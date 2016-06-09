@@ -1,0 +1,206 @@
+
+/*
+ * Styles for base HTML tags.
+ */
+
+
+/* TODO: Use "em" for font sizes. */
+/* TODO: We either or not use external hosted fonts, or we host them locally: */
+
+@import url('//fonts.googleapis.com/css?family=Lato');
+@import url('//fonts.googleapis.com/css?family=Lato:400italic');
+@import url('//fonts.googleapis.com/css?family=Lato:700');
+@import url('//fonts.googleapis.com/css?family=Lato:700italic');
+@import url('//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800');
+
+
+/* Body ***********************************************************************************************************************/
+
+body {
+  background-color: #535353;
+  color: #304a5f;
+  font-family: 'Open Sans',sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.3em;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Lists ***********************************************************************************************************************/
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  margin-left: 15px;
+}
+
+
+/* Links ***********************************************************************************************************************/
+
+a {
+  color: #304a5f !important;
+  text-decoration: underline;
+
+  /* Disable transitions for the anchor tag, since they don't work on some Chrome versions,
+     and makes anchors look bad on the fixed Chrome versions, check:
+
+     https://code.google.com/p/chromium/issues/detail?id=451756
+  */
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+
+/* Typography ******************************************************************************************************************/
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Open Sans',sans-serif;
+  line-height: 1.3em;
+}
+
+h1 { font-size: 32px;}
+h2 { font-size: 24px;}
+h3 { font-size: 18px;}
+h4 { font-size: 16px;}
+h5 { font-size: 14px;}
+h6 { font-size: 12px;}
+
+
+
+/* Table ***************************************************************************************************/
+
+table {
+  border-radius: 8px 8px 0 0;
+  background: #ffffff;
+  border-collapse: separate;
+  border-bottom: 0;
+  border-right: 0;
+  margin-bottom: 25px;
+}
+
+td {
+  padding: 10px;
+}
+
+th {
+  padding: 10px;
+  text-align: left;
+  font-size: 11px;
+  color: #cc3300 !important;
+}
+
+
+/* Header ***************************************************************************************************/
+
+header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e4e4e4;
+  display: table;
+  margin: 0 0 15px 0 !important;
+  width: 100%;
+  -webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow:    0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow:         0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Footer ***************************************************************************************************/
+
+footer {
+  clear: both;
+  color: #999999;
+  font-size: 11px;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 10px 10px;
+  position: relative;
+  text-align: left;
+}
+
+footer .row {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+footer a {
+  color: #999999;
+}
+
+footer img {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+
+/* Nav *************************************************************************************************************************/
+
+nav {
+  height: 33px;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+/* Forms ***********************************************************************************************************************/
+
+form label {
+  display: block;
+}
+
+label {
+  cursor: default;
+}
+
+form input,
+input[type="text"],
+textarea {
+  width: 100%;
+}
+
+select {
+  background: #ecf0f1;
+  background-image: url(/static/img/select-arrow.png);
+  background-position: 94% center;
+  background-repeat: no-repeat;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  height: 39px;
+  position: relative;
+  top: 1px;
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+input[type="date"] {
+  line-height: 32px;
+}
+
+/* Buttons ***************************************************************************************************/
+
+input[type="submit"] {
+  background: #273e50;
+  border: 1px solid #2b343b;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  width: auto;
+}
+
+@media screen and (max-width: 768px) {
+  input[type="submit"] {
+    padding: 9px 20px;
+  }
+}
+

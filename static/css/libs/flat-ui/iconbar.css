@@ -1,0 +1,173 @@
+.iconbar {
+  background-color: #2c3e50;
+  border-radius: 6px;
+  float: left;
+  margin: 0 20px 20px 0;
+  -webkit-backface-visibility: hidden;
+}
+.iconbar:before,
+.iconbar:after {
+  content: " ";
+  /* 1 */
+
+  display: table;
+  /* 2 */
+
+}
+.iconbar:after {
+  clear: both;
+}
+.iconbar > ul {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.iconbar > ul > li {
+  margin: 0;
+  padding: 0;
+}
+.iconbar > ul > li.active > a {
+  color: #1abc9c;
+}
+.iconbar > ul > li:first-child > a {
+  padding-top: 32px;
+}
+.iconbar > ul > li > a {
+  color: #ffffff;
+  display: block;
+  font-size: 24px;
+  line-height: 1;
+  padding: 8px 30px 32px;
+  position: relative;
+  text-decoration: none;
+}
+.iconbar > ul > li > a:hover,
+.iconbar > ul > li > a:focus {
+  color: #1abc9c;
+}
+@media (max-width: 767px) {
+  .iconbar > ul > li > a,
+  .iconbar.iconbar-horizontal > ul > li > a,
+  .iconbar > ul > li.active > a,
+  .iconbar.iconbar-horizontal > ul > li.active > a {
+    display: inline-block;
+    padding: 25px;
+  }
+  .iconbar .iconbar-unread {
+    right: 15px;
+    top: 13px;
+  }
+  .iconbar.iconbar-horizontal {
+    height: 70px;
+    overflow: auto;
+    width: 100%;
+    white-space: nowrap;
+  }
+  .iconbar.iconbar-horizontal > ul > li {
+    float: none;
+    display: inline;
+  }
+  .iconbar.iconbar-horizontal .iconbar-unread {
+    right: 15px;
+  }
+}
+[class*="iconbar-stick-"] {
+  border-radius: 0;
+  margin: 0;
+  position: fixed;
+  z-index: 1001;
+}
+[class*="iconbar-stick-"] > ul {
+  margin: 0;
+}
+.iconbar-stick-left {
+  bottom: 0;
+  left: 0;
+  top: 0;
+}
+.iconbar-unread {
+  background-color: #2a7aaf;
+  border-radius: 50%;
+  color: #ffffff;
+  font-family: "Lato", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.667;
+  min-width: 20px;
+  padding: 0 2px;
+  position: absolute;
+  right: 20px;
+  text-align: center;
+  top: -2px;
+  -webkit-font-smoothing: auto;
+}
+.iconbar-success {
+  background-color: #2ecc71;
+}
+.iconbar-success > ul > li.active > a {
+  color: #1e874b;
+}
+.iconbar-success > ul > li > a:hover,
+.iconbar-success > ul > li > a:focus {
+  color: #1e874b;
+}
+.iconbar-success .iconbar-unread {
+  background-color: #1e874b;
+}
+.iconbar-danger {
+  background-color: #e74c3c;
+}
+.iconbar-danger > ul > li.active > a {
+  color: #983228;
+}
+.iconbar-danger > ul > li > a:hover,
+.iconbar-danger > ul > li > a:focus {
+  color: #983228;
+}
+.iconbar-danger .iconbar-unread {
+  background-color: #983228;
+}
+.iconbar-warning {
+  background-color: #f1c40f;
+}
+.iconbar-warning > ul > li.active > a {
+  color: #9f810a;
+}
+.iconbar-warning > ul > li > a:hover,
+.iconbar-warning > ul > li > a:focus {
+  color: #9f810a;
+}
+.iconbar-warning .iconbar-unread {
+  background-color: #9f810a;
+}
+.iconbar-info {
+  background-color: #3498db;
+}
+.iconbar-info > ul > li.active > a {
+  color: #226491;
+}
+.iconbar-info > ul > li > a:hover,
+.iconbar-info > ul > li > a:focus {
+  color: #226491;
+}
+.iconbar-info .iconbar-unread {
+  background-color: #226491;
+}
+.iconbar-horizontal {
+  clear: both;
+  float: left;
+}
+.iconbar-horizontal > ul > li {
+  float: left;
+}
+.iconbar-horizontal > ul > li:first-child > a {
+  padding: 23px 32px 23px;
+}
+.iconbar-horizontal > ul > li > a {
+  padding: 23px 32px 23px 8px;
+}
+.iconbar-horizontal .iconbar-unread {
+  right: 23px;
+  top: 13px;
+}

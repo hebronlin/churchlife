@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!--[if IE 7]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="ie ie8" lang="en"><![endif]-->
+{% load i18n %}
+{% load bootstrap %}
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        {# Disable the iPad/iPhone automatic phone conversion into a link: #}
+        <meta name="format-detection" content="telephone=no">
+
+        <title>{% block title %}{% endblock %}</title>
+
+        <!-- Bootstrap + FlatUI (base CSS for an application). -->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/libs/bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/libs/flat-ui/flat-ui.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/libs/flat-ui/typeahead.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/libs/backbone/backbone.modal.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/libs/backbone/backbone.modal.theme.css" />
+
+        <!-- Base CSS styles (styles applied to generic HTML elements). -->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
+
+        <!-- Main layout and shared CSS styles. -->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/main.css" />
+
+        <!-- CSS override for our libraries (Bootstrap, FlatUI, etc.) -->
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/override/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/override/bootstrap-tagsinput.css" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/override/flat-ui/typeahead.css" />
+
+        <!-- CSS styles for each application/module. -->
+        {% block extrastyle %}{% endblock %}
+
+        <!--[if lte IE 10]>
+          <link rel="stylesheet" type="text/css" href="/static/css/ie/ie.css?cb=20131214" />
+        <![endif]-->
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+        <!--[if lt IE 9]>
+          <script type="text/javascript" src="/static/js/libs/flat-ui/html5shiv.js?cb=20131214"></script>
+          <script type="text/javascript" src="/static/js/libs/flat-ui/respond.min.js?cb=20131214"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        {% block drawer %}{% endblock %}
+
+        <div class="main-body-container">
+            <!-- BEGIN Header -->
+                {% block header %}{% endblock %}
+            <!-- END Header -->
+
+            <div class="container">
+                <!-- BEGIN Main Content -->
+                    {% block content %}{% endblock %}
+                <!-- END Main Content -->
+            </div>
+        </div>
+
+        {% block modal %}{% endblock %}
+
+        {% block extrajs %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,41 @@
+
+/*
+ * Overrides for the Flat-UI typeahead CSS.
+ */
+
+.twitter-typeahead {
+  display: inline;
+  width: auto !important;
+}
+
+.twitter-typeahead .tt-hint {
+  display: none;
+}
+
+/* Override the dropdown to display it a bit more separated than the
+   input box, and with a border with less color than the default. */
+.twitter-typeahead .tt-dropdown-menu {
+  margin-top: 12px;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+/* Style each the dropdown suggestion item. */
+.twitter-typeahead .tt-suggestion p {
+  padding: 3px 20px;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* The dropdown selected suggestion item color. */
+.twitter-typeahead .tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #304a5f;
+}
+

@@ -1,0 +1,115 @@
+
+/* Main login container */
+
+.login-container {
+    position: relative;
+    top: 50px;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+}
+
+/* Inner container */
+.login-container-column {
+    border: 2px solid #999999;
+    border-radius: 6px;
+    background-color: white;
+    padding: 0px;
+}
+
+.login-container-column footer {
+    padding: 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/* Top section */
+.login-container-top {
+    padding: 10px;
+}
+
+/* Bottom section */
+.login-container-bottom {
+    padding: 40px 50px 0px 50px;
+}
+
+
+/* Logo */
+.login-logo {
+    text-align: center;
+    width: 250px;
+    margin: 0 auto;
+}
+
+.login-logo img {
+    margin: 0;
+    max-height: 100px;
+}
+
+/* Sections and helper classes */
+
+.login-separator {
+    border-bottom: 1px solid #cccccc;
+}
+
+.login-title {
+    text-align: left;
+    margin: 0 auto;
+    margin-bottom: 25px;
+}
+
+.login-notice {
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+.login-text {
+    margin-bottom: 20px;
+}
+
+/* Forms */
+
+#login label {
+    font-weight: bold;
+}
+
+div.login-input-error {
+    color: #B94A48;
+    margin-top: -10px;
+    padding-bottom: 20px;
+}
+
+.login-controls {
+    height: 60px;
+    position: relative;
+    margin-top: 40px;
+}
+
+#login input[type="submit"] {
+    width: auto;
+    padding: 9px 40px;
+}
+
+.login-help {
+    font-size: 11px;
+    color: 304a5f !important;
+    line-height: 40px;
+}
+
+.login-bottom-button {
+    padding-bottom: 20px;
+}
+
+.login-password-rules ul {
+    margin-top: 10px;
+}
+
+.login-password-rules ul li {
+    margin-left: 30px;
+}
+
+
+

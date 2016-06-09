@@ -1,0 +1,61 @@
+{% extends "authentication/base.html" %}
+
+{% load bootstrap %}
+{% load i18n %}
+
+{% block login_title %}{% trans 'Sign into Church Life' %}{% endblock %}
+
+{% block login_container_classes %}col-xs-offset-3 col-xs-6{% endblock %}
+
+{% block login_content %}
+
+    <form method="post" action="?next={{ request.GET.next }}" id="login">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label class="control-label" for="{{ form.username.auto_id }}">{% trans 'Email Address:' %}</label>
+                <div class="form-group{% if form.username.errors %} has-error{% endif %}">
+                    <input id="id_username" type="text" name="username" class="form-control" />
+                    <span class="input-icon fui-user"></span>
+                </div>
+                {% for error in form.username.errors %}
+                    <div class="login-input-error">{{error}}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <label class="control-label" for="{{ form.password.auto_id }}">{% trans 'Password:' %}</label>
+                <div class="form-group{% if form.password.errors %} has-error{% endif %}">
+                    <input id="id_password" type="password" name="password" class="form-control" />
+                    <span class="input-icon fui-lock"></span>
+                </div>
+                {% for error in form.password.errors %}
+                    <div class="login-input-error">{{error}}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="login-controls clearfix">
+            <div class="login-control-submit">
+                <input type="submit" value="{% trans 'Sign In' %}" class="pull-left" />
+            </div>
+            <div class="login-control-help">
+                <a href="{% url 'authentication:password_reset' %}" class="pull-right login-help">{% trans "Help! I'm having trouble logging in." %}</a>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        {% if form.errors %}
+            <div class="login-input-error">
+                {% trans "We didn't recognize the email address or password you entered. Please try again." %}
+            </div>
+        {% endif %}
+
+    </form>
+
+{% endblock %}
+

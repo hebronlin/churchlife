@@ -1,1 +1,6 @@
 Django==1.9
+django-bootstrap-form==3.2
+django-countries
+djangorestframework
+psycopg2
+pytz

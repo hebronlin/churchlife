@@ -1,0 +1,28 @@
+
+<div class="row member-details-header">
+    <div class="col-xs-12 col-sm-2">
+        <h3>Members</h3>
+    </div>
+    <div class="col-xs-12 col-sm-8 pull-right text-right">
+        <button class="btn btn-primary member-add-button">Add New Member</button>
+    </div>
+
+    <div class="member-separator"></div>
+</div>
+
+<div class="row member-details-row member-details-header-row">
+    <div class="col-xs-1">ID</div>
+    <div class="col-xs-2">Name</div>
+    <div class="col-xs-2">Email</div>
+</div>
+
+{{#each members}}
+<div class="row member-details-row {{ extraClass }}">
+    <div class="col-xs-1 member-id-link" data-id="{{ id }}">{{ id }}</div>
+    <div class="col-xs-2 member-name-link">{{ first_name }} {{ last_name }}</div>
+    <div class="col-xs-2">{{ email }}</div>
+</div>
+{{/each}}
+
+<div id="member-index-modal"></div>
+

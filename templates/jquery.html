@@ -1,0 +1,32 @@
+
+{% comment %}
+    FlatUI requires jquery 2.x, but it will run with an old 1.x too (although in a flaky way), so 2.x is always preferred.
+    2.x doesn't support IE below version 9, thus with this conditional we tell to use an old 1.8.x jquery on those browsers.
+{% endcomment %}
+<!--[if lt IE 9]>
+  <script type="text/javascript" src="/static/js/libs/flat-ui/jquery-1.8.3.min.js?cb=20131214"></script>
+<![endif]-->
+
+{% comment %}
+   For other browsers (Firefox, Chrome, etc) always use the new 2.x jquery.
+   (this holds true for IE 10 and above too, which doesn't support IE conditionals).
+{% endcomment %}
+<!--[if !IE]> -->
+  <script type="text/javascript" src="/static/js/libs/flat-ui/jquery-2.0.3.min.js?cb=20131214"></script>
+<!-- <![endif]-->
+
+{% comment %}
+    IE 9 supports 2.x, and IE conditionals, so for that browser also use 2.x.
+{% endcomment %}
+<!--[if IE 9]>
+  <script type="text/javascript" src="/static/js/libs/flat-ui/jquery-2.0.3.min.js?cb=20131214"></script>
+<![endif]-->
+
+{% comment %}
+    For IE below 9 use the jquery placeholder library.
+{% endcomment %}
+<!--[if lte IE 9]>
+  <script type="text/javascript" src="/static/js/libs/flat-ui/jquery.placeholder.js?cb=20131214"></script>
+  <script type="text/javascript" src="/static/js/tlx/ie/ie.js?cb=20131214"></script>
+<![endif]-->
+

@@ -1,0 +1,19 @@
+.badge {
+  font-size: 13px;
+  font-weight: normal;
+  color: #ffffff;
+  line-height: 1.615;
+  background-color: #d8dce0;
+  border-radius: 4px;
+  padding: 0 8px;
+}
+.btn .badge {
+  position: relative;
+  top: -1px;
+}
+a.list-group-item.active > .badge,
+.nav-pills > .active > a > .badge,
+.nav-list > .active > a > .badge {
+  color: #9aa4af;
+  background-color: #ffffff;
+}

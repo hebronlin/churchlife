@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %}{% trans 'Church Life' %}{% endblock %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" type="text/css" href='{% static "authentication/css/login.css" %}' />
+{% endblock %}
+
+{% block content %}
+
+    <div class="row login-container">
+        <div class="{% block login_container_classes %}{% endblock %} login-container-column">
+            <div class="login-container-top">
+                <div class="login-logo">
+                    <div id="login-logo"></div>
+                </div>
+            </div>
+
+            <div class="login-separator"></div>
+
+            <div class="login-container-bottom">
+                <h1 class="login-title">{% block login_title %}{% endblock %}</h1>
+
+                {% block login_content %}{% endblock %}
+
+            </div>
+            {% include "footer.html" %}
+        </div>
+    </div>
+
+{% endblock %}
+

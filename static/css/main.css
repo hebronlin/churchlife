@@ -1,0 +1,384 @@
+
+/*
+ * Main layout and shared styles.
+ */
+
+/* Top header ***********************************************************************************************/
+
+.main-logo {
+  margin: 15px 0 15px 0;
+}
+
+
+/* Header ***************************************************************************************************/
+
+.header-container {
+  position: relative;
+}
+
+.header-left {
+  height: 82px;
+}
+
+.header-right {
+  position: absolute;
+  text-align: right;
+  right: 0px;
+  bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .header-right {
+    position: relative;
+    width: 100%;
+  }
+}
+
+.header-right-text {
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  margin-bottom: 0;
+  padding: 6px 12px;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.header-right a {
+  text-decoration: none;
+}
+
+.header-right .dropdown-toggle {
+  margin-left: 0;
+  -webkit-border-bottom-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+          border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -moz-border-radius-topleft: 4px;
+}
+
+.header-right .dropdown-menu {
+  width: 200px;
+  text-align: left;
+}
+
+/* Truncate text blocks */
+.main-text-ellipsis {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Main container *******************************************************************************************/
+
+/* Wrap almost all body elements inside this container,
+   so the drawer can scroll it instead of body,
+   to solve iOS layout issues. */
+.main-body-container {
+  height: 100%;
+  float: left;
+  left: 0;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  -webkit-overflow-scrolling: auto;
+}
+
+.main-container {
+  background-color: white !important;
+  border: 2px solid #999999;
+  border-radius: 4px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.main-container-content {
+  margin: 0px;
+  padding-bottom: 20px;
+}
+
+.main-heading-container {
+  padding-top: 20px;
+}
+
+.main-heading-container .input-group {
+  margin: 0px !important;
+}
+
+
+/* Footer ***************************************************************************************************/
+
+.footer-logo {
+  height: 30px !important;
+  width: 150px !important;
+  position: absolute;
+  top: 0;
+  right: 15px;
+  margin: 0;
+  float: right;
+}
+
+.footer-text {
+  line-height: 30px;
+  padding-right: 160px;
+  float: right;
+  text-align: right;
+  white-space: nowrap;
+}
+
+
+/* Search box in the header *********************************************************************************/
+
+.main-search-input {
+  float: right !important;
+  height: 33px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.main-search-button {
+  border-color: #c8c8c8 !important;
+  height: 33px;
+  max-height: 33px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.main-search-button-icon {
+  color: #cccccc !important;
+  font-size: 15px;
+}
+
+.main-separator {
+  border-bottom: 1px solid #eaeaea;
+  clear: both;
+  margin: 0 0 10px 0;
+  padding: 5px 0 10px 0;
+}
+
+
+/* Nav *************************************************************************************************************************/
+
+.main-nav-icon {
+  background-repeat: no-repeat;
+  background-position: top left;
+  display: block;
+  font-size: 11px;
+  padding-left: 40px !important;
+}
+
+@media (max-width: 768px) {
+  /* On small resolutions add some margin to the top, since this
+     section will stack below the nav icon. */
+  .main-search-box {
+    margin-top: 10px !important;
+  }
+}
+
+.main-nav-icon h1 {
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.main-nav-icon h1.no-nav-path {
+  font-size: 28px;
+  padding-left: 5px;
+}
+
+/*
+.main-nav-icon-control-panel { background-image: url('/static/img/tlx/drawer/control-panel.png'); }
+.main-nav-icon-order-central { background-image: url('/static/img/tlx/drawer/order-central.png'); }
+.main-nav-icon-account-central { background-image: url('/static/img/tlx/drawer/account-central.png'); }
+.main-nav-icon-report-central { background-image: url('/static/img/tlx/drawer/report-central.png'); }
+.main-nav-icon-user-central { background-image: url('/static/img/tlx/drawer/user-central.png'); }
+*/
+
+
+/* Button panels ***************************************************************************************************************/
+
+.main-button-panel {
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+
+.main-top-button-panel ul.actions li,
+.main-button-panel ul.actions li {
+  display: inline-block;
+  text-align: center;
+}
+
+.main-top-button-panel ul.actions li:first-child,
+.main-button-panel ul.actions li:first-child {
+  margin-left: 0;
+}
+
+
+/* Spinner classes *************************************************************************************************************/
+
+.main-spinner-modal .bbm-modal {
+  border-radius: 8px;
+  max-width: 200px;
+}
+
+.main-spinner-container {
+  padding: 50px;
+}
+
+.main-spinner-image {
+  background-image: url('/static/img/spinner.gif');
+  height: 62px;
+  width: 60px;
+}
+
+/* An alternative spinner image for different uses. */
+.main-spinner-ajax-image {
+  background-image: url('/static/img/ajax-loader.gif');
+  height: 32px;
+  width: 32px;
+}
+
+.main-spinner-text {
+  font-weight: bold;
+  padding: 5px;
+  text-align: center;
+}
+
+/* shared modal classes ********************************************************************************************************/
+
+.bbm-modal__bottombar {
+  background-color: #f8f8f8;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.bbm-modal__title {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+
+/* The close icon for all modals. */
+span.close {
+  background: url('/static/img/icons/close.png') no-repeat;
+  color: #304a5f;
+  height: 15px;
+  width: 15px;
+}
+
+span.close,
+span.close:hover
+span.close:focus {
+  filter: alpha(opacity=80) !important;
+  opacity: .8 !important;
+}
+
+/* A smaller version of the top section for modals
+  ("smaller" compared to the default of the Backbone.Modal CSS). */
+.main-modal-top-small {
+  border-bottom: 1px solid #cccccc;
+  font-size: 1.4em;
+  font-weight: bold;
+  height: 45px;
+  padding: 8px;
+}
+
+.main-modal-top-title {
+  display: inline;
+  line-height: 30px;
+  padding-left: 5px;
+}
+
+.main-modal-top-small .close {
+  margin: 8px 5px 5px 5px;
+}
+
+/* forms classes ***************************************************************************************************************/
+.main-form-error-field {
+  color: #e74c3c;
+  padding: 5px 0 0 12px;
+}
+
+.bbm-modal__topbar .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* Misc main classes ***********************************************************************************************************/
+
+.main-top-label {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 32px;
+}
+
+.main-top-label,
+.main-top-dropdown {
+  float: left;
+  padding: 0 0 0 12px;
+}
+
+.main-link {
+  cursor: pointer;
+}
+
+.main-centered-image {
+  clear: both;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.main-no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Styles to customize the HTML5's datetime input type.*******************************************************/
+/* (This only works on Chrome and Webkit based browsers. Firefox and IE doesn't support the new HTML5 input types. */
+
+/* Hide the up/down spin control: */
+::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* These are the other styles we can customize: */
+/*
+::-webkit-datetime-edit {}
+::-webkit-datetime-edit-fields-wrapper {}
+::-webkit-datetime-edit-text {}
+::-webkit-datetime-edit-month-field {}
+::-webkit-datetime-edit-day-field {}
+::-webkit-datetime-edit-year-field {}
+::-webkit-calendar-picker-indicator {}
+*/
+
+/* Styles to enable draggable on Safari. *********************************************************************/
+[draggable=true] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+

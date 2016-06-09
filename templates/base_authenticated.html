@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block header %}
+
+    <header class="clearfix">
+        <div class="container header-container">
+            <div class="header-left">
+                <div class="pull-left">
+                    <div class="main-logo"></div>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <div class="btn-group">
+                    <div class="header-right-text">{% blocktrans with first_name=request.user.first_name last_name=request.user.last_name %}Welcome, <strong>{{first_name}} {{last_name}}</strong>{% endblocktrans %}</div>
+                    <button class="btn btn-default dropdown-toggle btn-xs" type="button" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <span class="dropdown-arrow"></span>
+                    <ul class="dropdown-menu pull-right">
+                        {% if user.is_active %}
+                        <li><a href="">{% trans 'My Profile' %}</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'authentication:logout' %}">{% trans 'Sign Out' %}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 main-container">
+            <div class="main-container-content" id="main-container-content">
+            </div>
+            {% include "footer.html" %}
+        </div>
+    </div>
+
+{% endblock %}
+

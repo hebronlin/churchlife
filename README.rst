@@ -41,6 +41,18 @@ Installation
     #) sudo apt-get install python-psycopg2
     #) sudo apt-get install libpq-dev
 
+**Modify /var/lib/pgsql/9.3/data/pg_hba.conf to allow local connections. In the section below, change all methods from md5 to trust**:
+    #) sudo vim /etc/postgresql/9.3/main/pg_hba.conf
+    
+    # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+
+    # "local" is for Unix domain socket connections only
+    local   all         all                               trust
+    # IPv4 local connections:
+    host    all         all         127.0.0.1/32          trust
+    # IPv6 local connections:
+    host    all         all         ::1/128               trust
+
 **Create database user for Postgres**:
     #) sudo su - postgres
     #) createuser -P -d app_user

@@ -41,8 +41,8 @@ Installation
     #) sudo apt-get install libpq-dev
 
 **Modify /var/lib/pgsql/9.3/data/pg_hba.conf to allow local connections. In the section below, change all methods from md5 to trust**:
-    #) sudo vim /etc/postgresql/9.3/main/pg_hba.conf
-    ```
+```
+> sudo vim /etc/postgresql/9.3/main/pg_hba.conf
     # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 
     # "local" is for Unix domain socket connections only
@@ -51,8 +51,8 @@ Installation
     host    all         all         127.0.0.1/32          trust
     # IPv6 local connections:
     host    all         all         ::1/128               trust
-    ```
-    #) sudo service postgresql restart
+> sudo service postgresql restart
+```
 
 **Create database user for Postgres**:
     #) sudo su - postgres
@@ -62,19 +62,18 @@ Installation
     #) psql -U 'app_user' -d churchlife -f churchlife.sql
 
 **Create a virtual environment for churchlife**:
-    #) vim sourceme
+```
+> vim sourceme
     Enter the following settings:
-        ```
         export DJANGO_SETTINGS_MODULE=churchlife.settings.base
         export PYTHONPATH=~/mswe1:~/mswe1/churchlife
-        ```
     Save & Exit
-    #) virtualenv churchlife.env -p /usr/bin/python3.4
-    #) source churchlife.env/bin/activate
-    #) source sourceme
-    #) cd churchlife
-    #) pip install -r requirements.txt
-
+> virtualenv churchlife.env -p /usr/bin/python3.4
+> source churchlife.env/bin/activate
+> source sourceme
+> cd churchlife
+> pip install -r requirements.txt
+```
 **Install node and bundle Javascript**:
     #) cd core/apps
     #) npm install

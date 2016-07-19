@@ -1,19 +1,23 @@
 from django.contrib import admin
 
-from .models import Address, Locality, MemberProfile
+from .models import Address, Organization, Member, Event
 
 class AddressAdmin(admin.ModelAdmin):
     pass
 
-class LocalityAdmin(admin.ModelAdmin):
+class OrganizationAdmin(admin.ModelAdmin):
     pass
 
-class MemberProfileAdmin(admin.ModelAdmin):
+class MemberAdmin(admin.ModelAdmin):
+    pass
+
+class EventAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(Address, AddressAdmin)
-admin.site.register(Locality, LocalityAdmin)
+admin.site.register(Organization, OrganizationAdmin)
 
 # admin.site.unregister(User)
-admin.site.register(MemberProfile, MemberProfileAdmin)
+admin.site.register(Member, MemberAdmin)
+admin.site.register(Event, EventAdmin)

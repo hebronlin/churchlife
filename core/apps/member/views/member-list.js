@@ -4,9 +4,10 @@ var Backbone = require('backbone');
 var Modal = require('backbone.modal');
 var Marionette = require('backbone.marionette');
 var EditView = require('./modals/edit');
-var SpinnerModalView = require('./modals/spinner');
+var SpinnerModalView = require('../../common/views/modals/spinner');
 var Member = require('../models/member');
 var $ = require('jquery');
+var dt = require('datatables.net')(window, $);
 
 Backbone.$ = $;
 window.$ = $;

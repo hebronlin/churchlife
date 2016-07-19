@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from churchlife.authentication.views import LoginRequiredMixIn, NoCacheMixIn
-from .models import MemberProfile
-from .serializers import UserSerializer, MemberProfileSerializer
+from .models import Member, Event
+from .serializers import UserSerializer, MemberSerializer, EventSerializer
 
 class BaseModelViewCreateUpdateMixin():
     """
@@ -43,8 +43,15 @@ class IndexView(LoginRequiredMixIn, TemplateView):
 
 
 class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
-    serializer_class = MemberProfileSerializer
+    serializer_class = MemberSerializer
 
     def get_queryset(self):
-        return MemberProfile.objects.all()
+        return Member.objects.all()
+
+
+class EventView(BaseModelViewCreateUpdateMixin, ModelViewSet):
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        return Event.objects.all()
 

@@ -1,0 +1,16 @@
+
+<ul class="nav nav-tabs">
+{{#each tabs}}
+	<li {{#if active}}class="active"{{/if}}'><a data-toggle="tab" href="#{{ link }}">{{ label }}</a></li>
+{{/each}}
+</ul>
+
+<div class="tab-content">
+{{#each tabs}}
+	<div id="{{ link }}" class="tab-pane fade {{#if active}} in active{{/if}}">
+	</div>
+{{/each}}
+</div>
+
+<div id="main-spinner-modal" class="main-spinner-modal"></div>
+

@@ -43,4 +43,13 @@ urlpatterns = [
         }),
         name='member-detail'
     ),    
+
+    url(
+        r'^api/v1/event/$', 
+        views.EventView.as_view({
+            'get': 'list',
+            'post': 'create',
+        }),
+        name='event'
+    ),
 ]

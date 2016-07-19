@@ -1,0 +1,31 @@
+
+<div class="row event-details-header">
+    <div class="col-xs-12 col-sm-2">
+    </div>
+    <div class="col-xs-12 col-sm-8 pull-right text-right">
+        <button class="btn btn-primary event-add-button">Add New Event</button>
+    </div>
+
+    <div class="event-separator"></div>
+</div>
+
+<div class="responsive">
+    <table id="eventsTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each events}}
+            <tr>
+                <td class="event-id-link" data-id="{{ id }}">{{ id }}</td>
+                <td>{{ name }}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div id="event-index-modal"></div>

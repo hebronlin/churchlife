@@ -9,7 +9,7 @@ LANGUAGE_CHOICES = (('English', _('English')),
 					('Vietnanese', _('Vietnanese')),
 				   )
 
-STATUS_CHOICES = (('Junior High', _('Junior High')),
+MEMBER_STATUS_CHOICES = (('Junior High', _('Junior High')),
                   ('High School', _('High School')),
                   ('College Student', _('College Student')),
                   ('Full-timer', _('Full-timer')),
@@ -19,8 +19,20 @@ STATUS_CHOICES = (('Junior High', _('Junior High')),
 
 MEMBER_TYPE_CHOICES = (('Member', _('Member')),
 					   ('Guest', _('Guest')),
+                       ('ReportAdmin', _('ReportAdmin')),
 					   ('Admin', _('Admin')),
 					  )
+
+EVENT_STATUS_CHOICES = (('Active', _('Active')),
+						('Inactive', _('Inactive')),
+						('Completed', _('Completed')),
+					   )
+
+EVENT_TYPE_CHOICES = (('Daily', _('Daily')),
+					  ('Weekly', _('Weekly')),
+					  ('Monthly', _('Monthly')),
+					  ('Yearly', _('Yearly')),
+					 )
 
 ABSENT_REASON_CHOICES = (('Unknown', _('Unknown')),
 					     ('Sick', _('Sick')),

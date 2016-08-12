@@ -45,6 +45,25 @@ urlpatterns = [
     ),    
 
     url(
+        r'^api/v1/organization/$', 
+        views.OrganizationView.as_view({
+            'get': 'list',
+            'post': 'create',
+        }),
+        name='organization'
+    ),
+
+    url(
+        r'^api/v1/organization/(?P<pk>\d+)/$', 
+        views.OrganizationView.as_view({
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'update',
+        }),
+        name='organization-detail'
+    ),    
+
+    url(
         r'^api/v1/event/$', 
         views.EventView.as_view({
             'get': 'list',
@@ -52,4 +71,52 @@ urlpatterns = [
         }),
         name='event'
     ),
+
+    url(
+        r'^api/v1/event/(?P<pk>\d+)/$', 
+        views.EventView.as_view({
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'update',
+        }),
+        name='event-detail'
+    ),    
+
+    url(
+        r'^api/v1/group/$', 
+        views.GroupView.as_view({
+            'get': 'list',
+            'post': 'create',
+        }),
+        name='group'
+    ),
+
+    url(
+        r'^api/v1/group/(?P<pk>\d+)/$', 
+        views.GroupView.as_view({
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'update',
+        }),
+        name='group-detail'
+    ),    
+
+    url(
+        r'^api/v1/attendance/$', 
+        views.AttendanceView.as_view({
+            'get': 'list',
+            'post': 'create',
+        }),
+        name='attendance'
+    ),
+
+    url(
+        r'^api/v1/attendance/(?P<pk>\d+)/$', 
+        views.AttendanceView.as_view({
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'update',
+        }),
+        name='attendance-detail'
+    ),    
 ]

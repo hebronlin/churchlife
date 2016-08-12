@@ -1,0 +1,33 @@
+
+<div class="row group-details-header">
+    <div class="col-xs-12 col-sm-2">
+    </div>
+    <div class="col-xs-12 col-sm-8 pull-right text-right">
+        <button class="btn btn-primary group-add-button">Add New Group</button>
+    </div>
+
+    <div class="group-separator"></div>
+</div>
+
+<div class="responsive">
+    <table id="groupsTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#each groups}}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ description }}</td>
+                <td class="group-id-link" data-id="{{ id }}">Details</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div id="group-index-modal"></div>

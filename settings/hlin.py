@@ -30,3 +30,24 @@ else:
         #     'OPTIONS': { 'init_command': 'SET storage_engine=INNODB', }
         # }
     }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/home/hongchang/logs/django.log'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file','console'],
+            'level': 'INFO',
+        },
+    },
+}

@@ -42,7 +42,6 @@ module.exports = Marionette.LayoutView.extend({
     d.render();
 
     $('#member-index-modal').html(d.el);
-    // Backbone.history.navigate('members/new/', {trigger: true});
   },
 
   edit: function(e){

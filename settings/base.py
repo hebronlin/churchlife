@@ -52,6 +52,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'churchlife.authentication.middleware.OrganizationMiddleware',
 ]
 
 ROOT_URLCONF = 'churchlife.core.urls'

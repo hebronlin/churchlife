@@ -8,8 +8,9 @@ from django_countries.fields import Country, CountryField
 import pytz
 
 from .managers import MemberManager
-from .consts import (LANGUAGE_CHOICES, STATUS_CHOICES, GENDER_CHOICES,
-                     MEMBER_TYPE_CHOICES, ABSENT_REASON_CHOICES)
+from .consts import (LANGUAGE_CHOICES, MEMBER_STATUS_CHOICES, GENDER_CHOICES,
+                     MEMBER_TYPE_CHOICES, EVENT_STATUS_CHOICES,
+                     EVENT_TYPE_CHOICES, ABSENT_REASON_CHOICES)
 
 TIME_ZONES = [(tz, tz) for tz in pytz.common_timezones]
 
@@ -44,12 +45,12 @@ class Address(BaseModel):
 
 class Organization(BaseModel):
     """ Organization class definition """
-    name = CharField(max_length=100)
+    name = CharField(max_length=100, unique=True)
     description = CharField(max_length=500)
     address = ForeignKey(Address, blank=True, null=True)
 
     def __str__(self):
-        return u'{}'.format(self.name)
+        return u'{} {}'.format(self.id, self.name)
 
 class Group(BaseModel):
     """ Group definition """
@@ -59,21 +60,29 @@ class Group(BaseModel):
     organization = ForeignKey(Organization, blank=True, null=True)
 
     def __str__(self):
-        return u'{}'.format(self.name)
+        return u'{} {}'.format(self.id, self.name)
+
+    class Meta:
+        unique_together = ('name', 'organization')
 
 class Event(BaseModel):
     """ Event definition """
     name = CharField(max_length=100)
     description = CharField(max_length=500)
+    status = CharField(max_length=30, default='Active', choices=EVENT_STATUS_CHOICES)
+    event_type = CharField(max_length=30, default='Weekly', choices=EVENT_TYPE_CHOICES)
+    group = ForeignKey(Group, blank=True, null=True)
+    organization = ForeignKey(Organization, blank=True, null=True)
 
     def __str__(self):
-        return u'{}'.format(self.name)
+        return u'{} {}'.format(self.id, self.name)
+
+    class Meta:
+        unique_together = ('name', 'group', 'organization')
 
 class Member(BaseModel):
     """ Member definition """
-    # user = OneToOneField(User,
-    #                      related_name='profile',
-    #                      primary_key=True)
+    user = ForeignKey(User, null=True, blank=True)
     last_name = CharField(max_length=30)
     first_name = CharField(max_length=30)
     middle_name = CharField(max_length=30, null=True, blank=True)
@@ -92,22 +101,38 @@ class Member(BaseModel):
     address = ForeignKey(Address, blank=True, null=True)
     birth_date = DateField(blank=True, null=True)
     baptism_date = DateField(blank=True, null=True)
-    status = CharField(max_length=50, default='Others', choices=STATUS_CHOICES)
+    status = CharField(max_length=50, default='Others', choices=MEMBER_STATUS_CHOICES)
+
+    # objects = MemberManager()
 
     def __str__(self):
         return u'{} {}'.format(self.first_name, self.last_name)
-    # objects = MemberManager()
 
-# # Make sure the profile is always created after a user is created.
-# def user_post_save_receiver(sender, instance, created, **kwargs):
-#     user = instance
+    # def save(self, *args, **kwargs):
+    #     """ Override the save """
+    #     if self.user:
+    #         self.last_name = self.user.last_name
+    #         self.first_name = self.user.first_name
+    #         self.email = self.user.email
 
-#     if created:
-#         MemberProfile.objects.get_or_create(user=user)
+    #     super(Member, self).save(*args, **kwargs)
 
-#     user.profile.save()
+# Make sure a member is always created for a user.
+def user_post_save_receiver(sender, instance, created, **kwargs):
+    user = instance
+    try:
+        member = Member.objects.get(user=user)
+    except Member.DoesNotExist:
+        member = Member(user=user)
+    if user.first_name:
+        member.first_name = user.first_name
+    if user.last_name:
+        member.last_name = user.last_name
+    if user.email:
+        member.email = user.email
+    member.save()
 
-# post_save.connect(user_post_save_receiver, sender=User)
+post_save.connect(user_post_save_receiver, sender=User)
 
 class MemberGroup(BaseModel):
     """ Member Group """
@@ -116,25 +141,33 @@ class MemberGroup(BaseModel):
     member_type = CharField(max_length=50, default='Member', choices=MEMBER_TYPE_CHOICES)
 
     def __str__(self):
-        return u'{} {}'.format(self.member, self.group)
+        return u'{} {} {}'.format(self.member, self.group, self.member_type)
 
-class GroupAttendancee(BaseModel):
-    """ Group Attendancee """
-    date = DateField()
-    group = ForeignKey(Group)
+    class Meta:
+        unique_together = ('member', 'group', 'member_type')
+
+class EventNote(BaseModel):
+    """ Event Note """
     event = ForeignKey(Event)
-    completed = BooleanField(default=False)
-    notes = TextField(blank=True, null=True)
+    date = DateField()
+    note = TextField()
 
-class MemberAttendancee(BaseModel):
-    """ Member Attendancee """
+    class Meta:
+        unique_together = ('date', 'event')
+
+class EventAttendance(BaseModel):
+    """ Event Attendance """
+    event = ForeignKey(Event)
     date = DateField()
     member = ForeignKey(Member)
-    event = ForeignKey(Event)
-    reason = CharField(max_length=50, default='Unknown', choices=ABSENT_REASON_CHOICES)
+    attended = BooleanField(default=False)
+    absent_reason = CharField(max_length=50, default='Unknown', choices=ABSENT_REASON_CHOICES)
 
-class MemberNotes(BaseModel):
-    """ Member Notes """
+    class Meta:
+        unique_together = ('date', 'member', 'event')
+
+class MemberNote(BaseModel):
+    """ Member Note """
     member = ForeignKey(Member)
-    notes = TextField()
+    note = TextField()
 

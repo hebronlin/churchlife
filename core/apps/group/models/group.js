@@ -7,7 +7,7 @@ module.exports = Backbone.Model.extend({
   // so we can update this object (i.e. call HTTP PUT
   // on save()).
   url: function() {
-    var baseURL = '/api/v1/member/';
+    var baseURL = '/api/v1/group/';
     if (this.get('id')) {
         return baseURL + this.get('id') + '/';
     } else {
@@ -17,13 +17,7 @@ module.exports = Backbone.Model.extend({
   defaults: function() {
     return {
       id: null,
-      first_name: '',
-      last_name: '',
-      email: '',
-      gender: 'M',
-      nick_name: '',
-      other_name: '',
-      // locality: '',
+      name: '',
     };
   }
 });

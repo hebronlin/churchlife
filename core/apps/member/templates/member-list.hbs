@@ -13,17 +13,27 @@
     <table id="membersTable" class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Language</th>
+                <th>Other Name</th>
+                <th>B/S</th>
+                <th>Home Group</th>
                 <th>Email</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
         {{#each members}}
             <tr>
-                <td class="member-id-link" data-id="{{ id }}">{{ id }}</td>
-                <td class="member-name-link">{{ first_name }} {{ last_name }}</td>
+                <td class="member-name-link">{{ last_name }}</td>
+                <td class="member-name-link">{{ first_name }}</td>
+                <td>{{ language }}</td>
+                <td>{{ other_name }}</td>
+                <td>{{ gender }}</td>
+                <td>{{ home_group }}</td>
                 <td>{{ email }}</td>
+                <td class="member-id-link" data-id="{{ id }}">Details</td>
             </tr>
         {{/each}}
         </tbody>

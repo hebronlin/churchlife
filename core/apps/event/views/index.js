@@ -62,7 +62,7 @@ module.exports = Marionette.LayoutView.extend({
             self.listenTo(e, 'change', self.render);
         });
         self.render();
-        $(document).ready(function() {$('#eventsTable').dataTable();});
+        // $(document).ready(function() {$('#eventsTable').dataTable();});
       }
     );
   },

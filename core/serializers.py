@@ -83,8 +83,8 @@ class MemberSerializer(ModelSerializer):
             user.last_name = validated_data['last_name']
             user.email = validated_data['email']
             user.save()
-        instance.first_name = validated_data['first_name']
-        instance.save()
+        Member.objects.filter(pk=instance.pk).update(**validated_data)
+        instance = Member.objects.get(pk=instance.pk)
         return instance
  
     def create(self, validated_data):

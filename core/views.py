@@ -60,8 +60,16 @@ class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
 
     def get_queryset(self):
         organization = self.request.organization
-        group_admin = Member.objects.get(user=self.request.user)
-        if organization:
+        group_id = None
+        if 'gid' in self.request.GET and self.request.GET['gid']:
+            group_id = self.request.GET['gid']
+        # else:
+        #     group_admin = Member.objects.get(user=self.request.user)
+        print(group_id)
+        if group_id:
+            return Member.objects.filter(id__in=[mg.member_id for mg
+                        in MemberGroup.objects.filter(group_id=group_id)])
+        elif organization:
             return Member.objects.filter(organization=organization)
         else:
             return Member.objects.all()

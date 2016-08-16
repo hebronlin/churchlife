@@ -1,6 +1,254 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var Backbone = require('backbone');
+
+module.exports = Backbone.Collection.extend({
+  model: require('../models/attendance'),
+  initialize: function(options) {
+  	if (typeof (options) !== "undefined" && options.groupId) {
+    	this.url = '/api/v1/attendance/?gid=' + options.groupId + '&format=json';
+    }
+  }
+});
+
+},{"../models/attendance":3,"backbone":42}],2:[function(require,module,exports){
+'use strict';
+
+var Backbone = require('backbone');
+
+module.exports = Backbone.Collection.extend({
+  model: require('../models/member_attendance'),
+});
+
+},{"../models/member_attendance":4,"backbone":42}],3:[function(require,module,exports){
+'use strict';
+
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({
+  // If we have the id, let's use the URL with an id,
+  // so we can update this object (i.e. call HTTP PUT
+  // on save()).
+  url: function() {
+    var baseURL = '/api/v1/attendance/';
+    if (this.get('id')) {
+        return baseURL + this.get('id') + '/';
+    } else {
+        return baseURL;
+    }
+  },
+  defaults: function() {
+    return {
+      id: null,
+      member_id: '',
+      event_id: '',
+      attended: false,
+      absent_reason: "",
+    };
+  }
+});
+
+},{"backbone":42}],4:[function(require,module,exports){
+'use strict';
+
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({
+  defaults: function() {
+    return {
+      id: 0,
+      name: "",
+      attendance: null,
+    };
+  }
+});
+
+},{"backbone":42}],5:[function(require,module,exports){
+// hbsfy compiled Handlebars template
+var HandlebarsCompiler = require('hbsfy/runtime');
+module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                <th class=\"meeting"
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</th>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+
+  return "            <tr>\n                <td>"
+    + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</td>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.attendance : depth0),{"name":"each","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </tr>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+
+  return "                <td><input class=\"check meeting"
+    + container.escapeExpression(((helper = (helper = helpers.evt_id || (depth0 != null ? depth0.evt_id : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"evt_id","hash":{},"data":data}) : helper)))
+    + "\" "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.attended : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + " type=\"checkbox\"></input></td>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "checked";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "\n<div class=\"row attendance-filter-header\">\n    <div class=\"col-xs-12 col-sm-2\">\n    </div>\n    <div class=\"col-xs-12 col-sm-8 pull-right text-right\">\n        <button class=\"btn btn-primary member-add-button\">Add a member</button>\n    </div>\n\n    <div class=\"group-separator\"></div>\n</div>\n\n<div class=\"responsive\">\n    <table id=\"attendancesTable\" class=\"table table-striped table-bordered\">\n        <thead>\n            <tr>\n                <th>Member</th>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.evts : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </tr>\n        </thead>\n        <tbody>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </tbody>\n    </table>\n</div>\n\n<div id=\"member-index-modal\"></div>\n";
+},"useData":true});
+
+},{"hbsfy/runtime":76}],6:[function(require,module,exports){
+// hbsfy compiled Handlebars template
+var HandlebarsCompiler = require('hbsfy/runtime');
+module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Group</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"event-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">Name</div>\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Description</div>\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
+},"useData":true});
+
+},{"hbsfy/runtime":76}],7:[function(require,module,exports){
+'use strict';
+
+var Marionette = require('backbone.marionette');
+var MemberCollection = require('../../member/collections/member');
+var EventCollection = require('../../event/collections/event');
+var AttendanceModel = require('../models/attendance');
+var AttendanceCollection = require('../collections/attendance');
+var MemberAttendanceModel = require('../models/member_attendance');
+var MemberAttendanceCollection = require('../collections/member_attendance');
+var SpinnerModalView = require('../../common/views/modals/spinner');
+var EditView = require('./modals/edit');
+
+// The index view is a grid with the list of group.
+module.exports = Marionette.LayoutView.extend({
+  template: require('../templates/index.hbs'),
+  regions: {
+    modals: {
+      selector: "#group-index-modal",
+      regionType: Marionette.Modals
+    }
+  },
+
+  events: {
+    'click .group-add-button': 'add',
+    'click .group-id-link': 'edit',
+  },
+
+  showSpinnerModal: function() {
+    this.spinnerModalView = new SpinnerModalView();
+    $('#main-spinner-modal').html(this.spinnerModalView.render().el);
+  },
+
+  render: function(){
+    var self = this;
+    this.member_attendance = new MemberAttendanceCollection();
+    this.members.each(function(member) {
+      self.event_attendance = new AttendanceCollection();
+      var member_name = member.get('first_name') + ' ' + member.get('last_name');
+      self.evts.each(function(evt) {
+        var attendance = self.attendance.find(function(item) {
+          return (item.get('member_id') === member.id && item.get('event_id') === evt.id) ;
+        });
+        if (typeof (attendance) === 'undefined' || attendance === null) {
+          attendance = new AttendanceModel({member_id: member.id, evt_id: evt.id, attended: false});
+        }
+        self.event_attendance.add(attendance);
+      });
+      self.member_attendance.add(new MemberAttendanceModel({id: member.id, name: member_name,
+                                        attendance: self.event_attendance.toJSON()}));
+    });
+    this.$el.html(this.template({evts: this.evts.toJSON(),
+                                 members: this.member_attendance.toJSON()}));
+    return this;
+  },
+
+  initialize: function(){
+    var self = this;
+    this.evts = new EventCollection();
+    this.members = new MemberCollection({groupId: 1});
+    this.attendance = new AttendanceCollection({groupId: 1});
+    this.evts.fetch().done(
+      function() {
+        console.log('fetching events done');
+        self.members.fetch().done(
+          function() {
+            console.log('fetching members done');
+            self.attendance.fetch().done(
+              function() {
+                console.log('fetching attendance done');
+                self.render();
+              }
+            )
+          }
+        )
+        // $(document).ready(function() {$('#groupsTable').dataTable();});
+      }
+    );
+  },
+});
+
+},{"../../common/views/modals/spinner":13,"../../event/collections/event":14,"../../member/collections/member":27,"../collections/attendance":1,"../collections/member_attendance":2,"../models/attendance":3,"../models/member_attendance":4,"../templates/index.hbs":5,"./modals/edit":8,"backbone.marionette":37}],8:[function(require,module,exports){
+'use strict';
+
+var Backbone = require('backbone');
+var Marionette = require('backbone.marionette');
+var Modal = require('backbone.modal');
+var _ = require('underscore');
+
+var $ = require('jquery');
+
+Backbone.$ = $;
+window.$ = $;
+
+
+module.exports = Backbone.Modal.extend({
+    template: require('../../templates/modals/edit.hbs'),
+
+    cancelEl: '.close-button',
+    submitEl: '.save',
+
+    initialize: function(group) {
+        this.group = group;
+    },
+
+    groups: {
+        'keypress #member-edit-form': 'disableSubmit',
+        'keyup #member-edit-form': 'disableSubmit'
+    },
+
+    onShow: function() {
+        if (this.group) {
+            this.$el.find('form input[name="name"]').val(this.group.get('name'));
+            this.$el.find('form input[name="description"]').val(this.group.get('description'));
+        }
+    },
+
+    // Don't submit the form when the enter key is pressed.
+    disableSubmit: function(e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    },
+
+    submit: function() {
+        this.group.save({
+            'name': this.$el.find('form input[name="name"]').val(),
+            'description': this.$el.find('form input[name="description"]').val(),
+            }
+        );
+    }
+
+});
+
+},{"../../templates/modals/edit.hbs":6,"backbone":42,"backbone.marionette":37,"backbone.modal":41,"jquery":77,"underscore":78}],9:[function(require,module,exports){
+'use strict';
+
 // To register Handlebars helpers, since we use hbsfy,
 // we must reference 'hbsfy/runtime' which is the single
 // Handlebars copy used in all the system.
@@ -16,7 +264,7 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
 });
 
 
-},{"hbsfy/runtime":68}],2:[function(require,module,exports){
+},{"hbsfy/runtime":76}],10:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -51,38 +299,42 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "</div>\n\n<div id=\"main-spinner-modal\" class=\"main-spinner-modal\"></div>\n\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],3:[function(require,module,exports){
+},{"hbsfy/runtime":76}],11:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div class=\"main-spinner-container\">\r\n\r\n    <div class=\"main-spinner-image main-centered-image\"></div>\r\n\r\n    <div class=\"main-spinner-text\">LOADING</div>\r\n\r\n</div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],4:[function(require,module,exports){
+},{"hbsfy/runtime":76}],12:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
 var MemberView = require('../../member/views/index');
 var GroupView = require('../../group/views/index');
+var AttendanceView = require('../../attendance/views/index');
 var EventView = require('../../event/views/index');
 
 module.exports = Marionette.LayoutView.extend({
   template: require('../templates/layout.hbs'),
   el: '#main-container-content',
   regions: {
+      attendance: '#attendance',
       members: '#members',
       groups: '#groups',
       events: '#events'
   },
 	tabs    : [
-		{link: "members", label: "Members", active: true},
+    {link: "attendance", label: "Attendance", active: true},
+		{link: "members", label: "Members", active: false},
 		{link: "groups", label: "Groups", active: false},
     {link: "events", label: "Events", active: false}
 	],
 
   render: function(){
     this.$el.html(this.template({tabs: this.tabs}));
-    this.getRegion('members').show(new MemberView());
+    this.getRegion('attendance').show(new AttendanceView());
+    this.getRegion('members').show(new MemberView({groupId: ''}));
     this.getRegion('groups').show(new GroupView());
     this.getRegion('events').show(new EventView());
     return this;
@@ -90,7 +342,7 @@ module.exports = Marionette.LayoutView.extend({
 });
 
 
-},{"../../event/views/index":10,"../../group/views/index":16,"../../member/views/index":26,"../templates/layout.hbs":2,"backbone.marionette":29}],5:[function(require,module,exports){
+},{"../../attendance/views/index":7,"../../event/views/index":18,"../../group/views/index":24,"../../member/views/index":34,"../templates/layout.hbs":10,"backbone.marionette":37}],13:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -103,7 +355,7 @@ module.exports = Backbone.Modal.extend({
 });
 
 
-},{"../../templates/modals/spinner.hbs":3,"backbone":34,"backbone.modal":33}],6:[function(require,module,exports){
+},{"../../templates/modals/spinner.hbs":11,"backbone":42,"backbone.modal":41}],14:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -113,7 +365,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/event/',
 });
 
-},{"../models/event":7,"backbone":34}],7:[function(require,module,exports){
+},{"../models/event":15,"backbone":42}],15:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -138,7 +390,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":34}],8:[function(require,module,exports){
+},{"backbone":42}],16:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -159,14 +411,14 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div id=\"event-index-modal\"></div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],9:[function(require,module,exports){
+},{"hbsfy/runtime":76}],17:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Event</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"event-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">Name</div>\r\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],10:[function(require,module,exports){
+},{"hbsfy/runtime":76}],18:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -237,7 +489,7 @@ module.exports = Marionette.LayoutView.extend({
   },
 });
 
-},{"../../common/views/modals/spinner":5,"../collections/event":6,"../models/event":7,"../templates/index.hbs":8,"./modals/edit":11,"backbone.marionette":29}],11:[function(require,module,exports){
+},{"../../common/views/modals/spinner":13,"../collections/event":14,"../models/event":15,"../templates/index.hbs":16,"./modals/edit":19,"backbone.marionette":37}],19:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -290,7 +542,7 @@ module.exports = Backbone.Modal.extend({
 
 });
 
-},{"../../templates/modals/edit.hbs":9,"backbone":34,"backbone.marionette":29,"backbone.modal":33,"jquery":69,"underscore":70}],12:[function(require,module,exports){
+},{"../../templates/modals/edit.hbs":17,"backbone":42,"backbone.marionette":37,"backbone.modal":41,"jquery":77,"underscore":78}],20:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -300,7 +552,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/group/',
 });
 
-},{"../models/group":13,"backbone":34}],13:[function(require,module,exports){
+},{"../models/group":21,"backbone":42}],21:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -325,7 +577,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":34}],14:[function(require,module,exports){
+},{"backbone":42}],22:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -346,14 +598,9 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\n    </table>\n</div>\n\n<div id=\"group-index-modal\"></div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],15:[function(require,module,exports){
-// hbsfy compiled Handlebars template
-var HandlebarsCompiler = require('hbsfy/runtime');
-module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Group</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"event-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">Name</div>\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Description</div>\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
-},"useData":true});
-
-},{"hbsfy/runtime":68}],16:[function(require,module,exports){
+},{"hbsfy/runtime":76}],23:[function(require,module,exports){
+arguments[4][6][0].apply(exports,arguments)
+},{"dup":6,"hbsfy/runtime":76}],24:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -424,62 +671,9 @@ module.exports = Marionette.LayoutView.extend({
   },
 });
 
-},{"../../common/views/modals/spinner":5,"../collections/group":12,"../models/group":13,"../templates/index.hbs":14,"./modals/edit":17,"backbone.marionette":29}],17:[function(require,module,exports){
-'use strict';
-
-var Backbone = require('backbone');
-var Marionette = require('backbone.marionette');
-var Modal = require('backbone.modal');
-var _ = require('underscore');
-
-var $ = require('jquery');
-
-Backbone.$ = $;
-window.$ = $;
-
-
-module.exports = Backbone.Modal.extend({
-    template: require('../../templates/modals/edit.hbs'),
-
-    cancelEl: '.close-button',
-    submitEl: '.save',
-
-    initialize: function(group) {
-        this.group = group;
-    },
-
-    groups: {
-        'keypress #member-edit-form': 'disableSubmit',
-        'keyup #member-edit-form': 'disableSubmit'
-    },
-
-    onShow: function() {
-        if (this.group) {
-            this.$el.find('form input[name="name"]').val(this.group.get('name'));
-            this.$el.find('form input[name="description"]').val(this.group.get('description'));
-        }
-    },
-
-    // Don't submit the form when the enter key is pressed.
-    disableSubmit: function(e) {
-        var code = e.keyCode || e.which;
-        if (code == 13) {
-            e.preventDefault();
-            return false;
-        }
-    },
-
-    submit: function() {
-        this.group.save({
-            'name': this.$el.find('form input[name="name"]').val(),
-            'description': this.$el.find('form input[name="description"]').val(),
-            }
-        );
-    }
-
-});
-
-},{"../../templates/modals/edit.hbs":15,"backbone":34,"backbone.marionette":29,"backbone.modal":33,"jquery":69,"underscore":70}],18:[function(require,module,exports){
+},{"../../common/views/modals/spinner":13,"../collections/group":20,"../models/group":21,"../templates/index.hbs":22,"./modals/edit":25,"backbone.marionette":37}],25:[function(require,module,exports){
+arguments[4][8][0].apply(exports,arguments)
+},{"../../templates/modals/edit.hbs":23,"backbone":42,"backbone.marionette":37,"backbone.modal":41,"dup":8,"jquery":77,"underscore":78}],26:[function(require,module,exports){
 'use strict';
 
 // XXX should these three lines be a separate import
@@ -530,17 +724,19 @@ $(function() {
   layout.render();
 });
 
-},{"./common/handlebars":1,"./common/views/layout":4,"backbone":34,"backbone.marionette":29,"bootstrap":35,"jquery":69,"underscore":70}],19:[function(require,module,exports){
+},{"./common/handlebars":9,"./common/views/layout":12,"backbone":42,"backbone.marionette":37,"bootstrap":43,"jquery":77,"underscore":78}],27:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
   model: require('../models/member'),
-  url: '/api/v1/member/',
+  initialize: function(options) {
+    this.url = '/api/v1/member/?gid=' + options.groupId + '&format=json';
+  }
 });
 
-},{"../models/member":20,"backbone":34}],20:[function(require,module,exports){
+},{"../models/member":28,"backbone":42}],28:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -571,7 +767,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":34}],21:[function(require,module,exports){
+},{"backbone":42}],29:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -586,14 +782,14 @@ module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":f
     + "\" />\n                    <span class=\"input-group-btn\">\n                        <button type=\"submit\"\n                                id=\"main-search-button\"\n                                class=\"btn main-search-button\">\n                            <span class=\"main-search-button-icon fui-search\"></span>\n                        </button>\n                    </span>\n                </div>\n\n            </div>\n        </div>\n    </div>\n    <div class=\"main-separator\"></div>\n</div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],22:[function(require,module,exports){
+},{"hbsfy/runtime":76}],30:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div id=\"tab-content-header\">\r\n</div>\r\n\r\n<div id=\"tab-content-container\">\r\n</div>\r\n\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],23:[function(require,module,exports){
+},{"hbsfy/runtime":76}],31:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -624,14 +820,14 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div id=\"member-index-modal\"></div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],24:[function(require,module,exports){
+},{"hbsfy/runtime":76}],32:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Member</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"member-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">First Name</div>\r\n            <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Last Name</div>\r\n            <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Email</div>\r\n            <input type=\"text\" name=\"email\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Gender</div>\r\n            <select name=\"gender\" id=\"gender\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\r\n                <option value=\"M\">Male</option>\r\n                <option value=\"F\">Female</option>\r\n            </select>\r\n            <div class=\"member-edit-form-title\">Other Name</div>\r\n            <input type=\"text\" name=\"other_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Locality</div>\r\n            <input type=\"text\" name=\"locality\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":68}],25:[function(require,module,exports){
+},{"hbsfy/runtime":76}],33:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -651,7 +847,7 @@ module.exports = Marionette.LayoutView.extend({
 });
 
 
-},{"../templates/header.hbs":21,"backbone":34,"backbone.marionette":29,"jquery":69}],26:[function(require,module,exports){
+},{"../templates/header.hbs":29,"backbone":42,"backbone.marionette":37,"jquery":77}],34:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -669,9 +865,9 @@ module.exports = Marionette.LayoutView.extend({
     members: '#tab-content-container'
   },
 
-  initialize: function(){
+  initialize: function(options){
     var self = this;
-    this.members = new MemberCollection();
+    this.members = new MemberCollection({groupId: options.groupId});
     this.members.fetch().done(
       function() {
         console.log('fetching members done');
@@ -685,7 +881,7 @@ module.exports = Marionette.LayoutView.extend({
 
 });
 
-},{"../collections/member":19,"../templates/index.hbs":22,"./header":25,"./member-list":27,"backbone.marionette":29,"jquery":69}],27:[function(require,module,exports){
+},{"../collections/member":27,"../templates/index.hbs":30,"./header":33,"./member-list":35,"backbone.marionette":37,"jquery":77}],35:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -756,7 +952,7 @@ module.exports = Marionette.LayoutView.extend({
   }
 });
 
-},{"../../common/views/modals/spinner":5,"../models/member":20,"../templates/member-list.hbs":23,"./modals/edit":28,"backbone":34,"backbone.marionette":29,"backbone.modal":33,"datatables.net":48,"jquery":69}],28:[function(require,module,exports){
+},{"../../common/views/modals/spinner":13,"../models/member":28,"../templates/member-list.hbs":31,"./modals/edit":36,"backbone":42,"backbone.marionette":37,"backbone.modal":41,"datatables.net":56,"jquery":77}],36:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -817,7 +1013,7 @@ module.exports = Backbone.Modal.extend({
 
 });
 
-},{"../../templates/modals/edit.hbs":24,"backbone":34,"backbone.marionette":29,"backbone.modal":33,"jquery":69,"underscore":70}],29:[function(require,module,exports){
+},{"../../templates/modals/edit.hbs":32,"backbone":42,"backbone.marionette":37,"backbone.modal":41,"jquery":77,"underscore":78}],37:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.4.1
@@ -4180,7 +4376,7 @@ module.exports = Backbone.Modal.extend({
   return Marionette;
 }));
 
-},{"backbone":34,"backbone.babysitter":30,"backbone.wreqr":31,"underscore":32}],30:[function(require,module,exports){
+},{"backbone":42,"backbone.babysitter":38,"backbone.wreqr":39,"underscore":40}],38:[function(require,module,exports){
 // Backbone.BabySitter
 // -------------------
 // v0.1.11
@@ -4372,7 +4568,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"backbone":34,"underscore":32}],31:[function(require,module,exports){
+},{"backbone":42,"underscore":40}],39:[function(require,module,exports){
 // Backbone.Wreqr (Backbone.Marionette)
 // ----------------------------------
 // v1.3.6
@@ -4809,7 +5005,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"backbone":34,"underscore":32}],32:[function(require,module,exports){
+},{"backbone":42,"underscore":40}],40:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -6154,7 +6350,7 @@ module.exports = Backbone.Modal.extend({
   }
 }).call(this);
 
-},{}],33:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
@@ -6781,7 +6977,7 @@ module.exports = Backbone.Modal.extend({
 
 }).call(this);
 
-},{"backbone":34,"backbone.marionette":29,"underscore":70}],34:[function(require,module,exports){
+},{"backbone":42,"backbone.marionette":37,"underscore":78}],42:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -8391,7 +8587,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"underscore":70}],35:[function(require,module,exports){
+},{"underscore":78}],43:[function(require,module,exports){
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
 require('../../js/transition.js')
 require('../../js/alert.js')
@@ -8405,7 +8601,7 @@ require('../../js/popover.js')
 require('../../js/scrollspy.js')
 require('../../js/tab.js')
 require('../../js/affix.js')
-},{"../../js/affix.js":36,"../../js/alert.js":37,"../../js/button.js":38,"../../js/carousel.js":39,"../../js/collapse.js":40,"../../js/dropdown.js":41,"../../js/modal.js":42,"../../js/popover.js":43,"../../js/scrollspy.js":44,"../../js/tab.js":45,"../../js/tooltip.js":46,"../../js/transition.js":47}],36:[function(require,module,exports){
+},{"../../js/affix.js":44,"../../js/alert.js":45,"../../js/button.js":46,"../../js/carousel.js":47,"../../js/collapse.js":48,"../../js/dropdown.js":49,"../../js/modal.js":50,"../../js/popover.js":51,"../../js/scrollspy.js":52,"../../js/tab.js":53,"../../js/tooltip.js":54,"../../js/transition.js":55}],44:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: affix.js v3.3.6
  * http://getbootstrap.com/javascript/#affix
@@ -8569,7 +8765,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],37:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: alert.js v3.3.6
  * http://getbootstrap.com/javascript/#alerts
@@ -8665,7 +8861,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],38:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: button.js v3.3.6
  * http://getbootstrap.com/javascript/#buttons
@@ -8787,7 +8983,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],39:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: carousel.js v3.3.6
  * http://getbootstrap.com/javascript/#carousel
@@ -9026,7 +9222,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],40:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: collapse.js v3.3.6
  * http://getbootstrap.com/javascript/#collapse
@@ -9239,7 +9435,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],41:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: dropdown.js v3.3.6
  * http://getbootstrap.com/javascript/#dropdowns
@@ -9406,7 +9602,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],42:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: modal.js v3.3.6
  * http://getbootstrap.com/javascript/#modals
@@ -9745,7 +9941,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],43:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: popover.js v3.3.6
  * http://getbootstrap.com/javascript/#popovers
@@ -9855,7 +10051,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],44:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: scrollspy.js v3.3.6
  * http://getbootstrap.com/javascript/#scrollspy
@@ -10029,7 +10225,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],45:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tab.js v3.3.6
  * http://getbootstrap.com/javascript/#tabs
@@ -10186,7 +10382,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],46:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: tooltip.js v3.3.6
  * http://getbootstrap.com/javascript/#tooltip
@@ -10702,7 +10898,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],47:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 /* ========================================================================
  * Bootstrap: transition.js v3.3.6
  * http://getbootstrap.com/javascript/#transitions
@@ -10763,7 +10959,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],48:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /*! DataTables 1.10.12
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
@@ -26042,7 +26238,7 @@ require('../../js/affix.js')
 	return $.fn.dataTable;
 }));
 
-},{"jquery":69}],49:[function(require,module,exports){
+},{"jquery":77}],57:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26110,7 +26306,7 @@ exports['default'] = inst;
 module.exports = exports['default'];
 
 
-},{"./handlebars/base":50,"./handlebars/exception":53,"./handlebars/no-conflict":63,"./handlebars/runtime":64,"./handlebars/safe-string":65,"./handlebars/utils":66}],50:[function(require,module,exports){
+},{"./handlebars/base":58,"./handlebars/exception":61,"./handlebars/no-conflict":71,"./handlebars/runtime":72,"./handlebars/safe-string":73,"./handlebars/utils":74}],58:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26216,7 +26412,7 @@ exports.createFrame = _utils.createFrame;
 exports.logger = _logger2['default'];
 
 
-},{"./decorators":51,"./exception":53,"./helpers":54,"./logger":62,"./utils":66}],51:[function(require,module,exports){
+},{"./decorators":59,"./exception":61,"./helpers":62,"./logger":70,"./utils":74}],59:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26234,7 +26430,7 @@ function registerDefaultDecorators(instance) {
 }
 
 
-},{"./decorators/inline":52}],52:[function(require,module,exports){
+},{"./decorators/inline":60}],60:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26265,7 +26461,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":66}],53:[function(require,module,exports){
+},{"../utils":74}],61:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26307,7 +26503,7 @@ exports['default'] = Exception;
 module.exports = exports['default'];
 
 
-},{}],54:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26355,7 +26551,7 @@ function registerDefaultHelpers(instance) {
 }
 
 
-},{"./helpers/block-helper-missing":55,"./helpers/each":56,"./helpers/helper-missing":57,"./helpers/if":58,"./helpers/log":59,"./helpers/lookup":60,"./helpers/with":61}],55:[function(require,module,exports){
+},{"./helpers/block-helper-missing":63,"./helpers/each":64,"./helpers/helper-missing":65,"./helpers/if":66,"./helpers/log":67,"./helpers/lookup":68,"./helpers/with":69}],63:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26396,7 +26592,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":66}],56:[function(require,module,exports){
+},{"../utils":74}],64:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26492,7 +26688,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":53,"../utils":66}],57:[function(require,module,exports){
+},{"../exception":61,"../utils":74}],65:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26519,7 +26715,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":53}],58:[function(require,module,exports){
+},{"../exception":61}],66:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26550,7 +26746,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":66}],59:[function(require,module,exports){
+},{"../utils":74}],67:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26578,7 +26774,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],60:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26592,7 +26788,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],61:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26627,7 +26823,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":66}],62:[function(require,module,exports){
+},{"../utils":74}],70:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26676,7 +26872,7 @@ exports['default'] = logger;
 module.exports = exports['default'];
 
 
-},{"./utils":66}],63:[function(require,module,exports){
+},{"./utils":74}],71:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -26700,7 +26896,7 @@ module.exports = exports['default'];
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],64:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26994,7 +27190,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 }
 
 
-},{"./base":50,"./exception":53,"./utils":66}],65:[function(require,module,exports){
+},{"./base":58,"./exception":61,"./utils":74}],73:[function(require,module,exports){
 // Build out our basic SafeString type
 'use strict';
 
@@ -27011,7 +27207,7 @@ exports['default'] = SafeString;
 module.exports = exports['default'];
 
 
-},{}],66:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27137,15 +27333,15 @@ function appendContextPath(contextPath, id) {
 }
 
 
-},{}],67:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime')['default'];
 
-},{"./dist/cjs/handlebars.runtime":49}],68:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":57}],76:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":67}],69:[function(require,module,exports){
+},{"handlebars/runtime":75}],77:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
@@ -36989,7 +37185,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],70:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -38539,4 +38735,4 @@ return jQuery;
   }
 }.call(this));
 
-},{}]},{},[18]);
+},{}]},{},[26]);

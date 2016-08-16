@@ -4,5 +4,7 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
   model: require('../models/member'),
-  url: '/api/v1/member/',
+  initialize: function(options) {
+    this.url = '/api/v1/member/?gid=' + options.groupId + '&format=json';
+  }
 });

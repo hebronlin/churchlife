@@ -1,0 +1,119 @@
+[
+    {
+        "pk": 1,
+        "model": "auth.User",
+        "fields": {
+                    "username": "hebronlin@gmail.com",
+                    "first_name": "Hongchang",
+                    "last_name": "Lin",
+                    "is_active": true,
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2016-08-01 01:52:54",
+                    "groups": [],
+                    "user_permissions": [],
+                    "password": "admintest",
+                    "email": "hebronlin@gmail.com",
+                    "date_joined": "2016-08-01 01:50:18"
+                  }
+    },
+    {
+        "pk": 2,
+        "model": "auth.User",
+        "fields": {
+                    "username": "ezrlin@gmail.com",
+                    "first_name": "Eric",
+                    "last_name": "Lin",
+                    "is_active": true,
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2016-08-01 01:52:54",
+                    "groups": [],
+                    "user_permissions": [],
+                    "password": "admintest",
+                    "email": "ezrlin@gmail.com",
+                    "date_joined": "2016-08-01 01:50:18"
+                  }
+    },
+    {
+        "pk": 3,
+        "model": "auth.User",
+        "fields": {
+                    "username": "halin2007@gmail.com",
+                    "first_name": "Hailey",
+                    "last_name": "Lin",
+                    "is_active": true,
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2016-08-01 01:52:54",
+                    "groups": [],
+                    "user_permissions": [],
+                    "password": "admintest",
+                    "email": "halin2007@gmail.com",
+                    "date_joined": "2016-08-01 01:50:18"
+                  }
+    },
+    {
+        "pk": 1,
+        "model": "core.organization",
+        "fields": {
+              "name": "Church in Anaheim",
+              "description": "Church in Anaheim"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "core.organization",
+        "fields": {
+              "name": "Church in Riverside",
+              "description": "Church in Riverside"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "core.organization",
+        "fields": {
+              "name": "Church in Riverside",
+              "description": "Church in Riverside"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "core.member",
+        "fields": {
+                    "user": 1,
+                    "first_name": "Hongchang",
+                    "last_name": "Lin",
+                    "email": "hebronlin@gmail.com",
+                    "organization": 2,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 2,
+        "model": "core.member",
+        "fields": {
+                    "user": 2,
+                    "first_name": "Hongchang",
+                    "last_name": "Lin",
+                    "email": "hebronlin@gmail.com",
+                    "organization": 3,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 3,
+        "model": "core.member",
+        "fields": {
+                    "user": 3,
+                    "first_name": "Hongchang",
+                    "last_name": "Lin",
+                    "email": "hebronlin@gmail.com",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    }
+]

@@ -29,6 +29,11 @@ class UserSerializer(ModelSerializer):
         )
         return user
 
+class OrganizationSerializer(ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = ['id', 'name', 'description', ]
+
 class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
@@ -41,10 +46,17 @@ class GroupSerializer(ModelSerializer):
         group.save()
         return group
 
-class OrganizationSerializer(ModelSerializer):
+class EventSerializer(ModelSerializer):
     class Meta:
-        model = Organization
-        fields = ['id', 'name', 'description', ]
+        model = Event
+        fields = ['id', 'name', 'organization']
+ 
+    def create(self, validated_data):
+        print(validated_data)
+        event = Event.objects.create(**validated_data)
+        event.organization = self.context['request'].organization
+        event.save()
+        return event
 
 # class MemberSerializer(HyperlinkedModelSerializer):
 class MemberSerializer(ModelSerializer):
@@ -93,19 +105,6 @@ class MemberSerializer(ModelSerializer):
         member.organization = self.context['request'].organization
         member.save()
         return member
-    #     user = User.objects.create_user(
-    #         username=validated_data['user']['email'],
-    #         password='password',
-    #     ) 
-    #     user.first_name = validated_data['user']['first_name']
-    #     user.last_name = validated_data['user']['last_name']
-    #     user.email = validated_data['user']['email']
-    #     user.is_active = False
-    #     user.save()
- 
-    #     member, _ = Member.objects.get_or_create(user=user)
-         
-    #     return member 
 
 class EventSerializer(ModelSerializer):
     class Meta:
@@ -113,6 +112,9 @@ class EventSerializer(ModelSerializer):
         fields = ['id', 'name', 'organization']
 
 class AttendanceSerializer(ModelSerializer):
+    member_id = ReadOnlyField(source='member.id')
+    event_id = ReadOnlyField(source='event.id')
+
     class Meta:
         model = EventAttendance
-        fields = ['id', 'member', 'event', 'attended', 'date', 'absent_reason']
+        fields = ['id', 'member_id', 'event_id', 'attended', 'date', 'absent_reason']

@@ -15,9 +15,9 @@ module.exports = Marionette.LayoutView.extend({
     members: '#tab-content-container'
   },
 
-  initialize: function(){
+  initialize: function(options){
     var self = this;
-    this.members = new MemberCollection();
+    this.members = new MemberCollection({groupId: options.groupId});
     this.members.fetch().done(
       function() {
         console.log('fetching members done');

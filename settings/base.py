@@ -79,25 +79,26 @@ WSGI_APPLICATION = 'churchlife.core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
-    # Postgres Local
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'churchlife',
-        'USER': 'app_user',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    # # Postgres Local
     # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',     # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-    #     'NAME': 'churchlife',                      # Or path to database file if using sqlite3.
-    #     'TEST_NAME': 'churchlife',
-    #     'USER': 'app_user',                   # Not used with sqlite3.
-    #     'PASSWORD': 'admin',               # Not used with sqlite3.
-    #     'HOST': 'localhost',          # Set to empty string for localhost. Not used with sqlite3.
-    #     'PORT': '',                        # Set to empty string for default. Not used with sqlite3.
-    #     'OPTIONS': { 'init_command': 'SET storage_engine=INNODB', }
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'churchlife',
+    #     'USER': 'app_user',
+    #     'PASSWORD': 'admin',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
     # }
+    # MySQL Local
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',     # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'churchlife',                      # Or path to database file if using sqlite3.
+        'TEST_NAME': 'churchlife',
+        'USER': 'app_user',                   # Not used with sqlite3.
+        'PASSWORD': 'admintest',               # Not used with sqlite3.
+        'HOST': 'localhost',          # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                        # Set to empty string for default. Not used with sqlite3.
+        'OPTIONS': { 'init_command': 'SET storage_engine=INNODB', }
+    }
 }
 
 # Password validation

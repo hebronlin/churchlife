@@ -82,7 +82,7 @@ class Event(BaseModel):
 
 class Member(BaseModel):
     """ Member definition """
-    user = ForeignKey(User, null=True, blank=True)
+    user = OneToOneField(User, null=True, blank=True)
     last_name = CharField(max_length=30)
     first_name = CharField(max_length=30)
     middle_name = CharField(max_length=30, null=True, blank=True)

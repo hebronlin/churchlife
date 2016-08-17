@@ -25,7 +25,7 @@ module.exports = Marionette.LayoutView.extend({
   render: function(){
     this.$el.html(this.template({tabs: this.tabs}));
     this.getRegion('attendance').show(new AttendanceView());
-    this.getRegion('members').show(new MemberView({groupId: ''}));
+    this.getRegion('members').show(new MemberView());
     this.getRegion('groups').show(new GroupView());
     this.getRegion('events').show(new EventView());
     return this;

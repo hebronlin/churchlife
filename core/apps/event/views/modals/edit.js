@@ -29,6 +29,7 @@ module.exports = Backbone.Modal.extend({
     onShow: function() {
         if (this.evt) {
             this.$el.find('form input[name="name"]').val(this.evt.get('name'));
+            this.$el.find('form input[name="description"]').val(this.evt.get('description'));
         }
     },
 
@@ -44,6 +45,7 @@ module.exports = Backbone.Modal.extend({
     submit: function() {
         this.evt.save({
             'name': this.$el.find('form input[name="name"]').val(),
+            'description': this.$el.find('form input[name="description"]').val(),
             }
         );
     }

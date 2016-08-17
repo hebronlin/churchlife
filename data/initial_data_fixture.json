@@ -12,7 +12,7 @@
                     "last_login": "2016-08-01 01:52:54",
                     "groups": [],
                     "user_permissions": [],
-                    "password": "admintest",
+                    "password": "pbkdf2_sha256$24000$vobUSecP1n7N$KJsN3oAcg4OdZaKl7TlKj8BRyaz2LtiZ4gy4pEnjMEg=",
                     "email": "hebronlin@gmail.com",
                     "date_joined": "2016-08-01 01:50:18"
                   }
@@ -30,7 +30,7 @@
                     "last_login": "2016-08-01 01:52:54",
                     "groups": [],
                     "user_permissions": [],
-                    "password": "admintest",
+                    "password": "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ=",
                     "email": "ezrlin@gmail.com",
                     "date_joined": "2016-08-01 01:50:18"
                   }
@@ -48,7 +48,7 @@
                     "last_login": "2016-08-01 01:52:54",
                     "groups": [],
                     "user_permissions": [],
-                    "password": "admintest",
+                    "password": "pbkdf2_sha256$24000$sV3JlVs5I8mx$BCI/S3j2YuBbImeeBMTkfhKJEflfvpXLErORmlh/wWw=",
                     "email": "halin2007@gmail.com",
                     "date_joined": "2016-08-01 01:50:18"
                   }
@@ -57,24 +57,30 @@
         "pk": 1,
         "model": "core.organization",
         "fields": {
-              "name": "Church in Anaheim",
-              "description": "Church in Anaheim"
+                    "name": "Church in Anaheim",
+                    "description": "Church in Anaheim",
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
         }
     },
     {
         "pk": 2,
         "model": "core.organization",
         "fields": {
-              "name": "Church in Riverside",
-              "description": "Church in Riverside"
+                    "name": "Church in Los Angeles",
+                    "description": "Church in Los Angeles",
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
         }
     },
     {
         "pk": 3,
         "model": "core.organization",
         "fields": {
-              "name": "Church in Riverside",
-              "description": "Church in Riverside"
+                    "name": "Church in Riverside",
+                    "description": "Church in Riverside",
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
         }
     },
     {

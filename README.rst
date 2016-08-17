@@ -17,7 +17,7 @@ Installation
 **Create working folder**:
     #) mkdir mswe1
     #) cd mswe1
-    #) git clone https://github.com/hebronlin/churchlife.git
+    #) git clone https://github.com/hebronlin/churchlife.git or git@github.com:hebronlin/churchlife.git
 
 **Install Dev libraries as root**:
     #) sudo apt-get install python3-dev
@@ -34,6 +34,48 @@ Installation
 
 **Install virtualenv as root**:
     #) sudo pip install virtualenv
+
+**Install mysql as root**:
+    #) sudo apt-get update
+    #) sudo apt-get install mysql-server
+    #) sudo apt-get install python3-dev libmysqlclient-dev
+
+**Create database and user for mysql**:
+    #) mysql -u root -p
+    #) create database churchlife;
+    #) create user 'app_user'@'localhost' identified by 'admintest';
+    #) grant all on churchlife.* to 'app_user';
+
+**Create a virtual environment for churchlife**:
+    #) vim sourceme
+        Enter the following settings:
+            export DJANGO_SETTINGS_MODULE=churchlife.settings.base
+            export PYTHONPATH=~/mswe1:~/mswe1/churchlife
+        Save & Exit
+    #) virtualenv churchlife.env -p /usr/bin/python3.4
+    #) source churchlife.env/bin/activate
+    #) source sourceme
+    #) cd churchlife
+    #) pip install -r requirements.txt
+
+**Load initial data to database**:
+    #) django-admin loaddata data/initial_data_fixture.json
+
+**Install node and bundle Javascript**:
+    #) cd core/apps
+    #) npm install
+    #) npm run browserify
+
+**Start the django server**:
+    #) django-admin runserver 0.0.0.0:8081
+
+**Navigate from the browser**:
+    #) Enter the url: http://localhost:8081
+
+
+
+Postgresql Database
+--------------------
 
 **Install Postgresql as root**:
     #) sudo apt-get install postgresql postgresql-contrib
@@ -58,23 +100,3 @@ Installation
     #) psql -U 'app_user' -c "DROP DATABASE IF EXISTS churchlife" template1
     #) createdb -U app_user -E UTF8 --owner app_user churchlife
     #) psql -U 'app_user' -d churchlife -f churchlife.sql
-
-**Create a virtual environment for churchlife**:
-    #) vim sourceme
-        Enter the following settings:
-            export DJANGO_SETTINGS_MODULE=churchlife.settings.base
-            export PYTHONPATH=~/mswe1:~/mswe1/churchlife
-        Save & Exit
-    #) virtualenv churchlife.env -p /usr/bin/python3.4
-    #) source churchlife.env/bin/activate
-    #) source sourceme
-    #) cd churchlife
-    #) pip install -r requirements.txt
-
-**Install node and bundle Javascript**:
-    #) cd core/apps
-    #) npm install
-    #) npm run browserify
-
-**Start the django server**:
-    #) django-admin runserver 0.0.0.0:8081

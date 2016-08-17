@@ -6,8 +6,9 @@ var Backbone = require('backbone');
 module.exports = Backbone.Collection.extend({
   model: require('../models/attendance'),
   initialize: function(options) {
+  	this.url = '/api/v1/attendance/';
   	if (typeof (options) !== "undefined" && options.groupId) {
-    	this.url = '/api/v1/attendance/?gid=' + options.groupId + '&format=json';
+    	this.url = this.url + '?gid=' + options.groupId + '&format=json';
     }
   }
 });
@@ -100,7 +101,7 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.evts : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "            </tr>\n        </thead>\n        <tbody>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        </tbody>\n    </table>\n</div>\n\n<div id=\"member-index-modal\"></div>\n";
+    + "        </tbody>\n    </table>\n</div>\n\n<div id=\"attendance-index-modal\"></div>\n";
 },"useData":true});
 
 },{"hbsfy/runtime":76}],6:[function(require,module,exports){
@@ -169,8 +170,8 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function(){
     var self = this;
     this.evts = new EventCollection();
-    this.members = new MemberCollection({groupId: 1});
-    this.attendance = new AttendanceCollection({groupId: 1});
+    this.members = new MemberCollection();
+    this.attendance = new AttendanceCollection();
     this.evts.fetch().done(
       function() {
         console.log('fetching events done');
@@ -334,7 +335,7 @@ module.exports = Marionette.LayoutView.extend({
   render: function(){
     this.$el.html(this.template({tabs: this.tabs}));
     this.getRegion('attendance').show(new AttendanceView());
-    this.getRegion('members').show(new MemberView({groupId: ''}));
+    this.getRegion('members').show(new MemberView());
     this.getRegion('groups').show(new GroupView());
     this.getRegion('events').show(new EventView());
     return this;
@@ -396,17 +397,17 @@ var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "            <tr>\r\n                <td class=\"event-id-link\" data-id=\""
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\">"
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "</td>\r\n                <td>"
+  return "            <tr>\r\n                <td>"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n            </tr>\r\n";
+    + "</td>\r\n                <td>"
+    + alias4(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td class=\"event-id-link\" data-id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">Details</td>\r\n            </tr>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "\r\n<div class=\"row event-details-header\">\r\n    <div class=\"col-xs-12 col-sm-2\">\r\n    </div>\r\n    <div class=\"col-xs-12 col-sm-8 pull-right text-right\">\r\n        <button class=\"btn btn-primary event-add-button\">Add New Event</button>\r\n    </div>\r\n\r\n    <div class=\"event-separator\"></div>\r\n</div>\r\n\r\n<div class=\"responsive\">\r\n    <table id=\"eventsTable\" class=\"table table-striped table-bordered\">\r\n        <thead>\r\n            <tr>\r\n                <th>ID</th>\r\n                <th>Name</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n"
+  return "\r\n<div class=\"row event-details-header\">\r\n    <div class=\"col-xs-12 col-sm-2\">\r\n    </div>\r\n    <div class=\"col-xs-12 col-sm-8 pull-right text-right\">\r\n        <button class=\"btn btn-primary event-add-button\">Add New Event</button>\r\n    </div>\r\n\r\n    <div class=\"event-separator\"></div>\r\n</div>\r\n\r\n<div class=\"responsive\">\r\n    <table id=\"eventsTable\" class=\"table table-striped table-bordered\">\r\n        <thead>\r\n            <tr>\r\n                <th>Name</th>\r\n                <th>Description</th>\r\n                <th>Details</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.events : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div id=\"event-index-modal\"></div>\r\n";
 },"useData":true});
@@ -415,7 +416,7 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Event</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"event-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">Name</div>\r\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
+    return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Event</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"event-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">Name</div>\r\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Description</div>\r\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
 },{"hbsfy/runtime":76}],18:[function(require,module,exports){
@@ -521,6 +522,7 @@ module.exports = Backbone.Modal.extend({
     onShow: function() {
         if (this.evt) {
             this.$el.find('form input[name="name"]').val(this.evt.get('name'));
+            this.$el.find('form input[name="description"]').val(this.evt.get('description'));
         }
     },
 
@@ -536,6 +538,7 @@ module.exports = Backbone.Modal.extend({
     submit: function() {
         this.evt.save({
             'name': this.$el.find('form input[name="name"]').val(),
+            'description': this.$el.find('form input[name="description"]').val(),
             }
         );
     }
@@ -732,7 +735,10 @@ var Backbone = require('backbone');
 module.exports = Backbone.Collection.extend({
   model: require('../models/member'),
   initialize: function(options) {
-    this.url = '/api/v1/member/?gid=' + options.groupId + '&format=json';
+    this.url = '/api/v1/member/';
+  	if (typeof (options) !== "undefined" && options.groupId) {
+    	this.url = this.url + '?gid=' + options.groupId + '&format=json';
+    }
   }
 });
 
@@ -748,9 +754,12 @@ module.exports = Backbone.Model.extend({
   url: function() {
     var baseURL = '/api/v1/member/';
     if (this.get('id')) {
-        return baseURL + this.get('id') + '/';
+        baseURL = baseURL + this.get('id') + '/';
+    }
+    if (typeof (options) !== "undefined" && options.groupId) {
+      return baseURL + '?gid=' + options.groupId + '&format=json';
     } else {
-        return baseURL;
+      return baseURL;
     }
   },
   defaults: function() {
@@ -762,7 +771,7 @@ module.exports = Backbone.Model.extend({
       gender: 'M',
       nick_name: '',
       other_name: '',
-      // locality: '',
+      language: '',
     };
   }
 });
@@ -824,7 +833,7 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Member</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"member-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">First Name</div>\r\n            <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Last Name</div>\r\n            <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Email</div>\r\n            <input type=\"text\" name=\"email\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Gender</div>\r\n            <select name=\"gender\" id=\"gender\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\r\n                <option value=\"M\">Male</option>\r\n                <option value=\"F\">Female</option>\r\n            </select>\r\n            <div class=\"member-edit-form-title\">Other Name</div>\r\n            <input type=\"text\" name=\"other_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Locality</div>\r\n            <input type=\"text\" name=\"locality\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
+    return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Member</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"member-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">First Name</div>\r\n            <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Last Name</div>\r\n            <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Email</div>\r\n            <input type=\"text\" name=\"email\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Other Name</div>\r\n            <input type=\"text\" name=\"other_name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Gender</div>\r\n            <select name=\"gender\" id=\"gender\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\r\n                <option value=\"M\">Male</option>\r\n                <option value=\"F\">Female</option>\r\n            </select>\r\n            <div class=\"member-edit-form-title\">Language</div>\r\n            <select name=\"language\" id=\"language\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\r\n                <option value=\"English\">English</option>\r\n                <option value=\"Chinese\">Chinese</option>\r\n                <option value=\"Spanish\">Spanish</option>\r\n                <option value=\"Korean\">Korean</option>\r\n                <option value=\"Vietnanese\">Vietnanese</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
 },{"hbsfy/runtime":76}],33:[function(require,module,exports){
@@ -867,7 +876,7 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function(options){
     var self = this;
-    this.members = new MemberCollection({groupId: options.groupId});
+    this.members = new MemberCollection();
     this.members.fetch().done(
       function() {
         console.log('fetching members done');
@@ -986,8 +995,9 @@ module.exports = Backbone.Modal.extend({
             this.$el.find('form input[name="first_name"]').val(this.member.get('first_name'));
             this.$el.find('form input[name="last_name"]').val(this.member.get('last_name'));
             this.$el.find('form input[name="email"]').val(this.member.get('email'));
+            this.$el.find('form input[name="other_name"]').val(this.member.get('other_name'));
             this.$el.find('form select[name="gender"]').val(this.member.get('gender'));
-            this.$el.find('form input[name="locality"]').val(this.member.get('locality'));
+            this.$el.find('form input[name="language"]').val(this.member.get('language'));
         }
     },
 
@@ -1005,8 +1015,9 @@ module.exports = Backbone.Modal.extend({
             'first_name': this.$el.find('form input[name="first_name"]').val(),
             'last_name': this.$el.find('form input[name="last_name"]').val(),
             'email': this.$el.find('form input[name="email"]').val(),
+            'other_name': this.$el.find('form input[name="other_name"]').val(),
             'gender': this.$el.find('form select[name="gender"]').val(),
-            'locality': this.$el.find('form input[name="locality"]').val(),
+            'language': this.$el.find('form select[name="language"]').val(),
             }
         );
     }

@@ -37,10 +37,9 @@ class OrganizationSerializer(ModelSerializer):
 class GroupSerializer(ModelSerializer):
     class Meta:
         model = Group
-        fields = ['id', 'name', 'description', 'organization']
+        fields = ['id', 'name', 'description']
  
     def create(self, validated_data):
-        print(validated_data)
         group = Group.objects.create(**validated_data)
         group.organization = self.context['request'].organization
         group.save()
@@ -49,10 +48,9 @@ class GroupSerializer(ModelSerializer):
 class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ['id', 'name', 'organization']
+        fields = ['id', 'name', 'description']
  
     def create(self, validated_data):
-        print(validated_data)
         event = Event.objects.create(**validated_data)
         event.organization = self.context['request'].organization
         event.save()
@@ -71,10 +69,10 @@ class MemberSerializer(ModelSerializer):
         fields = ['id',
                   'last_name',
                   'first_name',
-                  'language',
+                  'email',
                   'other_name',
                   'gender',
-                  'email',
+                  'language',
                   'locality',
                   'home_group',
                  ]
@@ -87,8 +85,8 @@ class MemberSerializer(ModelSerializer):
             return ''
 
     def update(self, instance, validated_data):
-        print(validated_data)
-        print(self.context['request'])
+        # print(validated_data)
+        # print(self.context['request'])
         if instance.user:
             user = instance.user
             user.first_name = validated_data['first_name']
@@ -100,16 +98,10 @@ class MemberSerializer(ModelSerializer):
         return instance
  
     def create(self, validated_data):
-        print(validated_data)
         member = Member.objects.create(**validated_data)
         member.organization = self.context['request'].organization
         member.save()
         return member
-
-class EventSerializer(ModelSerializer):
-    class Meta:
-        model = Event
-        fields = ['id', 'name', 'organization']
 
 class AttendanceSerializer(ModelSerializer):
     member_id = ReadOnlyField(source='member.id')

@@ -9,9 +9,12 @@ module.exports = Backbone.Model.extend({
   url: function() {
     var baseURL = '/api/v1/member/';
     if (this.get('id')) {
-        return baseURL + this.get('id') + '/';
+        baseURL = baseURL + this.get('id') + '/';
+    }
+    if (typeof (options) !== "undefined" && options.groupId) {
+      return baseURL + '?gid=' + options.groupId + '&format=json';
     } else {
-        return baseURL;
+      return baseURL;
     }
   },
   defaults: function() {
@@ -23,7 +26,7 @@ module.exports = Backbone.Model.extend({
       gender: 'M',
       nick_name: '',
       other_name: '',
-      // locality: '',
+      language: '',
     };
   }
 });

@@ -56,8 +56,8 @@ module.exports = Marionette.LayoutView.extend({
   initialize: function(){
     var self = this;
     this.evts = new EventCollection();
-    this.members = new MemberCollection({groupId: 1});
-    this.attendance = new AttendanceCollection({groupId: 1});
+    this.members = new MemberCollection();
+    this.attendance = new AttendanceCollection();
     this.evts.fetch().done(
       function() {
         console.log('fetching events done');

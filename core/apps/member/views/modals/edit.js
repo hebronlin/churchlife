@@ -31,8 +31,9 @@ module.exports = Backbone.Modal.extend({
             this.$el.find('form input[name="first_name"]').val(this.member.get('first_name'));
             this.$el.find('form input[name="last_name"]').val(this.member.get('last_name'));
             this.$el.find('form input[name="email"]').val(this.member.get('email'));
+            this.$el.find('form input[name="other_name"]').val(this.member.get('other_name'));
             this.$el.find('form select[name="gender"]').val(this.member.get('gender'));
-            this.$el.find('form input[name="locality"]').val(this.member.get('locality'));
+            this.$el.find('form input[name="language"]').val(this.member.get('language'));
         }
     },
 
@@ -50,8 +51,9 @@ module.exports = Backbone.Modal.extend({
             'first_name': this.$el.find('form input[name="first_name"]').val(),
             'last_name': this.$el.find('form input[name="last_name"]').val(),
             'email': this.$el.find('form input[name="email"]').val(),
+            'other_name': this.$el.find('form input[name="other_name"]').val(),
             'gender': this.$el.find('form select[name="gender"]').val(),
-            'locality': this.$el.find('form input[name="locality"]').val(),
+            'language': this.$el.find('form select[name="language"]').val(),
             }
         );
     }

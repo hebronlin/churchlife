@@ -22,11 +22,11 @@ class BaseModelViewCreateUpdateMixin():
     """
     def create(self, request):
         data = request.data
-        print(data)
+        print("data: {}".format(data))
         # if "id" in data: data["id"] = 0
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid()
-        # print(serializer.errors)
+        print("Errors: {}".format(serializer.errors))
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -35,14 +35,13 @@ class BaseModelViewCreateUpdateMixin():
 
     def update(self, request, pk):
         data = request.data
-        print(data)
-        print(request.organization)
+        print("data: {}".format(data))
         instance = get_object_or_404(self.serializer_class.Meta.model, pk=pk)
         
         serializer = self.serializer_class(instance, data=request.data, context={'request': request})
 
         serializer.is_valid()
-        # print(serializer.errors)
+        print("Errors: {}".format(serializer.errors))
 
         if serializer.is_valid():
             self.perform_update(serializer)
@@ -62,7 +61,10 @@ class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
         organization = self.request.organization
         group_id = None
         if 'gid' in self.request.GET and self.request.GET['gid']:
-            group_id = self.request.GET['gid']
+            try:
+                group_id = self.request.GET['gid']
+            except:
+                pass
         # else:
         #     group_admin = Member.objects.get(user=self.request.user)
         print(group_id)
@@ -104,7 +106,10 @@ class AttendanceView(BaseModelViewCreateUpdateMixin, ModelViewSet):
         else:
             day = get_start_of_week(datetime.date.today())
         if 'gid' in self.request.GET and self.request.GET['gid']:
-            group = Group.objects.get(pk=int(self.request.GET['gid']))
+            try:
+                group = Group.objects.get(pk=int(self.request.GET['gid']))
+            except:
+                return None
         else:
             mgs = MemberGroup.objects.filter(member=group_admin,
                                                 member_type='Admin')

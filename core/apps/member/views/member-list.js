@@ -3,6 +3,7 @@
 var Backbone = require('backbone');
 var Modal = require('backbone.modal');
 var Marionette = require('backbone.marionette');
+var GroupCollection = require('../../group/collections/group');
 var EditView = require('./modals/edit');
 var SpinnerModalView = require('../../common/views/modals/spinner');
 var Member = require('../models/member');
@@ -60,8 +61,13 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function(members) {
     var self = this;
+    this.groups = new GroupCollection();
+    this.groups.fetch().done(
+      function() {
+        console.log('fetching groups done');
+      }
+    );
     this.members = members;
-
     this.members.each(function (member) {
         self.listenTo(member, 'change', self.render);
     });

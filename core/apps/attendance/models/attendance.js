@@ -19,8 +19,9 @@ module.exports = Backbone.Model.extend({
       id: null,
       member_id: '',
       event_id: '',
+      date: '',
       attended: false,
-      absent_reason: "",
+      absent_reason: "Unknown",
     };
   }
 });

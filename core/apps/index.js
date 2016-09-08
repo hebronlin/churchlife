@@ -11,6 +11,7 @@ require('./common/handlebars');
 //var App = require('./app');
 var Marionette = require('backbone.marionette');
 var LayoutView = require('./common/views/layout');
+var UserSessionCollection = require('./common/collections/user_session');
 var _ = require('underscore');
 
 // Handles CSRF for the app.
@@ -43,7 +44,13 @@ Backbone.sync = function(method, model, options){
 };
 
 $(function() {
-  // Render the main page layout (header + content) containers:
-  var layout = new LayoutView();
-  layout.render();
+    var self = this;
+    this.user_session = new UserSessionCollection();
+    this.user_session.fetch().done(
+        function() {
+            console.log("Fetching user_session done.");
+            var layout = new LayoutView({user_session: self.user_session.at(0)});
+            // layout.render();
+        }
+    );
 });

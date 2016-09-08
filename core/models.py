@@ -7,10 +7,10 @@ from django_countries.fields import Country, CountryField
 
 import pytz
 
-from .managers import MemberManager
 from .consts import (LANGUAGE_CHOICES, MEMBER_STATUS_CHOICES, GENDER_CHOICES,
-                     MEMBER_TYPE_CHOICES, EVENT_STATUS_CHOICES,
+                     MEMBER_TYPE_CHOICES, GROUP_TYPE_CHOICES, EVENT_STATUS_CHOICES,
                      EVENT_TYPE_CHOICES, ABSENT_REASON_CHOICES)
+# from .managers import MemberManager
 
 TIME_ZONES = [(tz, tz) for tz in pytz.common_timezones]
 
@@ -56,6 +56,7 @@ class Group(BaseModel):
     """ Group definition """
     name = CharField(max_length=100)
     description = CharField(max_length=500)
+    group_type = CharField(max_length=30, default='Home Group', choices=GROUP_TYPE_CHOICES)
     parent = ForeignKey(Group, blank=True, null=True)
     organization = ForeignKey(Organization, blank=True, null=True)
 
@@ -108,14 +109,12 @@ class Member(BaseModel):
     def __str__(self):
         return u'{} {}'.format(self.first_name, self.last_name)
 
-    # def save(self, *args, **kwargs):
-    #     """ Override the save """
-    #     if self.user:
-    #         self.last_name = self.user.last_name
-    #         self.first_name = self.user.first_name
-    #         self.email = self.user.email
-
-    #     super(Member, self).save(*args, **kwargs)
+    def get_full_name(self):
+        """
+        Returns the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
 
 # Make sure a member is always created for a user.
 def user_post_save_receiver(sender, instance, created, **kwargs):

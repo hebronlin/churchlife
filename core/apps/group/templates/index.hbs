@@ -9,13 +9,14 @@
     <div class="group-separator"></div>
 </div>
 
-<div class="responsive">
+<div class="table-responsive">
     <table id="groupsTable" class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Details</th>
+                <th>Add/Edit Owners</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +24,8 @@
             <tr>
                 <td>{{ name }}</td>
                 <td>{{ description }}</td>
-                <td class="group-id-link" data-id="{{ id }}">Details</td>
+                <td class="group-edit-link" data-id="{{ id }}">Details</td>
+                <td class="group-owner-link" data-id="{{ id }}">Add/Edit</td>
             </tr>
         {{/each}}
         </tbody>

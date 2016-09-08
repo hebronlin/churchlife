@@ -21,13 +21,41 @@ module.exports = Marionette.LayoutView.extend({
   },
 
   events: {
-    'click .group-add-button': 'add',
-    'click .group-id-link': 'edit',
+    'change .group_select': 'selectGroup',
+    'click .member-add-button': 'add',
+    'click .attendance-check': 'updateAttendance',
   },
 
   showSpinnerModal: function() {
     this.spinnerModalView = new SpinnerModalView();
     $('#main-spinner-modal').html(this.spinnerModalView.render().el);
+  },
+
+  selectGroup: function(e) {
+    this.groupId = e.target.value;
+    this.members = new MemberCollection({groupId:this.groupId});
+    this.attendance = new AttendanceCollection({groupId:this.groupId});
+    this.renderGroupAttendance();
+  },
+
+  updateAttendance: function(e){
+    e.preventDefault();
+    var event_attendance;
+    var id = $(e.currentTarget).data("id");
+    var member_id = $(e.currentTarget).data("memberid");
+    var evt_id = $(e.currentTarget).data("eventid");
+    var attended = e.currentTarget.checked;
+    if (id) {
+      event_attendance = this.attendance.get(id);
+      event_attendance.set({'attended': attended});
+    } else {
+      event_attendance = new AttendanceModel({member_id: member_id, event_id: evt_id,
+                                              date: this.date, attended: attended});
+      this.attendance.add(event_attendance);
+    }
+    console.log(event_attendance.get('id'));
+    event_attendance.save();
+    this.renderGroupAttendance();
   },
 
   render: function(){
@@ -38,10 +66,13 @@ module.exports = Marionette.LayoutView.extend({
       var member_name = member.get('first_name') + ' ' + member.get('last_name');
       self.evts.each(function(evt) {
         var attendance = self.attendance.find(function(item) {
-          return (item.get('member_id') === member.id && item.get('event_id') === evt.id) ;
+          return (item.get('member_id') === member.id &&
+                  item.get('event_id') === evt.id &&
+                  item.get('date') === self.date);
         });
         if (typeof (attendance) === 'undefined' || attendance === null) {
-          attendance = new AttendanceModel({member_id: member.id, evt_id: evt.id, attended: false});
+          attendance = new AttendanceModel({member_id: member.id, event_id: evt.id,
+                                            date: self.date, attended: false});
         }
         self.event_attendance.add(attendance);
       });
@@ -49,29 +80,43 @@ module.exports = Marionette.LayoutView.extend({
                                         attendance: self.event_attendance.toJSON()}));
     });
     this.$el.html(this.template({evts: this.evts.toJSON(),
-                                 members: this.member_attendance.toJSON()}));
+                                 members: this.member_attendance.toJSON(),
+                                 groups: this.groups.toJSON()}));
+    this.$el.find('select[name="group_select"]').val(this.groupId);
     return this;
   },
 
-  initialize: function(){
+  renderGroupAttendance: function() {
     var self = this;
-    this.evts = new EventCollection();
-    this.members = new MemberCollection();
-    this.attendance = new AttendanceCollection();
-    this.evts.fetch().done(
+    this.members.fetch().done(
       function() {
-        console.log('fetching events done');
-        self.members.fetch().done(
+        self.attendance.fetch().done(
           function() {
-            console.log('fetching members done');
-            self.attendance.fetch().done(
-              function() {
-                console.log('fetching attendance done');
-                self.render();
-              }
-            )
+            self.render();
           }
         )
+      }
+    );
+  },
+
+  initialize: function(options){
+    var self = this;
+    this.user_session = options.user_session;
+    this.groups = options.groups;
+    var d = new Date();
+    var mm = d.getMonth() + 1;
+    var dd = d.getDate() - d.getDay();
+    this.date = [d.getFullYear(), !mm[1] && '0' + mm, !dd[1] && '0' + dd].join('-');
+    this.groupId = "";
+    if (this.groups !== null) {
+      this.groupId = this.groups.at(0).get("id");
+    }
+    this.evts = new EventCollection();
+    this.members = new MemberCollection({groupId:this.groupId});
+    this.attendance = new AttendanceCollection({groupId:this.groupId});
+    this.evts.fetch().done(
+      function() {
+        self.renderGroupAttendance();
         // $(document).ready(function() {$('#groupsTable').dataTable();});
       }
     );

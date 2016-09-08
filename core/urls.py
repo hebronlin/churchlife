@@ -26,6 +26,24 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
 
     url(
+        r'^api/v1/user_session/$', 
+        views.UserSessionView.as_view({
+            'get': 'list',
+            # 'post': 'create',
+        }),
+        name='user_session'
+    ),
+
+    url(
+        r'^api/v1/user/$', 
+        views.UserView.as_view({
+            'get': 'list',
+            # 'post': 'create',
+        }),
+        name='user'
+    ),
+
+    url(
         r'^api/v1/member/$', 
         views.MemberView.as_view({
             'get': 'list',
@@ -42,7 +60,15 @@ urlpatterns = [
             'patch': 'update',
         }),
         name='member-detail'
-    ),    
+    ), 
+
+    url(
+        r'^api/v1/member/search/$', 
+        views.MemberSearchView.as_view({
+            'get': 'list'
+        }),
+        name='member-search'
+    ),
 
     url(
         r'^api/v1/organization/$', 
@@ -99,6 +125,25 @@ urlpatterns = [
             'patch': 'update',
         }),
         name='group-detail'
+    ),    
+
+    url(
+        r'^api/v1/member_group/$', 
+        views.MemberGroupView.as_view({
+            'get': 'list',
+            'post': 'create',
+        }),
+        name='member-group'
+    ),
+
+    url(
+        r'^api/v1/member_group/(?P<pk>\d+)/$', 
+        views.MemberGroupView.as_view({
+            'get': 'retrieve',
+            'put': 'update',
+            'patch': 'update',
+        }),
+        name='member-group-detail'
     ),    
 
     url(

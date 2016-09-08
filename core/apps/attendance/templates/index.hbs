@@ -1,6 +1,13 @@
 
 <div class="row attendance-filter-header">
     <div class="col-xs-12 col-sm-2">
+        <label>Select a group:</label>
+        <select name="group_select" id="group_select" class="form-control group_select" style="width:200px; margin-bottom:20px">
+            <option value="">Select a group</option>
+        {{#each groups}}
+            <option value="{{ id }}">{{ name }}</option>
+        {{/each}}
+        </select>
     </div>
     <div class="col-xs-12 col-sm-8 pull-right text-right">
         <button class="btn btn-primary member-add-button">Add a member</button>
@@ -24,7 +31,7 @@
             <tr>
                 <td>{{ name }}</td>
             {{#each attendance}}
-                <td><input class="check meeting{{ evt_id }}" {{#if attended}}checked{{/if}} type="checkbox"></input></td>
+                <td><input data-id="{{ id }}" data-memberid="{{ member_id }}" data-eventid="{{ event_id }}" class="check attendance-check meeting{{ evt_id }}" {{#if attended}}checked{{/if}} type="checkbox"></input></td>
             {{/each}}
             </tr>
         {{/each}}

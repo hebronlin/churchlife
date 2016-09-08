@@ -5,6 +5,7 @@ var Group = require('../models/group');
 var GroupCollection = require('../collections/group');
 var SpinnerModalView = require('../../common/views/modals/spinner');
 var EditView = require('./modals/edit');
+var OwnerView = require('./modals/owner');
 
 // The index view is a grid with the list of group.
 module.exports = Marionette.LayoutView.extend({
@@ -18,7 +19,8 @@ module.exports = Marionette.LayoutView.extend({
 
   events: {
     'click .group-add-button': 'add',
-    'click .group-id-link': 'edit',
+    'click .group-edit-link': 'edit',
+    'click .group-owner-link': 'editOwner',
   },
 
   showSpinnerModal: function() {
@@ -47,23 +49,40 @@ module.exports = Marionette.LayoutView.extend({
       $('#group-index-modal').html(d.el);
   },
 
+  editOwner: function(e){
+      e.preventDefault();
+      var id = $(e.currentTarget).data("id");
+      var d = new OwnerView(this.groups.get(id));
+      d.render();
+
+      $('#group-index-modal').html(d.el);
+  },
+
   render: function(){
     this.$el.html(this.template({groups: this.groups.toJSON()}));
     return this;
   },
 
-  initialize: function(){
+  initialize: function(groups){
     var self = this;
-    this.groups = new GroupCollection();
-    this.groups.fetch().done(
-      function() {
-        console.log('fetching groups done');
-        self.groups.each(function (group) {
-            self.listenTo(group, 'change', self.render);
-        });
-        self.render();
-        // $(document).ready(function() {$('#groupsTable').dataTable();});
-      }
-    );
+    if (groups !== null) {
+      this.groups = groups;
+      this.groups.each(function (group) {
+          self.listenTo(group, 'change', self.render);
+      });
+      this.render();
+    } else {
+      this.groups = new GroupCollection();
+      this.groups.fetch().done(
+        function() {
+          console.log('fetching groups done');
+          self.groups.each(function (group) {
+              self.listenTo(group, 'change', self.render);
+          });
+          self.render();
+          // $(document).ready(function() {$('#groupsTable').dataTable();});
+        }
+      );
+    }
   },
 });

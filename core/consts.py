@@ -23,6 +23,11 @@ MEMBER_TYPE_CHOICES = (('Member', _('Member')),
 					   ('Admin', _('Admin')),
 					  )
 
+GROUP_TYPE_CHOICES = (('Home Group', _('Home Group')),
+					  ('Attendance Group', _('Attendance Group')),
+					  ('Report Group', _('Report Group')),
+					 )
+
 EVENT_STATUS_CHOICES = (('Active', _('Active')),
 						('Inactive', _('Inactive')),
 						('Completed', _('Completed')),

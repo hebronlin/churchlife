@@ -21,6 +21,7 @@ module.exports = Marionette.LayoutView.extend({
     this.members.fetch().done(
       function() {
         console.log('fetching members done');
+        console.log(self.members);
         self.getRegion('header').show(new HeaderView());
         self.memberListView = new MemberListView(self.members);
         self.getRegion('members').show(self.memberListView);

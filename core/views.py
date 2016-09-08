@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q, Min, Max
 from django.views.generic.base import View, TemplateView
 from django.shortcuts import get_object_or_404
 import datetime
@@ -12,6 +14,7 @@ from .models import (Member, Group, EventAttendance,
                      EventNote, Event,
                      MemberGroup, Organization)
 from .serializers import (UserSerializer, MemberSerializer,
+                          MemberGroupSerializer, MemberSearchSerializer,
                           GroupSerializer, AttendanceSerializer,
                           OrganizationSerializer, EventSerializer)
 from .utils import get_start_of_week
@@ -54,6 +57,21 @@ class IndexView(LoginRequiredMixIn, TemplateView):
     template_name = 'core/index.html'
 
 
+class UserSessionView(BaseModelViewCreateUpdateMixin, ModelViewSet):
+    """Get the user object in the session"""
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(pk=self.request.user.id)
+
+
+class UserView(BaseModelViewCreateUpdateMixin, ModelViewSet):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.all()
+
+
 class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
     serializer_class = MemberSerializer
 
@@ -67,14 +85,35 @@ class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
                 pass
         # else:
         #     group_admin = Member.objects.get(user=self.request.user)
-        print(group_id)
+        print("group: {}".format(group_id))
         if group_id:
             return Member.objects.filter(id__in=[mg.member_id for mg
                         in MemberGroup.objects.filter(group_id=group_id)])
-        elif organization:
-            return Member.objects.filter(organization=organization)
+        # elif organization:
+        #     return Member.objects.filter(organization=organization)
+        # else:
+        #     return Member.objects.all()
+        return None
+
+
+class MemberSearchView(ModelViewSet):
+    serializer_class = MemberSearchSerializer
+
+    def get_queryset(self):
+        org = Q(organization=self.request.organization)
+        print(org)
+
+        if 'name' in self.request.GET:
+            q = (
+                  Q(first_name__icontains=self.request.GET['name']) |
+                  Q(last_name__icontains=self.request.GET['name'])
+                ) & org
         else:
-            return Member.objects.all()
+            q = org
+
+        return Member.objects.filter(
+            q
+        )
 
 
 class OrganizationView(BaseModelViewCreateUpdateMixin, ModelViewSet):
@@ -93,6 +132,13 @@ class GroupView(BaseModelViewCreateUpdateMixin, ModelViewSet):
             return Group.objects.filter(organization=organization)
         else:
             return Group.objects.all()
+
+
+class MemberGroupView(BaseModelViewCreateUpdateMixin, ModelViewSet):
+    serializer_class = MemberGroupSerializer
+
+    def get_queryset(self):
+        return MemberGroup.objects.all()
 
 
 class AttendanceView(BaseModelViewCreateUpdateMixin, ModelViewSet):

@@ -1,0 +1,35 @@
+
+<div class="main-modal-top-small">
+    <div class="main-modal-top-title">Group: {{ name }}</div>
+    <span class="close close-button"></span>
+</div>
+
+<div class="member-edit-form-wrapper">
+    <span>Search members to be added to th group</span>
+    <input type="text"
+           id="modal-search-input"
+           name="search"
+           class="bootstrap-tagsinput"
+           placeholder="Search member" />
+    <span class="input-group-btn">
+        <button type="submit"
+                id="main-search-button"
+                class="btn main-search-button">
+            <span class="main-search-button-icon fui-search"></span>
+        </button>
+    </span>
+</div>
+
+<form id="group-edit-form" class="member-edit-form">
+
+    <div id="main-search-results" class="main-search-results table-responsive">
+    </div>
+
+    <div class="bbm-modal__bottombar main-button-panel">
+        <ul class="actions">
+            <li><button class="btn btn-normal btn-responsive close-button">Cancel</button></li>
+            <li><button class="btn btn-primary btn-responsive save">Save Changes</button></li>
+        </ul>
+    </div>
+
+</form>

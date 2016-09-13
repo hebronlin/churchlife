@@ -12,7 +12,7 @@
                     "last_login": "2016-08-01 01:52:54",
                     "groups": [],
                     "user_permissions": [],
-                    "password": "pbkdf2_sha256$24000$vobUSecP1n7N$KJsN3oAcg4OdZaKl7TlKj8BRyaz2LtiZ4gy4pEnjMEg=",
+                    "password": "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ=",
                     "email": "hebronlin@gmail.com",
                     "date_joined": "2016-08-01 01:50:18"
                   }
@@ -48,8 +48,44 @@
                     "last_login": "2016-08-01 01:52:54",
                     "groups": [],
                     "user_permissions": [],
-                    "password": "pbkdf2_sha256$24000$sV3JlVs5I8mx$BCI/S3j2YuBbImeeBMTkfhKJEflfvpXLErORmlh/wWw=",
+                    "password": "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ=",
                     "email": "halin2007@gmail.com",
+                    "date_joined": "2016-08-01 01:50:18"
+                  }
+    },
+    {
+        "pk": 4,
+        "model": "auth.User",
+        "fields": {
+                    "username": "ngpapers@gmail.com",
+                    "first_name": "Thomas",
+                    "last_name": "Tang",
+                    "is_active": true,
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2016-08-01 01:52:54",
+                    "groups": [],
+                    "user_permissions": [],
+                    "password": "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ=",
+                    "email": "ngpapers@gmail.com",
+                    "date_joined": "2016-08-01 01:50:18"
+                  }
+    },
+    {
+        "pk": 5,
+        "model": "auth.User",
+        "fields": {
+                    "username": "kenneth.troughton@gmail.com",
+                    "first_name": "Kenneth",
+                    "last_name": "Troughton",
+                    "is_active": true,
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2016-08-01 01:52:54",
+                    "groups": [],
+                    "user_permissions": [],
+                    "password": "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ=",
+                    "email": "kenneth.troughton@gmail.com",
                     "date_joined": "2016-08-01 01:50:18"
                   }
     },
@@ -101,9 +137,9 @@
         "model": "core.member",
         "fields": {
                     "user": 2,
-                    "first_name": "Hongchang",
+                    "first_name": "Eric",
                     "last_name": "Lin",
-                    "email": "hebronlin@gmail.com",
+                    "email": "ezrlin@gmail.com",
                     "organization": 3,
                     "created": "2016-08-01 01:50:18+0800",
                     "last_updated": "2016-08-01 01:50:18+0800"
@@ -114,9 +150,35 @@
         "model": "core.member",
         "fields": {
                     "user": 3,
-                    "first_name": "Hongchang",
+                    "first_name": "Hailey",
                     "last_name": "Lin",
-                    "email": "hebronlin@gmail.com",
+                    "email": "halin2007@gmail.com",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 4,
+        "model": "core.member",
+        "fields": {
+                    "user": 4,
+                    "first_name": "Thomas",
+                    "last_name": "Tang",
+                    "email": "ngpapers@gmail.com",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 5,
+        "model": "core.member",
+        "fields": {
+                    "user": 5,
+                    "first_name": "Kenneth",
+                    "last_name": "Troughton",
+                    "email": "kenneth.troughton@gmail.com",
                     "organization": 1,
                     "created": "2016-08-01 01:50:18+0800",
                     "last_updated": "2016-08-01 01:50:18+0800"

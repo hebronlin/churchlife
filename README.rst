@@ -59,6 +59,7 @@ Installation
     #) pip install -r requirements.txt
 
 **Load initial data to database**:
+    #) django-admin migrate
     #) django-admin loaddata data/initial_data_fixture.json
 
 **Install node and bundle Javascript**:

@@ -183,5 +183,44 @@
                     "created": "2016-08-01 01:50:18+0800",
                     "last_updated": "2016-08-01 01:50:18+0800"
                   }
+    },
+    {
+        "pk": 1,
+        "model": "core.event",
+        "fields": {
+                    "name": "Prayers Meeting",
+                    "description": "Prayers meeting",
+                    "status": "Active",
+                    "event_type": "Weekly",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 2,
+        "model": "core.event",
+        "fields": {
+                    "name": "Small Group Meeting",
+                    "description": "Small group meeting",
+                    "status": "Active",
+                    "event_type": "Weekly",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
+    },
+    {
+        "pk": 3,
+        "model": "core.event",
+        "fields": {
+                    "name": "Lord's Meeting",
+                    "description": "Lord's meeting",
+                    "status": "Active",
+                    "event_type": "Weekly",
+                    "organization": 1,
+                    "created": "2016-08-01 01:50:18+0800",
+                    "last_updated": "2016-08-01 01:50:18+0800"
+                  }
     }
 ]

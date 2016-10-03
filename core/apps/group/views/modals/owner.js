@@ -38,7 +38,7 @@ module.exports = Backbone.Modal.extend({
 
     events: {
         'click .main-search-button': 'search',
-        'click .member-check': 'updateOwner',
+        'click .admin-check': 'updateOwner',
     },
 
     search: function() {

@@ -56,7 +56,7 @@ class Group(BaseModel):
     """ Group definition """
     name = CharField(max_length=100)
     description = CharField(max_length=500)
-    group_type = CharField(max_length=30, default='Home Group', choices=GROUP_TYPE_CHOICES)
+    group_type = CharField(max_length=30, default='Small Group', choices=GROUP_TYPE_CHOICES)
     parent = ForeignKey(Group, blank=True, null=True)
     organization = ForeignKey(Organization, blank=True, null=True)
 
@@ -87,7 +87,7 @@ class Member(BaseModel):
     last_name = CharField(max_length=30)
     first_name = CharField(max_length=30)
     middle_name = CharField(max_length=30, null=True, blank=True)
-    email = CharField(max_length=254, null=True, blank=True)
+    email = CharField(max_length=254, unique=True, null=True, blank=True)
     nick_name = CharField(max_length=100, null=True, blank=True)
     other_name = CharField(max_length=100, null=True, blank=True)
     organization = ForeignKey(Organization, blank=True, null=True)
@@ -122,7 +122,12 @@ def user_post_save_receiver(sender, instance, created, **kwargs):
     try:
         member = Member.objects.get(user=user)
     except Member.DoesNotExist:
-        member = Member(user=user)
+        try:
+            member = Member.objects.get(email=user.email)
+            member.user = user
+        except Member.DoesNotExist:
+            member = Member(user=user)
+    print(member)
     if user.first_name:
         member.first_name = user.first_name
     if user.last_name:

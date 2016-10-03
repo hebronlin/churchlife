@@ -23,7 +23,7 @@ module.exports = Marionette.LayoutView.extend({
         console.log('fetching members done');
         console.log(self.members);
         self.getRegion('header').show(new HeaderView());
-        self.memberListView = new MemberListView(self.members);
+        self.memberListView = new MemberListView({members: self.members, groups: options.groups});
         self.getRegion('members').show(self.memberListView);
         // $(document).ready(function() {$('#membersTable').dataTable();});
       }

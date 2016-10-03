@@ -3,6 +3,7 @@
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var Modal = require('backbone.modal');
+var GroupListView = require('../group-list');
 var _ = require('underscore');
 
 var $ = require('jquery');
@@ -17,8 +18,9 @@ module.exports = Backbone.Modal.extend({
     cancelEl: '.close-button',
     submitEl: '.save',
 
-    initialize: function(member) {
-        this.member = member;
+    initialize: function(options) {
+        this.member = options.member;
+        this.groups = options.groups;
     },
 
     events: {
@@ -27,6 +29,10 @@ module.exports = Backbone.Modal.extend({
     },
 
     onShow: function() {
+        if (this.groups.length > 0) {
+            var groupListView = new GroupListView(this.groups);
+            groupListView.render();
+        }
         if (this.member) {
             this.$el.find('form input[name="first_name"]').val(this.member.get('first_name'));
             this.$el.find('form input[name="last_name"]').val(this.member.get('last_name'));
@@ -34,6 +40,8 @@ module.exports = Backbone.Modal.extend({
             this.$el.find('form input[name="other_name"]').val(this.member.get('other_name'));
             this.$el.find('form select[name="gender"]').val(this.member.get('gender'));
             this.$el.find('form input[name="language"]').val(this.member.get('language'));
+            var home_group = this.groups.get(name=this.member.get('home_group'));
+            this.$el.find('form select[name="home_group"]').val(this.member.get('home_group'));
         }
     },
 

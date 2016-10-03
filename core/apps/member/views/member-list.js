@@ -31,7 +31,7 @@ module.exports = Marionette.LayoutView.extend({
 
   showSpinnerModal: function() {
     this.spinnerModalView = new SpinnerModalView();
-    $('#main-spinner-modal').html(this.spinnerModalView.render().el);
+    this.$('#main-spinner-modal').html(this.spinnerModalView.render().el);
   },
 
   add: function() {
@@ -39,19 +39,19 @@ module.exports = Marionette.LayoutView.extend({
     var member = new Member();
     this.members.add(member);
     this.listenTo(member, 'change', this.render);
-    var d = new EditView(member);
+    var d = new EditView({groups: this.groups, member: member});
     d.render();
 
-    $('#member-index-modal').html(d.el);
+    this.$('#member-index-modal').html(d.el);
   },
 
   edit: function(e){
       e.preventDefault();
       var id = $(e.currentTarget).data("id");
-      var d = new EditView(this.members.get(id));
+      var d = new EditView({groups: this.groups, member: this.members.get(id)});
       d.render();
 
-      $('#member-index-modal').html(d.el);
+      this.$('#member-index-modal').html(d.el);
   },
 
   render: function(){
@@ -59,17 +59,9 @@ module.exports = Marionette.LayoutView.extend({
     return this;
   },
 
-  initialize: function(members) {
+  initialize: function(options) {
     var self = this;
-    this.groups = new GroupCollection();
-    this.groups.fetch().done(
-      function() {
-        console.log('fetching groups done');
-      }
-    );
-    this.members = members;
-    this.members.each(function (member) {
-        self.listenTo(member, 'change', self.render);
-    });
+    this.groups = options.groups;
+    this.members = options.members;
   }
 });

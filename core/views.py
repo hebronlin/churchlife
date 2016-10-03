@@ -62,6 +62,7 @@ class UserSessionView(BaseModelViewCreateUpdateMixin, ModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self):
+        print(self.request.user.id)
         return User.objects.filter(pk=self.request.user.id)
 
 
@@ -76,6 +77,7 @@ class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
     serializer_class = MemberSerializer
 
     def get_queryset(self):
+        user = self.request.user
         organization = self.request.organization
         group_id = None
         if 'gid' in self.request.GET and self.request.GET['gid']:
@@ -85,31 +87,33 @@ class MemberView(BaseModelViewCreateUpdateMixin, ModelViewSet):
                 pass
         # else:
         #     group_admin = Member.objects.get(user=self.request.user)
-        print("group: {}".format(group_id))
         if group_id:
             return Member.objects.filter(id__in=[mg.member_id for mg
                         in MemberGroup.objects.filter(group_id=group_id)])
-        # elif organization:
-        #     return Member.objects.filter(organization=organization)
-        # else:
-        #     return Member.objects.all()
-        return None
+        elif organization and user.is_superuser:
+            return Member.objects.filter(organization=organization)
+        elif user.is_superuser:
+            return Member.objects.all()
+        else:
+            return None
 
 
 class MemberSearchView(ModelViewSet):
     serializer_class = MemberSearchSerializer
 
     def get_queryset(self):
-        org = Q(organization=self.request.organization)
-        print(org)
+        q = Q(organization=self.request.organization)
+        print(self.request.GET)
 
-        if 'name' in self.request.GET:
+        if 'fn' in self.request.GET:
             q = (
-                  Q(first_name__icontains=self.request.GET['name']) |
-                  Q(last_name__icontains=self.request.GET['name'])
-                ) & org
-        else:
-            q = org
+                  Q(first_name__icontains=self.request.GET['fn'])
+                ) & q
+        if 'ln' in self.request.GET:
+            q = (
+                  Q(last_name__icontains=self.request.GET['ln'])
+                ) & q
+        print(q)
 
         return Member.objects.filter(
             q
@@ -145,18 +149,20 @@ class AttendanceView(BaseModelViewCreateUpdateMixin, ModelViewSet):
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        group_admin = Member.objects.get(user=self.request.user)
         if 'day' in self.request.GET and self.request.GET['day']:
             day = datetime.datetime.strptime(self.request.GET['day'], 
                                                 "%Y-%m-%d").date()
         else:
-            day = get_start_of_week(datetime.date.today())
+            day = datetime.date.today()
+        day = get_start_of_week(day)
+        print(day)
         if 'gid' in self.request.GET and self.request.GET['gid']:
             try:
                 group = Group.objects.get(pk=int(self.request.GET['gid']))
             except:
                 return None
         else:
+            group_admin = Member.objects.get(user=self.request.user)
             mgs = MemberGroup.objects.filter(member=group_admin,
                                                 member_type='Admin')
             if mgs:

@@ -1,4 +1,5 @@
 <div style="padding: 10px">
+    <div class="member-edit-form-title">Members found:</div>
     <table id="membersTable" class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -14,7 +15,7 @@
                 <td class="member-name-link">{{ last_name }}</td>
                 <td class="member-name-link">{{ first_name }}</td>
                 <td>{{ gender }}</td>
-                <td><input data-id="{{ id }}" class="check member-check" type="checkbox"></input></td>
+                <td><input data-id="{{ id }}" class="check admin-check" type="checkbox"></input></td>
             </tr>
         {{/each}}
         </tbody>

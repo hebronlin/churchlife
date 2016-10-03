@@ -17,6 +17,9 @@ from .consts import (LANGUAGE_CHOICES, MEMBER_STATUS_CHOICES, GENDER_CHOICES,
                      MEMBER_TYPE_CHOICES, ABSENT_REASON_CHOICES)
 from .models import (Member, Group, Organization, Event, MemberGroup,
                      Address, EventNote, EventAttendance)
+from .utils import get_start_of_week
+
+DEFAULT_PASSWORD = "pbkdf2_sha256$24000$jtpxBo9B9F6R$GLt/P23jBvGiVJHeVOwFCMWOjF6ebqhkSev9QuRtigQ="
 
 class UserSerializer(ModelSerializer):
     total_groups = SerializerMethodField()
@@ -60,9 +63,20 @@ class MemberGroupSerializer(ModelSerializer):
     def create(self, validated_data):
         print(validated_data)
         member_group = MemberGroup(member_type=validated_data['member_type'])
-        member_group.member = Member.objects.get(pk=validated_data['member']['id'])
+        member = Member.objects.get(pk=validated_data['member']['id'])
+        member_group.member = member
         member_group.group = Group.objects.get(pk=validated_data['group']['id'])
         member_group.save()
+        if validated_data['member_type'] == 'Admin' and not member.user:
+            User.objects.create(first_name=member.first_name,
+                                last_name=member.last_name,
+                                email=member.email,
+                                username=member.email,
+                                password=DEFAULT_PASSWORD,
+                                date_joined=datetime.datetime.now(),
+                                is_superuser=False,
+                                is_staff=False,
+                                is_active=True)
         return member_group
 
 class EventSerializer(ModelSerializer):
@@ -124,7 +138,8 @@ class MemberSerializer(ModelSerializer):
         return member
 
 class MemberSearchSerializer(ModelSerializer):
-    # name = SerializerMethodField(read_only=True)
+    year_of_birth = SerializerMethodField(read_only=True)
+    home_group = SerializerMethodField()
 
     class Meta:
         model = Member
@@ -133,10 +148,22 @@ class MemberSearchSerializer(ModelSerializer):
             'first_name',
             'last_name',
             'gender',
+            'home_phone',
+            'year_of_birth',
+            'home_group',
         )
 
-    def get_name(self, obj):
-        return obj.get_full_name()
+    def get_home_group(self, obj):
+        try:
+            mg = MemberGroup.objects.get(member=obj, member_type='Member')
+            return mg.group.name
+        except MemberGroup.DoesNotExist:
+            return ''
+
+    def get_year_of_birth(self, obj):
+        if obj.birth_date:
+            return obj.birth_date.year
+        return ""
 
 class AttendanceSerializer(ModelSerializer):
     member_id = IntegerField(source='member.id')
@@ -150,7 +177,7 @@ class AttendanceSerializer(ModelSerializer):
         print(validated_data)
         attendance = EventAttendance(attended=validated_data['attended'],
                                      absent_reason=validated_data['absent_reason'],
-                                     date=validated_data['date'])
+                                     date=get_start_of_week(validated_data['date']))
         attendance.member = Member.objects.get(pk=validated_data['member']['id'])
         attendance.event = Event.objects.get(pk=validated_data['event']['id'])
         attendance.save()

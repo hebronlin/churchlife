@@ -11,11 +11,12 @@ module.exports = Backbone.Model.extend({
     if (this.get('id')) {
         baseURL = baseURL + this.get('id') + '/';
     }
-    if (typeof (options) !== "undefined" && options.groupId) {
-      return baseURL + '?gid=' + options.groupId + '&format=json';
-    } else {
-      return baseURL;
-    }
+    return baseURL;
+    // if (typeof (options) !== "undefined" && options.groupId) {
+    //   return baseURL + '?gid=' + options.groupId + '&format=json';
+    // } else {
+    //   return baseURL;
+    // }
   },
   defaults: function() {
     return {

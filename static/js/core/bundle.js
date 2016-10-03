@@ -6,14 +6,20 @@ var Backbone = require('backbone');
 module.exports = Backbone.Collection.extend({
   model: require('../models/attendance'),
   initialize: function(options) {
-  	this.url = '/api/v1/attendance/';
-  	if (typeof (options) !== "undefined" && options.groupId) {
-    	this.url = this.url + '?gid=' + options.groupId + '&format=json';
+  	this.url = '/api/v1/attendance/?';
+  	if (typeof (options) !== "undefined") {
+  		if (options.groupId) {
+  			this.url += 'gid=' + options.groupId + '&';
+  		}
+  		if (options.date) {
+  			this.url += 'day=' + options.date + '&';
+  		}
+    	this.url += 'format=json';
     }
   }
 });
 
-},{"../models/attendance":3,"backbone":52}],2:[function(require,module,exports){
+},{"../models/attendance":3,"backbone":56}],2:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -22,7 +28,7 @@ module.exports = Backbone.Collection.extend({
   model: require('../models/member_attendance'),
 });
 
-},{"../models/member_attendance":4,"backbone":52}],3:[function(require,module,exports){
+},{"../models/member_attendance":4,"backbone":56}],3:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -51,7 +57,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":52}],4:[function(require,module,exports){
+},{"backbone":56}],4:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -66,7 +72,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":52}],5:[function(require,module,exports){
+},{"backbone":56}],5:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -112,26 +118,61 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return "\n<div class=\"row attendance-filter-header\">\n    <div class=\"col-xs-12 col-sm-2\">\n        <label>Select a group:</label>\n        <select name=\"group_select\" id=\"group_select\" class=\"form-control group_select\" style=\"width:200px; margin-bottom:20px\">\n            <option value=\"\">Select a group</option>\n"
+  return "\n<div class=\"row attendance-filter-header\">\n    <div class=\"col-xs-12 col-sm-2\">\n        <label>Select a date:</label>\n        <input type=\"date\" placeholder=\"dd-mm-yyyy\" class=\"datepicker\" name=\"attendance_date\" id=\"attendance_date\" />\n        <label>Select a group:</label>\n        <select name=\"group_select\" id=\"group_select\" class=\"form-control group_select\" style=\"width:200px; margin-bottom:20px\">\n            <option value=\"\">Select a group</option>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </select>\n    </div>\n    <div class=\"col-xs-12 col-sm-8 pull-right text-right\">\n        <button class=\"btn btn-primary member-add-button\">Add a member</button>\n    </div>\n\n    <div class=\"group-separator\"></div>\n</div>\n\n<div class=\"responsive\">\n    <table id=\"attendancesTable\" class=\"table table-striped table-bordered\">\n        <thead>\n            <tr>\n                <th>Member</th>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.evts : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "            </tr>\n        </thead>\n        <tbody>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        </tbody>\n    </table>\n</div>\n\n<div id=\"attendance-index-modal\"></div>\n";
+    + "        </tbody>\n    </table>\n</div>\n\n<div id=\"attendance-index-modal\"></div>\n\n<div id=\"member-index-modal\"></div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],6:[function(require,module,exports){
+},{"hbsfy/runtime":90}],6:[function(require,module,exports){
+// hbsfy compiled Handlebars template
+var HandlebarsCompiler = require('hbsfy/runtime');
+module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "            <tr>\r\n                <td class=\"member-name\">"
+    + alias4(((helper = (helper = helpers.last_name || (depth0 != null ? depth0.last_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"last_name","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td class=\"member-name\">"
+    + alias4(((helper = (helper = helpers.first_name || (depth0 != null ? depth0.first_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"first_name","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td>"
+    + alias4(((helper = (helper = helpers.gender || (depth0 != null ? depth0.gender : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"gender","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td>"
+    + alias4(((helper = (helper = helpers.home_phone || (depth0 != null ? depth0.home_phone : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"home_phone","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td>"
+    + alias4(((helper = (helper = helpers.year_of_birth || (depth0 != null ? depth0.year_of_birth : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"year_of_birth","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td>"
+    + alias4(((helper = (helper = helpers.home_group || (depth0 != null ? depth0.home_group : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"home_group","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                <td class='member-type'>\r\n                    <label>Member</label><input data-id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"check member-check\" type=\"checkbox\" />\r\n                    <label>Visitor</label><input data-id=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"check visitor-check\" type=\"checkbox\" />\r\n                </td>\r\n            </tr>\r\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div style=\"padding: 10px\">\r\n    <div class=\"member-edit-form-title\">Members found:</div>\r\n    <table id=\"membersTable\" class=\"table table-striped table-bordered\">\r\n        <thead>\r\n            <tr>\r\n                <th>Last Name</th>\r\n                <th>First Name</th>\r\n                <th>M/F</th>\r\n                <th>Phone</th>\r\n                <th>Year of Birth</th>\r\n                <th>Home Group</th>\r\n                <th>Add</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </tbody>\r\n    </table>\r\n</div>\r\n";
+},"useData":true});
+
+},{"hbsfy/runtime":90}],7:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Group</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"event-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">Name</div>\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Description</div>\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
+    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Add Member to Group</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<div class=\"member-edit-form-wrapper\">\n    <span>Search members to be added to the group</span>\n    <div class=\"member-edit-form-title\">First Name:</div>\n    <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n    <div class=\"member-edit-form-title\">Last name:</div>\n    <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n    <span class=\"input-group-btn\">\n        <button\n                id=\"main-search-button\"\n                class=\"btn btn-primary main-search-button\">\n            <span class=\"main-search-button-icon fui-search\"></span>\n        </button>\n    </span>\n</div>\n\n    <div id=\"main-search-results\" class=\"main-search-results table-responsive\">\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Add Selected Members</button></li>\n            <li><button class=\"btn btn-primary btn-responsive add-new-member close-button\">Add A New Member</button></li>\n        </ul>\n    </div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],7:[function(require,module,exports){
+},{"hbsfy/runtime":90}],8:[function(require,module,exports){
 'use strict';
 
+require('jquery-ui');
+
+var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
+var Member = require('../../member/models/member');
 var MemberCollection = require('../../member/collections/member');
 var EventCollection = require('../../event/collections/event');
 var AttendanceModel = require('../models/attendance');
@@ -140,19 +181,24 @@ var MemberAttendanceModel = require('../models/member_attendance');
 var MemberAttendanceCollection = require('../collections/member_attendance');
 var SpinnerModalView = require('../../common/views/modals/spinner');
 var EditView = require('./modals/edit');
+var MemberEditView = require('../../member/views/modals/edit');
 
 // The index view is a grid with the list of group.
 module.exports = Marionette.LayoutView.extend({
   template: require('../templates/index.hbs'),
   regions: {
     modals: {
-      selector: "#group-index-modal",
+      selector: "#attendance-index-modal",
       regionType: Marionette.Modals
     }
   },
+  // ui: {
+  //   datepicker: "#attendance_date"
+  // },
 
   events: {
     'change .group_select': 'selectGroup',
+    'change #attendance_date': 'changeDate',
     'click .member-add-button': 'add',
     'click .attendance-check': 'updateAttendance',
   },
@@ -162,15 +208,54 @@ module.exports = Marionette.LayoutView.extend({
     $('#main-spinner-modal').html(this.spinnerModalView.render().el);
   },
 
+  add: function() {
+    console.log("add is being used");
+    var d = new EditView({parent: this});
+    d.render();
+
+    this.$('#attendance-index-modal').html(d.el);
+    // Backbone.history.navigate('members/new/', {trigger: true});
+  },
+
+  changeDate: function() {
+    console.log("Come to change date");
+    var from = this.$("#attendance_date").val().split("-");
+    var d = new Date(from[0], from[1] - 1, from[2]);
+    this.date = this.convertDateToStr(d);
+    // this.date = $("#attendance_date").val();
+    this.attendance = new AttendanceCollection({groupId:this.groupId, date:this.date});
+    this.renderGroupAttendance();
+  },
+
+  convertDateToStr: function(d) {
+    var firstDate = new Date(d.setDate(d.getDate() - d.getDay()));
+    var mm = (firstDate.getMonth() + 1) + '';
+    if (mm.length < 2) mm = '0' + mm;
+    var dd = firstDate.getDate() + '';
+    if (dd.length < 2) dd = '0' + dd;
+    return [d.getFullYear(), mm, dd].join('-');
+  },
+
+  addNewMember: function() {
+    console.log("addNewMember is being used");
+    var member = new Member();
+    this.members.add(member);
+    this.listenTo(member, 'change', this.render);
+    var d = new MemberEditView({groups: this.groups, member: member});
+    d.render();
+
+    this.$('#member-index-modal').html(d.el);
+  },
+
   selectGroup: function(e) {
     this.groupId = e.target.value;
     this.members = new MemberCollection({groupId:this.groupId});
-    this.attendance = new AttendanceCollection({groupId:this.groupId});
+    this.attendance = new AttendanceCollection({groupId:this.groupId, date:this.date});
     this.renderGroupAttendance();
   },
 
   updateAttendance: function(e){
-    e.preventDefault();
+    // e.preventDefault();
     var event_attendance;
     var id = $(e.currentTarget).data("id");
     var member_id = $(e.currentTarget).data("memberid");
@@ -179,13 +264,14 @@ module.exports = Marionette.LayoutView.extend({
     if (id) {
       event_attendance = this.attendance.get(id);
       event_attendance.set({'attended': attended});
+      event_attendance.save();
     } else {
       event_attendance = new AttendanceModel({member_id: member_id, event_id: evt_id,
                                               date: this.date, attended: attended});
+      event_attendance.save();
       this.attendance.add(event_attendance);
     }
-    console.log(event_attendance.get('id'));
-    event_attendance.save();
+    // console.log(event_attendance.get('id'));
     this.renderGroupAttendance();
   },
 
@@ -193,7 +279,7 @@ module.exports = Marionette.LayoutView.extend({
     var self = this;
     this.member_attendance = new MemberAttendanceCollection();
     this.members.each(function(member) {
-      self.event_attendance = new AttendanceCollection();
+      self.event_attendance = new Backbone.Collection;
       var member_name = member.get('first_name') + ' ' + member.get('last_name');
       self.evts.each(function(evt) {
         var attendance = self.attendance.find(function(item) {
@@ -214,6 +300,7 @@ module.exports = Marionette.LayoutView.extend({
                                  members: this.member_attendance.toJSON(),
                                  groups: this.groups.toJSON()}));
     this.$el.find('select[name="group_select"]').val(this.groupId);
+    this.$('#attendance_date').val(this.date);
     return this;
   },
 
@@ -221,6 +308,7 @@ module.exports = Marionette.LayoutView.extend({
     var self = this;
     this.members.fetch().done(
       function() {
+        console.log("members fetching done.");
         self.attendance.fetch().done(
           function() {
             self.render();
@@ -234,17 +322,15 @@ module.exports = Marionette.LayoutView.extend({
     var self = this;
     this.user_session = options.user_session;
     this.groups = options.groups;
-    var d = new Date();
-    var mm = d.getMonth() + 1;
-    var dd = d.getDate() - d.getDay();
-    this.date = [d.getFullYear(), !mm[1] && '0' + mm, !dd[1] && '0' + dd].join('-');
+    // Set cuurent date
+    this.date = this.convertDateToStr(new Date());
     this.groupId = "";
-    if (this.groups !== null) {
+    if (this.groups !== null && this.groups.length !== 0) {
       this.groupId = this.groups.at(0).get("id");
     }
     this.evts = new EventCollection();
     this.members = new MemberCollection({groupId:this.groupId});
-    this.attendance = new AttendanceCollection({groupId:this.groupId});
+    this.attendance = new AttendanceCollection({groupId:this.groupId, date:this.date});
     this.evts.fetch().done(
       function() {
         self.renderGroupAttendance();
@@ -254,12 +340,35 @@ module.exports = Marionette.LayoutView.extend({
   },
 });
 
-},{"../../common/views/modals/spinner":21,"../../event/collections/event":22,"../../member/collections/member":37,"../collections/attendance":1,"../collections/member_attendance":2,"../models/attendance":3,"../models/member_attendance":4,"../templates/index.hbs":5,"./modals/edit":8,"backbone.marionette":47}],8:[function(require,module,exports){
+},{"../../common/views/modals/spinner":23,"../../event/collections/event":24,"../../member/collections/member":39,"../../member/models/member":40,"../../member/views/modals/edit":50,"../collections/attendance":1,"../collections/member_attendance":2,"../models/attendance":3,"../models/member_attendance":4,"../templates/index.hbs":5,"./modals/edit":10,"backbone":56,"backbone.marionette":51,"jquery-ui":91}],9:[function(require,module,exports){
+'use strict';
+
+var Marionette = require('backbone.marionette');
+
+module.exports = Marionette.LayoutView.extend({
+  template: require('../templates/member-search-results.hbs'),
+  el: '#main-search-results',
+
+  render: function(){
+    this.$el.html(this.template({members: this.members.toJSON()}));
+    return this;
+  },
+
+  initialize: function(members){
+    var self = this;
+    this.members = members;
+  },
+});
+
+},{"../templates/member-search-results.hbs":6,"backbone.marionette":51}],10:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var Modal = require('backbone.modal');
+var MemberSearchResultsView = require('../member-search-results');
+var MemberSearchCollection = require('../../../common/collections/member_search');
+var MemberGroupModel = require('../../../common/models/member_group');
 var _ = require('underscore');
 
 var $ = require('jquery');
@@ -273,9 +382,15 @@ module.exports = Backbone.Modal.extend({
 
     cancelEl: '.close-button',
     submitEl: '.save',
+    regions: {
+        searchResults: '#main-search-results'
+    },
 
-    initialize: function(group) {
-        this.group = group;
+    initialize: function(options) {
+        this.parent = options.parent;
+        this.group_id = this.parent.groupId;
+        console.log(this.group_id);
+        this.members = null;
     },
 
     groups: {
@@ -283,10 +398,45 @@ module.exports = Backbone.Modal.extend({
         'keyup #member-edit-form': 'disableSubmit'
     },
 
-    onShow: function() {
-        if (this.group) {
-            this.$el.find('form input[name="name"]').val(this.group.get('name'));
-            this.$el.find('form input[name="description"]').val(this.group.get('description'));
+    events: {
+        'click .main-search-button': 'search',
+        'click .add-new-member': 'addNewMember',
+        'click .member-check': 'setMemberType',
+        'click .visitor-check': 'setMemberType',
+        // 'click .add-selected-members': 'addSelectedMembers'
+    },
+
+    setMemberType: function(e) {
+        var member_id = $(e.target).data("id");
+        if ($(e.target).prop('checked')) {
+            this.$('.member-type input[data-id=' + member_id + ']').prop('checked', false);
+            $(e.target).prop('checked', true);
+        }
+    },
+
+    addNewMember: function() {
+        this.parent.addNewMember();
+    },
+
+    search: function() {
+        console.log("Searching members...");
+        var self = this;
+        var first_name = this.$el.find('input[name="first_name"]').val();
+        var last_name = this.$el.find('input[name="last_name"]').val();
+        this.members = new MemberSearchCollection({first_name: first_name, last_name: last_name});
+        this.members.fetch().done(
+            function() {
+                console.log('Searching members done');
+                self.onShow();
+            }
+        );
+    },
+
+    onShow: function(){
+        if (this.members !== null) {
+            console.log('Members: ' + this.members.length);
+            var msrView = new MemberSearchResultsView(this.members);
+            msrView.render();
         }
     },
 
@@ -300,16 +450,29 @@ module.exports = Backbone.Modal.extend({
     },
 
     submit: function() {
-        this.group.save({
-            'name': this.$el.find('form input[name="name"]').val(),
-            'description': this.$el.find('form input[name="description"]').val(),
+        var self = this;
+        this.$('.member-check').each(function (e) {
+            if ($(this).prop('checked')) {
+                var group_member = new MemberGroupModel({member_id: $(this).data('id'),
+                                        group_id: self.group_id,
+                                        member_type: 'Member'});
+                group_member.save();
             }
-        );
+        });
+        this.$('.visitor-check').each(function (e) {
+            if ($(this).prop('checked')) {
+                var group_member = new MemberGroupModel({member_id: $(this).data('id'),
+                                        group_id: self.group_id,
+                                        member_type: 'Guest'});
+                group_member.save();
+            }
+        });
+        this.parent.renderGroupAttendance();
     }
 
 });
 
-},{"../../templates/modals/edit.hbs":6,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"jquery":87,"underscore":88}],9:[function(require,module,exports){
+},{"../../../common/collections/member_search":12,"../../../common/models/member_group":15,"../../templates/modals/edit.hbs":7,"../member-search-results":9,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"jquery":92,"underscore":93}],11:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -319,17 +482,30 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/member_group/',
 });
 
-},{"../models/member_group":13,"backbone":52}],10:[function(require,module,exports){
+},{"../models/member_group":15,"backbone":56}],12:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
 
 module.exports = Backbone.Collection.extend({
   model: require('../models/member_search'),
-  url: '/api/v1/member/search/',
+  // url: '/api/v1/member/search/',
+  initialize: function(options) {
+    this.url = '/api/v1/member/search/?';
+  	if (typeof (options) !== "undefined") {
+  		if (options.first_name) {
+  			this.url += 'fn=' + options.first_name + '&';
+  		}
+  		if (options.last_name) {
+  			this.url += 'ln=' + options.last_name + '&';
+  		}
+    	this.url += 'format=json';
+    }
+    console.log(this.url);
+  }
 });
 
-},{"../models/member_search":14,"backbone":52}],11:[function(require,module,exports){
+},{"../models/member_search":16,"backbone":56}],13:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -339,7 +515,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/user_session/',
 });
 
-},{"../models/user_session":15,"backbone":52}],12:[function(require,module,exports){
+},{"../models/user_session":17,"backbone":56}],14:[function(require,module,exports){
 'use strict';
 
 // To register Handlebars helpers, since we use hbsfy,
@@ -357,7 +533,7 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
 });
 
 
-},{"hbsfy/runtime":86}],13:[function(require,module,exports){
+},{"hbsfy/runtime":90}],15:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -367,7 +543,7 @@ module.exports = Backbone.Model.extend({
     	return '/api/v1/member_group/';
     }
 });
-},{"backbone":52}],14:[function(require,module,exports){
+},{"backbone":56}],16:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -377,7 +553,7 @@ module.exports = Backbone.Model.extend({
     	return '/api/v1/member/search/';
     }
 });
-},{"backbone":52}],15:[function(require,module,exports){
+},{"backbone":56}],17:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -387,7 +563,7 @@ module.exports = Backbone.Model.extend({
     	return '/api/v1/user_session/';
     }
 });
-},{"backbone":52}],16:[function(require,module,exports){
+},{"backbone":56}],18:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -422,7 +598,7 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "</div>\n\n<div id=\"main-spinner-modal\" class=\"main-spinner-modal\"></div>\n\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],17:[function(require,module,exports){
+},{"hbsfy/runtime":90}],19:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -436,25 +612,26 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + alias4(((helper = (helper = helpers.gender || (depth0 != null ? depth0.gender : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"gender","hash":{},"data":data}) : helper)))
     + "</td>\r\n                <td><input data-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"check member-check\" type=\"checkbox\"></input></td>\r\n            </tr>\r\n";
+    + "\" class=\"check admin-check\" type=\"checkbox\"></input></td>\r\n            </tr>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div style=\"padding: 10px\">\r\n    <table id=\"membersTable\" class=\"table table-striped table-bordered\">\r\n        <thead>\r\n            <tr>\r\n                <th>Last Name</th>\r\n                <th>First Name</th>\r\n                <th>B/S</th>\r\n                <th>Add</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n"
+  return "<div style=\"padding: 10px\">\r\n    <div class=\"member-edit-form-title\">Members found:</div>\r\n    <table id=\"membersTable\" class=\"table table-striped table-bordered\">\r\n        <thead>\r\n            <tr>\r\n                <th>Last Name</th>\r\n                <th>First Name</th>\r\n                <th>B/S</th>\r\n                <th>Add</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.members : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </tbody>\r\n    </table>\r\n</div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],18:[function(require,module,exports){
+},{"hbsfy/runtime":90}],20:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div class=\"main-spinner-container\">\r\n\r\n    <div class=\"main-spinner-image main-centered-image\"></div>\r\n\r\n    <div class=\"main-spinner-text\">LOADING</div>\r\n\r\n</div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],19:[function(require,module,exports){
+},{"hbsfy/runtime":90}],21:[function(require,module,exports){
 'use strict';
 
+var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var MemberView = require('../../member/views/index');
 var GroupView = require('../../group/views/index');
@@ -471,21 +648,21 @@ module.exports = Marionette.LayoutView.extend({
       groups: '#groups',
       events: '#events'
   },
-	tabs    : [
-    {link: "attendance", label: "Attendance", active: true},
-		{link: "members", label: "Members", active: false},
-		{link: "groups", label: "Groups", active: false},
-    {link: "events", label: "Events", active: false}
-	],
 
   render: function(){
-    this.$el.html(this.template({tabs: this.tabs}));
-    var attendanceView = new AttendanceView({user_session: this.user_session,
-                                             groups: this.groups});
-    this.getRegion('attendance').show(attendanceView);
-    this.getRegion('members').show(new MemberView({user_session: this.user_session,
-                                                   groups: this.groups}));
+    this.tabs = [{link: "attendance", label: "Attendance", active: true}];
     if (this.user_session.get("is_superuser")) {
+      this.tabs.push({link: "members", label: "Members", active: false});
+      this.tabs.push({link: "groups", label: "Groups", active: false});
+      this.tabs.push({link: "events", label: "Events", active: false});
+    }
+    // this.tabs.add({link: "attendance", label: "Attendance", active: true});
+    this.$el.html(this.template({tabs: this.tabs}));
+    this.getRegion('attendance').show(new AttendanceView({user_session: this.user_session,
+                                                          groups: this.groups}));
+    if (this.user_session.get("is_superuser")) {
+      this.getRegion('members').show(new MemberView({user_session: this.user_session,
+                                                     groups: this.groups}));
       this.getRegion('groups').show(new GroupView(this.groups));
       this.getRegion('events').show(new EventView());
     }
@@ -494,6 +671,7 @@ module.exports = Marionette.LayoutView.extend({
 
   initialize: function(options){
     var self = this;
+    // this.tabs = new Backbone.Collection;
     this.user_session = options.user_session;
     this.groups = new GroupCollection();
     this.groups.fetch().done(
@@ -506,27 +684,9 @@ module.exports = Marionette.LayoutView.extend({
 });
 
 
-},{"../../attendance/views/index":7,"../../event/views/index":26,"../../group/collections/group":28,"../../group/views/index":33,"../../member/views/index":44,"../templates/layout.hbs":16,"backbone.marionette":47}],20:[function(require,module,exports){
-'use strict';
-
-var Marionette = require('backbone.marionette');
-
-module.exports = Marionette.LayoutView.extend({
-  template: require('../templates/member-search-results.hbs'),
-  el: '#main-search-results',
-
-  render: function(){
-    this.$el.html(this.template({members: this.members.toJSON()}));
-    return this;
-  },
-
-  initialize: function(members){
-    var self = this;
-    this.members = members;
-  },
-});
-
-},{"../templates/member-search-results.hbs":17,"backbone.marionette":47}],21:[function(require,module,exports){
+},{"../../attendance/views/index":8,"../../event/views/index":28,"../../group/collections/group":30,"../../group/views/index":35,"../../member/views/index":48,"../templates/layout.hbs":18,"backbone":56,"backbone.marionette":51}],22:[function(require,module,exports){
+arguments[4][9][0].apply(exports,arguments)
+},{"../templates/member-search-results.hbs":19,"backbone.marionette":51,"dup":9}],23:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -539,7 +699,7 @@ module.exports = Backbone.Modal.extend({
 });
 
 
-},{"../../templates/modals/spinner.hbs":18,"backbone":52,"backbone.modal":51}],22:[function(require,module,exports){
+},{"../../templates/modals/spinner.hbs":20,"backbone":56,"backbone.modal":55}],24:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -549,7 +709,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/event/',
 });
 
-},{"../models/event":23,"backbone":52}],23:[function(require,module,exports){
+},{"../models/event":25,"backbone":56}],25:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -574,7 +734,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":52}],24:[function(require,module,exports){
+},{"backbone":56}],26:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -595,14 +755,14 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\r\n    </table>\r\n</div>\r\n\r\n<div id=\"event-index-modal\"></div>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],25:[function(require,module,exports){
+},{"hbsfy/runtime":90}],27:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Event</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<form id=\"event-edit-form\" class=\"member-edit-form\">\r\n    <div class=\"member-edit-form-section-name\">\r\n        <div class=\"member-edit-form-wrapper\">\r\n            <div class=\"member-edit-form-title\">Name</div>\r\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n            <div class=\"member-edit-form-title\">Description</div>\r\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],26:[function(require,module,exports){
+},{"hbsfy/runtime":90}],28:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -673,7 +833,7 @@ module.exports = Marionette.LayoutView.extend({
   },
 });
 
-},{"../../common/views/modals/spinner":21,"../collections/event":22,"../models/event":23,"../templates/index.hbs":24,"./modals/edit":27,"backbone.marionette":47}],27:[function(require,module,exports){
+},{"../../common/views/modals/spinner":23,"../collections/event":24,"../models/event":25,"../templates/index.hbs":26,"./modals/edit":29,"backbone.marionette":51}],29:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -728,7 +888,7 @@ module.exports = Backbone.Modal.extend({
 
 });
 
-},{"../../templates/modals/edit.hbs":25,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"jquery":87,"underscore":88}],28:[function(require,module,exports){
+},{"../../templates/modals/edit.hbs":27,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"jquery":92,"underscore":93}],30:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -738,7 +898,7 @@ module.exports = Backbone.Collection.extend({
   url: '/api/v1/group/',
 });
 
-},{"../models/group":29,"backbone":52}],29:[function(require,module,exports){
+},{"../models/group":31,"backbone":56}],31:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -763,7 +923,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":52}],30:[function(require,module,exports){
+},{"backbone":56}],32:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -786,9 +946,14 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\n    </table>\n</div>\n\n<div id=\"group-index-modal\"></div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],31:[function(require,module,exports){
-arguments[4][6][0].apply(exports,arguments)
-},{"dup":6,"hbsfy/runtime":86}],32:[function(require,module,exports){
+},{"hbsfy/runtime":90}],33:[function(require,module,exports){
+// hbsfy compiled Handlebars template
+var HandlebarsCompiler = require('hbsfy/runtime');
+module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Group</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"event-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">Name</div>\n            <input type=\"text\" name=\"name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Description</div>\n            <input type=\"text\" name=\"description\" value=\"\" class=\"bootstrap-tagsinput\" />\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
+},"useData":true});
+
+},{"hbsfy/runtime":90}],34:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -796,10 +961,10 @@ module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":f
 
   return "\r\n<div class=\"main-modal-top-small\">\r\n    <div class=\"main-modal-top-title\">Group: "
     + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"name","hash":{},"data":data}) : helper)))
-    + "</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<div class=\"member-edit-form-wrapper\">\r\n    <span>Search members to be added to th group</span>\r\n    <input type=\"text\"\r\n           id=\"modal-search-input\"\r\n           name=\"search\"\r\n           class=\"bootstrap-tagsinput\"\r\n           placeholder=\"Search member\" />\r\n    <span class=\"input-group-btn\">\r\n        <button type=\"submit\"\r\n                id=\"main-search-button\"\r\n                class=\"btn main-search-button\">\r\n            <span class=\"main-search-button-icon fui-search\"></span>\r\n        </button>\r\n    </span>\r\n</div>\r\n\r\n<form id=\"group-edit-form\" class=\"member-edit-form\">\r\n\r\n    <div id=\"main-search-results\" class=\"main-search-results table-responsive\">\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
+    + "</div>\r\n    <span class=\"close close-button\"></span>\r\n</div>\r\n\r\n<div class=\"member-edit-form-wrapper\">\r\n    <span>Search members to be added to the group</span>\r\n    <input type=\"text\"\r\n           id=\"modal-search-input\"\r\n           name=\"search\"\r\n           class=\"bootstrap-tagsinput\"\r\n           placeholder=\"Search member\" />\r\n    <span class=\"input-group-btn\">\r\n        <button type=\"submit\"\r\n                id=\"main-search-button\"\r\n                class=\"btn main-search-button\">\r\n            <span class=\"main-search-button-icon fui-search\"></span>\r\n        </button>\r\n    </span>\r\n</div>\r\n\r\n<form id=\"group-edit-form\" class=\"member-edit-form\">\r\n\r\n    <div id=\"main-search-results\" class=\"main-search-results table-responsive\">\r\n    </div>\r\n\r\n    <div class=\"bbm-modal__bottombar main-button-panel\">\r\n        <ul class=\"actions\">\r\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\r\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\r\n        </ul>\r\n    </div>\r\n\r\n</form>\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],33:[function(require,module,exports){
+},{"hbsfy/runtime":90}],35:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -889,9 +1054,62 @@ module.exports = Marionette.LayoutView.extend({
   },
 });
 
-},{"../../common/views/modals/spinner":21,"../collections/group":28,"../models/group":29,"../templates/index.hbs":30,"./modals/edit":34,"./modals/owner":35,"backbone.marionette":47}],34:[function(require,module,exports){
-arguments[4][8][0].apply(exports,arguments)
-},{"../../templates/modals/edit.hbs":31,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"dup":8,"jquery":87,"underscore":88}],35:[function(require,module,exports){
+},{"../../common/views/modals/spinner":23,"../collections/group":30,"../models/group":31,"../templates/index.hbs":32,"./modals/edit":36,"./modals/owner":37,"backbone.marionette":51}],36:[function(require,module,exports){
+'use strict';
+
+var Backbone = require('backbone');
+var Marionette = require('backbone.marionette');
+var Modal = require('backbone.modal');
+var _ = require('underscore');
+
+var $ = require('jquery');
+
+Backbone.$ = $;
+window.$ = $;
+
+
+module.exports = Backbone.Modal.extend({
+    template: require('../../templates/modals/edit.hbs'),
+
+    cancelEl: '.close-button',
+    submitEl: '.save',
+
+    initialize: function(group) {
+        this.group = group;
+    },
+
+    groups: {
+        'keypress #member-edit-form': 'disableSubmit',
+        'keyup #member-edit-form': 'disableSubmit'
+    },
+
+    onShow: function() {
+        if (this.group) {
+            this.$el.find('form input[name="name"]').val(this.group.get('name'));
+            this.$el.find('form input[name="description"]').val(this.group.get('description'));
+        }
+    },
+
+    // Don't submit the form when the enter key is pressed.
+    disableSubmit: function(e) {
+        var code = e.keyCode || e.which;
+        if (code == 13) {
+            e.preventDefault();
+            return false;
+        }
+    },
+
+    submit: function() {
+        this.group.save({
+            'name': this.$el.find('form input[name="name"]').val(),
+            'description': this.$el.find('form input[name="description"]').val(),
+            }
+        );
+    }
+
+});
+
+},{"../../templates/modals/edit.hbs":33,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"jquery":92,"underscore":93}],37:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -932,7 +1150,7 @@ module.exports = Backbone.Modal.extend({
 
     events: {
         'click .main-search-button': 'search',
-        'click .member-check': 'updateOwner',
+        'click .admin-check': 'updateOwner',
     },
 
     search: function() {
@@ -990,7 +1208,7 @@ module.exports = Backbone.Modal.extend({
 
 });
 
-},{"../../../common/collections/member_group":9,"../../../common/collections/member_search":10,"../../../common/models/member_group":13,"../../../common/views/member-search-results":20,"../../templates/modals/owner.hbs":32,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"jquery":87,"underscore":88}],36:[function(require,module,exports){
+},{"../../../common/collections/member_group":11,"../../../common/collections/member_search":12,"../../../common/models/member_group":15,"../../../common/views/member-search-results":22,"../../templates/modals/owner.hbs":34,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"jquery":92,"underscore":93}],38:[function(require,module,exports){
 'use strict';
 
 // XXX should these three lines be a separate import
@@ -1048,7 +1266,7 @@ $(function() {
     );
 });
 
-},{"./common/collections/user_session":11,"./common/handlebars":12,"./common/views/layout":19,"backbone":52,"backbone.marionette":47,"bootstrap":53,"jquery":87,"underscore":88}],37:[function(require,module,exports){
+},{"./common/collections/user_session":13,"./common/handlebars":14,"./common/views/layout":21,"backbone":56,"backbone.marionette":51,"bootstrap":57,"jquery":92,"underscore":93}],39:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -1063,7 +1281,7 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"../models/member":38,"backbone":52}],38:[function(require,module,exports){
+},{"../models/member":40,"backbone":56}],40:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -1077,11 +1295,12 @@ module.exports = Backbone.Model.extend({
     if (this.get('id')) {
         baseURL = baseURL + this.get('id') + '/';
     }
-    if (typeof (options) !== "undefined" && options.groupId) {
-      return baseURL + '?gid=' + options.groupId + '&format=json';
-    } else {
-      return baseURL;
-    }
+    return baseURL;
+    // if (typeof (options) !== "undefined" && options.groupId) {
+    //   return baseURL + '?gid=' + options.groupId + '&format=json';
+    // } else {
+    //   return baseURL;
+    // }
   },
   defaults: function() {
     return {
@@ -1097,7 +1316,26 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":52}],39:[function(require,module,exports){
+},{"backbone":56}],41:[function(require,module,exports){
+// hbsfy compiled Handlebars template
+var HandlebarsCompiler = require('hbsfy/runtime');
+module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "    <option value=\""
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\">"
+    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</option>\r\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div class=\"member-edit-form-title\">Home Group</div>\r\n<select name=\"home_group\" id=\"home_group\" class=\"form-control group\" style=\"width:200px; margin-bottom:20px\">\r\n    <option value=\"\">Select a group</option>\r\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</select>\r\n";
+},"useData":true});
+
+},{"hbsfy/runtime":90}],42:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1112,14 +1350,14 @@ module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":f
     + "\" />\n                    <span class=\"input-group-btn\">\n                        <button type=\"submit\"\n                                id=\"main-search-button\"\n                                class=\"btn main-search-button\">\n                            <span class=\"main-search-button-icon fui-search\"></span>\n                        </button>\n                    </span>\n                </div>\n\n            </div>\n        </div>\n    </div>\n    <div class=\"main-separator\"></div>\n</div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],40:[function(require,module,exports){
+},{"hbsfy/runtime":90}],43:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "\r\n<div id=\"tab-content-header\">\r\n</div>\r\n\r\n<div id=\"tab-content-container\">\r\n</div>\r\n\r\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],41:[function(require,module,exports){
+},{"hbsfy/runtime":90}],44:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"1":function(container,depth0,helpers,partials,data) {
@@ -1150,14 +1388,34 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
     + "        </tbody>\n    </table>\n</div>\n\n<div id=\"member-index-modal\"></div>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],42:[function(require,module,exports){
+},{"hbsfy/runtime":90}],45:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Member</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"member-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">First Name</div>\n            <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Last Name</div>\n            <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Email</div>\n            <input type=\"text\" name=\"email\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Other Name</div>\n            <input type=\"text\" name=\"other_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Gender</div>\n            <select name=\"gender\" id=\"gender\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\n                <option value=\"M\">Male</option>\n                <option value=\"F\">Female</option>\n            </select>\n            <div class=\"member-edit-form-title\">Language</div>\n            <select name=\"language\" id=\"language\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\n                <option value=\"English\">English</option>\n                <option value=\"Chinese\">Chinese</option>\n                <option value=\"Spanish\">Spanish</option>\n                <option value=\"Korean\">Korean</option>\n                <option value=\"Vietnanese\">Vietnanese</option>\n            </select>\n            <div class=\"member-edit-form-title\">Group</div>\n            <div class=\"member-edit-form-group\">\n                <button class=\"btn btn-primary group-assign-button\">Assign Group</button>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
+    return "\n<div class=\"main-modal-top-small\">\n    <div class=\"main-modal-top-title\">Member</div>\n    <span class=\"close close-button\"></span>\n</div>\n\n<form id=\"member-edit-form\" class=\"member-edit-form\">\n    <div class=\"member-edit-form-section-name\">\n        <div class=\"member-edit-form-wrapper\">\n            <div class=\"member-edit-form-title\">First Name</div>\n            <input type=\"text\" name=\"first_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Last Name</div>\n            <input type=\"text\" name=\"last_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Email</div>\n            <input type=\"text\" name=\"email\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Other Name</div>\n            <input type=\"text\" name=\"other_name\" value=\"\" class=\"bootstrap-tagsinput\" />\n            <div class=\"member-edit-form-title\">Gender</div>\n            <select name=\"gender\" id=\"gender\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\n                <option value=\"M\">Male</option>\n                <option value=\"F\">Female</option>\n            </select>\n            <div class=\"member-edit-form-title\">Language</div>\n            <select name=\"language\" id=\"language\" class=\"form-control\" style=\"width:200px; margin-bottom:20px\">\n                <option value=\"English\">English</option>\n                <option value=\"Chinese\">Chinese</option>\n                <option value=\"Spanish\">Spanish</option>\n                <option value=\"Korean\">Korean</option>\n                <option value=\"Vietnanese\">Vietnanese</option>\n            </select>\n            <div id=\"group-list\">\n            </div>\n        </div>\n    </div>\n\n    <div class=\"bbm-modal__bottombar main-button-panel\">\n        <ul class=\"actions\">\n            <li><button class=\"btn btn-normal btn-responsive close-button\">Cancel</button></li>\n            <li><button class=\"btn btn-primary btn-responsive save\">Save Changes</button></li>\n        </ul>\n    </div>\n\n</form>\n";
 },"useData":true});
 
-},{"hbsfy/runtime":86}],43:[function(require,module,exports){
+},{"hbsfy/runtime":90}],46:[function(require,module,exports){
+'use strict';
+
+var Marionette = require('backbone.marionette');
+
+module.exports = Marionette.LayoutView.extend({
+  template: require('../templates/group-list.hbs'),
+  el: '#group-list',
+
+  render: function(){
+    this.$el.html(this.template({groups: this.groups.toJSON()}));
+    return this;
+  },
+
+  initialize: function(groups){
+    var self = this;
+    this.groups = groups;
+  },
+});
+
+},{"../templates/group-list.hbs":41,"backbone.marionette":51}],47:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -1177,7 +1435,7 @@ module.exports = Marionette.LayoutView.extend({
 });
 
 
-},{"../templates/header.hbs":39,"backbone":52,"backbone.marionette":47,"jquery":87}],44:[function(require,module,exports){
+},{"../templates/header.hbs":42,"backbone":56,"backbone.marionette":51,"jquery":92}],48:[function(require,module,exports){
 'use strict';
 
 var Marionette = require('backbone.marionette');
@@ -1203,7 +1461,7 @@ module.exports = Marionette.LayoutView.extend({
         console.log('fetching members done');
         console.log(self.members);
         self.getRegion('header').show(new HeaderView());
-        self.memberListView = new MemberListView(self.members);
+        self.memberListView = new MemberListView({members: self.members, groups: options.groups});
         self.getRegion('members').show(self.memberListView);
         // $(document).ready(function() {$('#membersTable').dataTable();});
       }
@@ -1212,7 +1470,7 @@ module.exports = Marionette.LayoutView.extend({
 
 });
 
-},{"../collections/member":37,"../templates/index.hbs":40,"./header":43,"./member-list":45,"backbone.marionette":47,"jquery":87}],45:[function(require,module,exports){
+},{"../collections/member":39,"../templates/index.hbs":43,"./header":47,"./member-list":49,"backbone.marionette":51,"jquery":92}],49:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -1246,7 +1504,7 @@ module.exports = Marionette.LayoutView.extend({
 
   showSpinnerModal: function() {
     this.spinnerModalView = new SpinnerModalView();
-    $('#main-spinner-modal').html(this.spinnerModalView.render().el);
+    this.$('#main-spinner-modal').html(this.spinnerModalView.render().el);
   },
 
   add: function() {
@@ -1254,19 +1512,19 @@ module.exports = Marionette.LayoutView.extend({
     var member = new Member();
     this.members.add(member);
     this.listenTo(member, 'change', this.render);
-    var d = new EditView(member);
+    var d = new EditView({groups: this.groups, member: member});
     d.render();
 
-    $('#member-index-modal').html(d.el);
+    this.$('#member-index-modal').html(d.el);
   },
 
   edit: function(e){
       e.preventDefault();
       var id = $(e.currentTarget).data("id");
-      var d = new EditView(this.members.get(id));
+      var d = new EditView({groups: this.groups, member: this.members.get(id)});
       d.render();
 
-      $('#member-index-modal').html(d.el);
+      this.$('#member-index-modal').html(d.el);
   },
 
   render: function(){
@@ -1274,27 +1532,20 @@ module.exports = Marionette.LayoutView.extend({
     return this;
   },
 
-  initialize: function(members) {
+  initialize: function(options) {
     var self = this;
-    this.groups = new GroupCollection();
-    this.groups.fetch().done(
-      function() {
-        console.log('fetching groups done');
-      }
-    );
-    this.members = members;
-    this.members.each(function (member) {
-        self.listenTo(member, 'change', self.render);
-    });
+    this.groups = options.groups;
+    this.members = options.members;
   }
 });
 
-},{"../../common/views/modals/spinner":21,"../../group/collections/group":28,"../models/member":38,"../templates/member-list.hbs":41,"./modals/edit":46,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"datatables.net":66,"jquery":87}],46:[function(require,module,exports){
+},{"../../common/views/modals/spinner":23,"../../group/collections/group":30,"../models/member":40,"../templates/member-list.hbs":44,"./modals/edit":50,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"datatables.net":70,"jquery":92}],50:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
 var Marionette = require('backbone.marionette');
 var Modal = require('backbone.modal');
+var GroupListView = require('../group-list');
 var _ = require('underscore');
 
 var $ = require('jquery');
@@ -1309,8 +1560,9 @@ module.exports = Backbone.Modal.extend({
     cancelEl: '.close-button',
     submitEl: '.save',
 
-    initialize: function(member) {
-        this.member = member;
+    initialize: function(options) {
+        this.member = options.member;
+        this.groups = options.groups;
     },
 
     events: {
@@ -1319,6 +1571,10 @@ module.exports = Backbone.Modal.extend({
     },
 
     onShow: function() {
+        if (this.groups.length > 0) {
+            var groupListView = new GroupListView(this.groups);
+            groupListView.render();
+        }
         if (this.member) {
             this.$el.find('form input[name="first_name"]').val(this.member.get('first_name'));
             this.$el.find('form input[name="last_name"]').val(this.member.get('last_name'));
@@ -1326,6 +1582,8 @@ module.exports = Backbone.Modal.extend({
             this.$el.find('form input[name="other_name"]').val(this.member.get('other_name'));
             this.$el.find('form select[name="gender"]').val(this.member.get('gender'));
             this.$el.find('form input[name="language"]').val(this.member.get('language'));
+            var home_group = this.groups.get(name=this.member.get('home_group'));
+            this.$el.find('form select[name="home_group"]').val(this.member.get('home_group'));
         }
     },
 
@@ -1352,7 +1610,7 @@ module.exports = Backbone.Modal.extend({
 
 });
 
-},{"../../templates/modals/edit.hbs":42,"backbone":52,"backbone.marionette":47,"backbone.modal":51,"jquery":87,"underscore":88}],47:[function(require,module,exports){
+},{"../../templates/modals/edit.hbs":45,"../group-list":46,"backbone":56,"backbone.marionette":51,"backbone.modal":55,"jquery":92,"underscore":93}],51:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.4.1
@@ -4715,7 +4973,7 @@ module.exports = Backbone.Modal.extend({
   return Marionette;
 }));
 
-},{"backbone":52,"backbone.babysitter":48,"backbone.wreqr":49,"underscore":50}],48:[function(require,module,exports){
+},{"backbone":56,"backbone.babysitter":52,"backbone.wreqr":53,"underscore":54}],52:[function(require,module,exports){
 // Backbone.BabySitter
 // -------------------
 // v0.1.11
@@ -4907,7 +5165,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"backbone":52,"underscore":50}],49:[function(require,module,exports){
+},{"backbone":56,"underscore":54}],53:[function(require,module,exports){
 // Backbone.Wreqr (Backbone.Marionette)
 // ----------------------------------
 // v1.3.6
@@ -5344,7 +5602,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"backbone":52,"underscore":50}],50:[function(require,module,exports){
+},{"backbone":56,"underscore":54}],54:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -6689,7 +6947,7 @@ module.exports = Backbone.Modal.extend({
   }
 }).call(this);
 
-},{}],51:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
@@ -7316,7 +7574,7 @@ module.exports = Backbone.Modal.extend({
 
 }).call(this);
 
-},{"backbone":52,"backbone.marionette":47,"underscore":88}],52:[function(require,module,exports){
+},{"backbone":56,"backbone.marionette":51,"underscore":93}],56:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -8926,7 +9184,7 @@ module.exports = Backbone.Modal.extend({
 
 }));
 
-},{"underscore":88}],53:[function(require,module,exports){
+},{"underscore":93}],57:[function(require,module,exports){
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
 require('../../js/transition.js')
 require('../../js/alert.js')
@@ -8940,12 +9198,12 @@ require('../../js/popover.js')
 require('../../js/scrollspy.js')
 require('../../js/tab.js')
 require('../../js/affix.js')
-},{"../../js/affix.js":54,"../../js/alert.js":55,"../../js/button.js":56,"../../js/carousel.js":57,"../../js/collapse.js":58,"../../js/dropdown.js":59,"../../js/modal.js":60,"../../js/popover.js":61,"../../js/scrollspy.js":62,"../../js/tab.js":63,"../../js/tooltip.js":64,"../../js/transition.js":65}],54:[function(require,module,exports){
+},{"../../js/affix.js":58,"../../js/alert.js":59,"../../js/button.js":60,"../../js/carousel.js":61,"../../js/collapse.js":62,"../../js/dropdown.js":63,"../../js/modal.js":64,"../../js/popover.js":65,"../../js/scrollspy.js":66,"../../js/tab.js":67,"../../js/tooltip.js":68,"../../js/transition.js":69}],58:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: affix.js v3.3.6
+ * Bootstrap: affix.js v3.3.7
  * http://getbootstrap.com/javascript/#affix
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -8971,7 +9229,7 @@ require('../../js/affix.js')
     this.checkPosition()
   }
 
-  Affix.VERSION  = '3.3.6'
+  Affix.VERSION  = '3.3.7'
 
   Affix.RESET    = 'affix affix-top affix-bottom'
 
@@ -9104,12 +9362,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],55:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: alert.js v3.3.6
+ * Bootstrap: alert.js v3.3.7
  * http://getbootstrap.com/javascript/#alerts
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9125,7 +9383,7 @@ require('../../js/affix.js')
     $(el).on('click', dismiss, this.close)
   }
 
-  Alert.VERSION = '3.3.6'
+  Alert.VERSION = '3.3.7'
 
   Alert.TRANSITION_DURATION = 150
 
@@ -9138,7 +9396,7 @@ require('../../js/affix.js')
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    var $parent = $(selector)
+    var $parent = $(selector === '#' ? [] : selector)
 
     if (e) e.preventDefault()
 
@@ -9200,12 +9458,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],56:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: button.js v3.3.6
+ * Bootstrap: button.js v3.3.7
  * http://getbootstrap.com/javascript/#buttons
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9222,7 +9480,7 @@ require('../../js/affix.js')
     this.isLoading = false
   }
 
-  Button.VERSION  = '3.3.6'
+  Button.VERSION  = '3.3.7'
 
   Button.DEFAULTS = {
     loadingText: 'loading...'
@@ -9244,10 +9502,10 @@ require('../../js/affix.js')
 
       if (state == 'loadingText') {
         this.isLoading = true
-        $el.addClass(d).attr(d, d)
+        $el.addClass(d).attr(d, d).prop(d, true)
       } else if (this.isLoading) {
         this.isLoading = false
-        $el.removeClass(d).removeAttr(d)
+        $el.removeClass(d).removeAttr(d).prop(d, false)
       }
     }, this), 0)
   }
@@ -9311,10 +9569,15 @@ require('../../js/affix.js')
 
   $(document)
     .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target)
-      if (!$btn.hasClass('btn')) $btn = $btn.closest('.btn')
+      var $btn = $(e.target).closest('.btn')
       Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"]') || $(e.target).is('input[type="checkbox"]'))) e.preventDefault()
+      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
+        // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
+        e.preventDefault()
+        // The target component still receive the focus
+        if ($btn.is('input,button')) $btn.trigger('focus')
+        else $btn.find('input:visible,button:visible').first().trigger('focus')
+      }
     })
     .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
       $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
@@ -9322,12 +9585,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],57:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: carousel.js v3.3.6
+ * Bootstrap: carousel.js v3.3.7
  * http://getbootstrap.com/javascript/#carousel
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9355,7 +9618,7 @@ require('../../js/affix.js')
       .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
   }
 
-  Carousel.VERSION  = '3.3.6'
+  Carousel.VERSION  = '3.3.7'
 
   Carousel.TRANSITION_DURATION = 600
 
@@ -9561,15 +9824,16 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],58:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: collapse.js v3.3.6
+ * Bootstrap: collapse.js v3.3.7
  * http://getbootstrap.com/javascript/#collapse
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
+/* jshint latedef: false */
 
 +function ($) {
   'use strict';
@@ -9593,7 +9857,7 @@ require('../../js/affix.js')
     if (this.options.toggle) this.toggle()
   }
 
-  Collapse.VERSION  = '3.3.6'
+  Collapse.VERSION  = '3.3.7'
 
   Collapse.TRANSITION_DURATION = 350
 
@@ -9774,12 +10038,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],59:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.6
+ * Bootstrap: dropdown.js v3.3.7
  * http://getbootstrap.com/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9796,7 +10060,7 @@ require('../../js/affix.js')
     $(element).on('click.bs.dropdown', this.toggle)
   }
 
-  Dropdown.VERSION = '3.3.6'
+  Dropdown.VERSION = '3.3.7'
 
   function getParent($this) {
     var selector = $this.attr('data-target')
@@ -9941,12 +10205,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],60:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: modal.js v3.3.6
+ * Bootstrap: modal.js v3.3.7
  * http://getbootstrap.com/javascript/#modals
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -9977,7 +10241,7 @@ require('../../js/affix.js')
     }
   }
 
-  Modal.VERSION  = '3.3.6'
+  Modal.VERSION  = '3.3.7'
 
   Modal.TRANSITION_DURATION = 300
   Modal.BACKDROP_TRANSITION_DURATION = 150
@@ -10084,7 +10348,9 @@ require('../../js/affix.js')
     $(document)
       .off('focusin.bs.modal') // guard against infinite focus loop
       .on('focusin.bs.modal', $.proxy(function (e) {
-        if (this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+        if (document !== e.target &&
+            this.$element[0] !== e.target &&
+            !this.$element.has(e.target).length) {
           this.$element.trigger('focus')
         }
       }, this))
@@ -10280,12 +10546,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],61:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: popover.js v3.3.6
+ * Bootstrap: popover.js v3.3.7
  * http://getbootstrap.com/javascript/#popovers
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10302,7 +10568,7 @@ require('../../js/affix.js')
 
   if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
 
-  Popover.VERSION  = '3.3.6'
+  Popover.VERSION  = '3.3.7'
 
   Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
     placement: 'right',
@@ -10390,12 +10656,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],62:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: scrollspy.js v3.3.6
+ * Bootstrap: scrollspy.js v3.3.7
  * http://getbootstrap.com/javascript/#scrollspy
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10421,7 +10687,7 @@ require('../../js/affix.js')
     this.process()
   }
 
-  ScrollSpy.VERSION  = '3.3.6'
+  ScrollSpy.VERSION  = '3.3.7'
 
   ScrollSpy.DEFAULTS = {
     offset: 10
@@ -10564,12 +10830,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],63:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tab.js v3.3.6
+ * Bootstrap: tab.js v3.3.7
  * http://getbootstrap.com/javascript/#tabs
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10586,7 +10852,7 @@ require('../../js/affix.js')
     // jscs:enable requireDollarBeforejQueryAssignment
   }
 
-  Tab.VERSION = '3.3.6'
+  Tab.VERSION = '3.3.7'
 
   Tab.TRANSITION_DURATION = 150
 
@@ -10721,13 +10987,13 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],64:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: tooltip.js v3.3.6
+ * Bootstrap: tooltip.js v3.3.7
  * http://getbootstrap.com/javascript/#tooltip
  * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -10750,7 +11016,7 @@ require('../../js/affix.js')
     this.init('tooltip', element, options)
   }
 
-  Tooltip.VERSION  = '3.3.6'
+  Tooltip.VERSION  = '3.3.7'
 
   Tooltip.TRANSITION_DURATION = 150
 
@@ -11041,9 +11307,11 @@ require('../../js/affix.js')
 
     function complete() {
       if (that.hoverState != 'in') $tip.detach()
-      that.$element
-        .removeAttr('aria-describedby')
-        .trigger('hidden.bs.' + that.type)
+      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
+        that.$element
+          .removeAttr('aria-describedby')
+          .trigger('hidden.bs.' + that.type)
+      }
       callback && callback()
     }
 
@@ -11086,7 +11354,10 @@ require('../../js/affix.js')
       // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
       elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
     }
-    var elOffset  = isBody ? { top: 0, left: 0 } : $element.offset()
+    var isSvg = window.SVGElement && el instanceof window.SVGElement
+    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
+    // See https://github.com/twbs/bootstrap/issues/20280
+    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
     var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
     var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
 
@@ -11202,6 +11473,7 @@ require('../../js/affix.js')
       that.$tip = null
       that.$arrow = null
       that.$viewport = null
+      that.$element = null
     })
   }
 
@@ -11237,12 +11509,12 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],65:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 /* ========================================================================
- * Bootstrap: transition.js v3.3.6
+ * Bootstrap: transition.js v3.3.7
  * http://getbootstrap.com/javascript/#transitions
  * ========================================================================
- * Copyright 2011-2015 Twitter, Inc.
+ * Copyright 2011-2016 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -11298,7 +11570,7 @@ require('../../js/affix.js')
 
 }(jQuery);
 
-},{}],66:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 /*! DataTables 1.10.12
  * ©2008-2015 SpryMedia Ltd - datatables.net/license
  */
@@ -26577,7 +26849,7 @@ require('../../js/affix.js')
 	return $.fn.dataTable;
 }));
 
-},{"jquery":87}],67:[function(require,module,exports){
+},{"jquery":92}],71:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26645,7 +26917,7 @@ exports['default'] = inst;
 module.exports = exports['default'];
 
 
-},{"./handlebars/base":68,"./handlebars/exception":71,"./handlebars/no-conflict":81,"./handlebars/runtime":82,"./handlebars/safe-string":83,"./handlebars/utils":84}],68:[function(require,module,exports){
+},{"./handlebars/base":72,"./handlebars/exception":75,"./handlebars/no-conflict":85,"./handlebars/runtime":86,"./handlebars/safe-string":87,"./handlebars/utils":88}],72:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26751,7 +27023,7 @@ exports.createFrame = _utils.createFrame;
 exports.logger = _logger2['default'];
 
 
-},{"./decorators":69,"./exception":71,"./helpers":72,"./logger":80,"./utils":84}],69:[function(require,module,exports){
+},{"./decorators":73,"./exception":75,"./helpers":76,"./logger":84,"./utils":88}],73:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26769,7 +27041,7 @@ function registerDefaultDecorators(instance) {
 }
 
 
-},{"./decorators/inline":70}],70:[function(require,module,exports){
+},{"./decorators/inline":74}],74:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26800,7 +27072,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":84}],71:[function(require,module,exports){
+},{"../utils":88}],75:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26842,7 +27114,7 @@ exports['default'] = Exception;
 module.exports = exports['default'];
 
 
-},{}],72:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26890,7 +27162,7 @@ function registerDefaultHelpers(instance) {
 }
 
 
-},{"./helpers/block-helper-missing":73,"./helpers/each":74,"./helpers/helper-missing":75,"./helpers/if":76,"./helpers/log":77,"./helpers/lookup":78,"./helpers/with":79}],73:[function(require,module,exports){
+},{"./helpers/block-helper-missing":77,"./helpers/each":78,"./helpers/helper-missing":79,"./helpers/if":80,"./helpers/log":81,"./helpers/lookup":82,"./helpers/with":83}],77:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26931,7 +27203,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":84}],74:[function(require,module,exports){
+},{"../utils":88}],78:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27027,7 +27299,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":71,"../utils":84}],75:[function(require,module,exports){
+},{"../exception":75,"../utils":88}],79:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27054,7 +27326,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":71}],76:[function(require,module,exports){
+},{"../exception":75}],80:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27085,7 +27357,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":84}],77:[function(require,module,exports){
+},{"../utils":88}],81:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27113,7 +27385,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],78:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27127,7 +27399,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],79:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27162,7 +27434,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":84}],80:[function(require,module,exports){
+},{"../utils":88}],84:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27211,7 +27483,7 @@ exports['default'] = logger;
 module.exports = exports['default'];
 
 
-},{"./utils":84}],81:[function(require,module,exports){
+},{"./utils":88}],85:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -27235,7 +27507,7 @@ module.exports = exports['default'];
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],82:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27529,7 +27801,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 }
 
 
-},{"./base":68,"./exception":71,"./utils":84}],83:[function(require,module,exports){
+},{"./base":72,"./exception":75,"./utils":88}],87:[function(require,module,exports){
 // Build out our basic SafeString type
 'use strict';
 
@@ -27546,7 +27818,7 @@ exports['default'] = SafeString;
 module.exports = exports['default'];
 
 
-},{}],84:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27672,17 +27944,732 @@ function appendContextPath(contextPath, id) {
 }
 
 
-},{}],85:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime')['default'];
 
-},{"./dist/cjs/handlebars.runtime":67}],86:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":71}],90:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":85}],87:[function(require,module,exports){
+},{"handlebars/runtime":89}],91:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery UI Widget 1.12.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Widget
+//>>group: Core
+//>>description: Provides a factory for creating stateful widgets with a common API.
+//>>docs: http://api.jqueryui.com/jQuery.widget/
+//>>demos: http://jqueryui.com/widget/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "jquery", "./version" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+var widgetUuid = 0;
+var widgetSlice = Array.prototype.slice;
+
+$.cleanData = ( function( orig ) {
+	return function( elems ) {
+		var events, elem, i;
+		for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+			try {
+
+				// Only trigger remove when necessary to save time
+				events = $._data( elem, "events" );
+				if ( events && events.remove ) {
+					$( elem ).triggerHandler( "remove" );
+				}
+
+			// Http://bugs.jquery.com/ticket/8235
+			} catch ( e ) {}
+		}
+		orig( elems );
+	};
+} )( $.cleanData );
+
+$.widget = function( name, base, prototype ) {
+	var existingConstructor, constructor, basePrototype;
+
+	// ProxiedPrototype allows the provided prototype to remain unmodified
+	// so that it can be used as a mixin for multiple widgets (#8876)
+	var proxiedPrototype = {};
+
+	var namespace = name.split( "." )[ 0 ];
+	name = name.split( "." )[ 1 ];
+	var fullName = namespace + "-" + name;
+
+	if ( !prototype ) {
+		prototype = base;
+		base = $.Widget;
+	}
+
+	if ( $.isArray( prototype ) ) {
+		prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+	}
+
+	// Create selector for plugin
+	$.expr[ ":" ][ fullName.toLowerCase() ] = function( elem ) {
+		return !!$.data( elem, fullName );
+	};
+
+	$[ namespace ] = $[ namespace ] || {};
+	existingConstructor = $[ namespace ][ name ];
+	constructor = $[ namespace ][ name ] = function( options, element ) {
+
+		// Allow instantiation without "new" keyword
+		if ( !this._createWidget ) {
+			return new constructor( options, element );
+		}
+
+		// Allow instantiation without initializing for simple inheritance
+		// must use "new" keyword (the code above always passes args)
+		if ( arguments.length ) {
+			this._createWidget( options, element );
+		}
+	};
+
+	// Extend with the existing constructor to carry over any static properties
+	$.extend( constructor, existingConstructor, {
+		version: prototype.version,
+
+		// Copy the object used to create the prototype in case we need to
+		// redefine the widget later
+		_proto: $.extend( {}, prototype ),
+
+		// Track widgets that inherit from this widget in case this widget is
+		// redefined after a widget inherits from it
+		_childConstructors: []
+	} );
+
+	basePrototype = new base();
+
+	// We need to make the options hash a property directly on the new instance
+	// otherwise we'll modify the options hash on the prototype that we're
+	// inheriting from
+	basePrototype.options = $.widget.extend( {}, basePrototype.options );
+	$.each( prototype, function( prop, value ) {
+		if ( !$.isFunction( value ) ) {
+			proxiedPrototype[ prop ] = value;
+			return;
+		}
+		proxiedPrototype[ prop ] = ( function() {
+			function _super() {
+				return base.prototype[ prop ].apply( this, arguments );
+			}
+
+			function _superApply( args ) {
+				return base.prototype[ prop ].apply( this, args );
+			}
+
+			return function() {
+				var __super = this._super;
+				var __superApply = this._superApply;
+				var returnValue;
+
+				this._super = _super;
+				this._superApply = _superApply;
+
+				returnValue = value.apply( this, arguments );
+
+				this._super = __super;
+				this._superApply = __superApply;
+
+				return returnValue;
+			};
+		} )();
+	} );
+	constructor.prototype = $.widget.extend( basePrototype, {
+
+		// TODO: remove support for widgetEventPrefix
+		// always use the name + a colon as the prefix, e.g., draggable:start
+		// don't prefix for widgets that aren't DOM-based
+		widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+	}, proxiedPrototype, {
+		constructor: constructor,
+		namespace: namespace,
+		widgetName: name,
+		widgetFullName: fullName
+	} );
+
+	// If this widget is being redefined then we need to find all widgets that
+	// are inheriting from it and redefine all of them so that they inherit from
+	// the new version of this widget. We're essentially trying to replace one
+	// level in the prototype chain.
+	if ( existingConstructor ) {
+		$.each( existingConstructor._childConstructors, function( i, child ) {
+			var childPrototype = child.prototype;
+
+			// Redefine the child widget using the same prototype that was
+			// originally used, but inherit from the new version of the base
+			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+				child._proto );
+		} );
+
+		// Remove the list of existing child constructors from the old constructor
+		// so the old child constructors can be garbage collected
+		delete existingConstructor._childConstructors;
+	} else {
+		base._childConstructors.push( constructor );
+	}
+
+	$.widget.bridge( name, constructor );
+
+	return constructor;
+};
+
+$.widget.extend = function( target ) {
+	var input = widgetSlice.call( arguments, 1 );
+	var inputIndex = 0;
+	var inputLength = input.length;
+	var key;
+	var value;
+
+	for ( ; inputIndex < inputLength; inputIndex++ ) {
+		for ( key in input[ inputIndex ] ) {
+			value = input[ inputIndex ][ key ];
+			if ( input[ inputIndex ].hasOwnProperty( key ) && value !== undefined ) {
+
+				// Clone objects
+				if ( $.isPlainObject( value ) ) {
+					target[ key ] = $.isPlainObject( target[ key ] ) ?
+						$.widget.extend( {}, target[ key ], value ) :
+
+						// Don't extend strings, arrays, etc. with objects
+						$.widget.extend( {}, value );
+
+				// Copy everything else by reference
+				} else {
+					target[ key ] = value;
+				}
+			}
+		}
+	}
+	return target;
+};
+
+$.widget.bridge = function( name, object ) {
+	var fullName = object.prototype.widgetFullName || name;
+	$.fn[ name ] = function( options ) {
+		var isMethodCall = typeof options === "string";
+		var args = widgetSlice.call( arguments, 1 );
+		var returnValue = this;
+
+		if ( isMethodCall ) {
+			this.each( function() {
+				var methodValue;
+				var instance = $.data( this, fullName );
+
+				if ( options === "instance" ) {
+					returnValue = instance;
+					return false;
+				}
+
+				if ( !instance ) {
+					return $.error( "cannot call methods on " + name +
+						" prior to initialization; " +
+						"attempted to call method '" + options + "'" );
+				}
+
+				if ( !$.isFunction( instance[ options ] ) || options.charAt( 0 ) === "_" ) {
+					return $.error( "no such method '" + options + "' for " + name +
+						" widget instance" );
+				}
+
+				methodValue = instance[ options ].apply( instance, args );
+
+				if ( methodValue !== instance && methodValue !== undefined ) {
+					returnValue = methodValue && methodValue.jquery ?
+						returnValue.pushStack( methodValue.get() ) :
+						methodValue;
+					return false;
+				}
+			} );
+		} else {
+
+			// Allow multiple hashes to be passed on init
+			if ( args.length ) {
+				options = $.widget.extend.apply( null, [ options ].concat( args ) );
+			}
+
+			this.each( function() {
+				var instance = $.data( this, fullName );
+				if ( instance ) {
+					instance.option( options || {} );
+					if ( instance._init ) {
+						instance._init();
+					}
+				} else {
+					$.data( this, fullName, new object( options, this ) );
+				}
+			} );
+		}
+
+		return returnValue;
+	};
+};
+
+$.Widget = function( /* options, element */ ) {};
+$.Widget._childConstructors = [];
+
+$.Widget.prototype = {
+	widgetName: "widget",
+	widgetEventPrefix: "",
+	defaultElement: "<div>",
+
+	options: {
+		classes: {},
+		disabled: false,
+
+		// Callbacks
+		create: null
+	},
+
+	_createWidget: function( options, element ) {
+		element = $( element || this.defaultElement || this )[ 0 ];
+		this.element = $( element );
+		this.uuid = widgetUuid++;
+		this.eventNamespace = "." + this.widgetName + this.uuid;
+
+		this.bindings = $();
+		this.hoverable = $();
+		this.focusable = $();
+		this.classesElementLookup = {};
+
+		if ( element !== this ) {
+			$.data( element, this.widgetFullName, this );
+			this._on( true, this.element, {
+				remove: function( event ) {
+					if ( event.target === element ) {
+						this.destroy();
+					}
+				}
+			} );
+			this.document = $( element.style ?
+
+				// Element within the document
+				element.ownerDocument :
+
+				// Element is window or document
+				element.document || element );
+			this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+		}
+
+		this.options = $.widget.extend( {},
+			this.options,
+			this._getCreateOptions(),
+			options );
+
+		this._create();
+
+		if ( this.options.disabled ) {
+			this._setOptionDisabled( this.options.disabled );
+		}
+
+		this._trigger( "create", null, this._getCreateEventData() );
+		this._init();
+	},
+
+	_getCreateOptions: function() {
+		return {};
+	},
+
+	_getCreateEventData: $.noop,
+
+	_create: $.noop,
+
+	_init: $.noop,
+
+	destroy: function() {
+		var that = this;
+
+		this._destroy();
+		$.each( this.classesElementLookup, function( key, value ) {
+			that._removeClass( value, key );
+		} );
+
+		// We can probably remove the unbind calls in 2.0
+		// all event bindings should go through this._on()
+		this.element
+			.off( this.eventNamespace )
+			.removeData( this.widgetFullName );
+		this.widget()
+			.off( this.eventNamespace )
+			.removeAttr( "aria-disabled" );
+
+		// Clean up events and states
+		this.bindings.off( this.eventNamespace );
+	},
+
+	_destroy: $.noop,
+
+	widget: function() {
+		return this.element;
+	},
+
+	option: function( key, value ) {
+		var options = key;
+		var parts;
+		var curOption;
+		var i;
+
+		if ( arguments.length === 0 ) {
+
+			// Don't return a reference to the internal hash
+			return $.widget.extend( {}, this.options );
+		}
+
+		if ( typeof key === "string" ) {
+
+			// Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+			options = {};
+			parts = key.split( "." );
+			key = parts.shift();
+			if ( parts.length ) {
+				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+				for ( i = 0; i < parts.length - 1; i++ ) {
+					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+					curOption = curOption[ parts[ i ] ];
+				}
+				key = parts.pop();
+				if ( arguments.length === 1 ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
+			} else {
+				if ( arguments.length === 1 ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
+				options[ key ] = value;
+			}
+		}
+
+		this._setOptions( options );
+
+		return this;
+	},
+
+	_setOptions: function( options ) {
+		var key;
+
+		for ( key in options ) {
+			this._setOption( key, options[ key ] );
+		}
+
+		return this;
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "classes" ) {
+			this._setOptionClasses( value );
+		}
+
+		this.options[ key ] = value;
+
+		if ( key === "disabled" ) {
+			this._setOptionDisabled( value );
+		}
+
+		return this;
+	},
+
+	_setOptionClasses: function( value ) {
+		var classKey, elements, currentElements;
+
+		for ( classKey in value ) {
+			currentElements = this.classesElementLookup[ classKey ];
+			if ( value[ classKey ] === this.options.classes[ classKey ] ||
+					!currentElements ||
+					!currentElements.length ) {
+				continue;
+			}
+
+			// We are doing this to create a new jQuery object because the _removeClass() call
+			// on the next line is going to destroy the reference to the current elements being
+			// tracked. We need to save a copy of this collection so that we can add the new classes
+			// below.
+			elements = $( currentElements.get() );
+			this._removeClass( currentElements, classKey );
+
+			// We don't use _addClass() here, because that uses this.options.classes
+			// for generating the string of classes. We want to use the value passed in from
+			// _setOption(), this is the new value of the classes option which was passed to
+			// _setOption(). We pass this value directly to _classes().
+			elements.addClass( this._classes( {
+				element: elements,
+				keys: classKey,
+				classes: value,
+				add: true
+			} ) );
+		}
+	},
+
+	_setOptionDisabled: function( value ) {
+		this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+
+		// If the widget is becoming disabled, then nothing is interactive
+		if ( value ) {
+			this._removeClass( this.hoverable, null, "ui-state-hover" );
+			this._removeClass( this.focusable, null, "ui-state-focus" );
+		}
+	},
+
+	enable: function() {
+		return this._setOptions( { disabled: false } );
+	},
+
+	disable: function() {
+		return this._setOptions( { disabled: true } );
+	},
+
+	_classes: function( options ) {
+		var full = [];
+		var that = this;
+
+		options = $.extend( {
+			element: this.element,
+			classes: this.options.classes || {}
+		}, options );
+
+		function processClassString( classes, checkOption ) {
+			var current, i;
+			for ( i = 0; i < classes.length; i++ ) {
+				current = that.classesElementLookup[ classes[ i ] ] || $();
+				if ( options.add ) {
+					current = $( $.unique( current.get().concat( options.element.get() ) ) );
+				} else {
+					current = $( current.not( options.element ).get() );
+				}
+				that.classesElementLookup[ classes[ i ] ] = current;
+				full.push( classes[ i ] );
+				if ( checkOption && options.classes[ classes[ i ] ] ) {
+					full.push( options.classes[ classes[ i ] ] );
+				}
+			}
+		}
+
+		if ( options.keys ) {
+			processClassString( options.keys.match( /\S+/g ) || [], true );
+		}
+		if ( options.extra ) {
+			processClassString( options.extra.match( /\S+/g ) || [] );
+		}
+
+		return full.join( " " );
+	},
+
+	_removeClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, false );
+	},
+
+	_addClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, true );
+	},
+
+	_toggleClass: function( element, keys, extra, add ) {
+		add = ( typeof add === "boolean" ) ? add : extra;
+		var shift = ( typeof element === "string" || element === null ),
+			options = {
+				extra: shift ? keys : extra,
+				keys: shift ? element : keys,
+				element: shift ? this.element : element,
+				add: add
+			};
+		options.element.toggleClass( this._classes( options ), add );
+		return this;
+	},
+
+	_on: function( suppressDisabledCheck, element, handlers ) {
+		var delegateElement;
+		var instance = this;
+
+		// No suppressDisabledCheck flag, shuffle arguments
+		if ( typeof suppressDisabledCheck !== "boolean" ) {
+			handlers = element;
+			element = suppressDisabledCheck;
+			suppressDisabledCheck = false;
+		}
+
+		// No element argument, shuffle and use this.element
+		if ( !handlers ) {
+			handlers = element;
+			element = this.element;
+			delegateElement = this.widget();
+		} else {
+			element = delegateElement = $( element );
+			this.bindings = this.bindings.add( element );
+		}
+
+		$.each( handlers, function( event, handler ) {
+			function handlerProxy() {
+
+				// Allow widgets to customize the disabled handling
+				// - disabled as an array instead of boolean
+				// - disabled class as method for disabling individual parts
+				if ( !suppressDisabledCheck &&
+						( instance.options.disabled === true ||
+						$( this ).hasClass( "ui-state-disabled" ) ) ) {
+					return;
+				}
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+
+			// Copy the guid so direct unbinding works
+			if ( typeof handler !== "string" ) {
+				handlerProxy.guid = handler.guid =
+					handler.guid || handlerProxy.guid || $.guid++;
+			}
+
+			var match = event.match( /^([\w:-]*)\s*(.*)$/ );
+			var eventName = match[ 1 ] + instance.eventNamespace;
+			var selector = match[ 2 ];
+
+			if ( selector ) {
+				delegateElement.on( eventName, selector, handlerProxy );
+			} else {
+				element.on( eventName, handlerProxy );
+			}
+		} );
+	},
+
+	_off: function( element, eventName ) {
+		eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+			this.eventNamespace;
+		element.off( eventName ).off( eventName );
+
+		// Clear the stack to avoid memory leaks (#10056)
+		this.bindings = $( this.bindings.not( element ).get() );
+		this.focusable = $( this.focusable.not( element ).get() );
+		this.hoverable = $( this.hoverable.not( element ).get() );
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
+	},
+
+	_hoverable: function( element ) {
+		this.hoverable = this.hoverable.add( element );
+		this._on( element, {
+			mouseenter: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+			},
+			mouseleave: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+			}
+		} );
+	},
+
+	_focusable: function( element ) {
+		this.focusable = this.focusable.add( element );
+		this._on( element, {
+			focusin: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+			},
+			focusout: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+			}
+		} );
+	},
+
+	_trigger: function( type, event, data ) {
+		var prop, orig;
+		var callback = this.options[ type ];
+
+		data = data || {};
+		event = $.Event( event );
+		event.type = ( type === this.widgetEventPrefix ?
+			type :
+			this.widgetEventPrefix + type ).toLowerCase();
+
+		// The original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
+
+		// Copy original event properties over to the new event
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
+			}
+		}
+
+		this.element.trigger( event, data );
+		return !( $.isFunction( callback ) &&
+			callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
+			event.isDefaultPrevented() );
+	}
+};
+
+$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+
+		var hasOptions;
+		var effectName = !options ?
+			method :
+			options === true || typeof options === "number" ?
+				defaultEffect :
+				options.effect || defaultEffect;
+
+		options = options || {};
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		}
+
+		hasOptions = !$.isEmptyObject( options );
+		options.complete = callback;
+
+		if ( options.delay ) {
+			element.delay( options.delay );
+		}
+
+		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+			element[ method ]( options );
+		} else if ( effectName !== method && element[ effectName ] ) {
+			element[ effectName ]( options.duration, options.easing, callback );
+		} else {
+			element.queue( function( next ) {
+				$( this )[ method ]();
+				if ( callback ) {
+					callback.call( element[ 0 ] );
+				}
+				next();
+			} );
+		}
+	};
+} );
+
+return $.widget;
+
+} ) );
+
+},{}],92:[function(require,module,exports){
+/*!
+ * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -27692,7 +28679,7 @@ module.exports = require("handlebars/runtime")["default"];
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-05-20T17:23Z
  */
 
 (function( global, factory ) {
@@ -27748,7 +28735,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -32689,13 +33676,14 @@ jQuery.Event.prototype = {
 	isDefaultPrevented: returnFalse,
 	isPropagationStopped: returnFalse,
 	isImmediatePropagationStopped: returnFalse,
+	isSimulated: false,
 
 	preventDefault: function() {
 		var e = this.originalEvent;
 
 		this.isDefaultPrevented = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.preventDefault();
 		}
 	},
@@ -32704,7 +33692,7 @@ jQuery.Event.prototype = {
 
 		this.isPropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopPropagation();
 		}
 	},
@@ -32713,7 +33701,7 @@ jQuery.Event.prototype = {
 
 		this.isImmediatePropagationStopped = returnTrue;
 
-		if ( e ) {
+		if ( e && !this.isSimulated ) {
 			e.stopImmediatePropagation();
 		}
 
@@ -33643,19 +34631,6 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
 		isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// Support: IE11 only
-	// In IE 11 fullscreen elements inside of an iframe have
-	// 100x too small dimensions (gh-1764).
-	if ( document.msFullscreenElement && window.top !== window ) {
-
-		// Support: IE11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-		}
-	}
 
 	// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -35547,6 +36522,7 @@ jQuery.extend( jQuery.event, {
 	},
 
 	// Piggyback on a donor event to simulate a different one
+	// Used only for `focus(in | out)` events
 	simulate: function( type, elem, event ) {
 		var e = jQuery.extend(
 			new jQuery.Event(),
@@ -35554,27 +36530,10 @@ jQuery.extend( jQuery.event, {
 			{
 				type: type,
 				isSimulated: true
-
-				// Previously, `originalEvent: {}` was set here, so stopPropagation call
-				// would not be triggered on donor event, since in our own
-				// jQuery.event.stopPropagation function we had a check for existence of
-				// originalEvent.stopPropagation method, so, consequently it would be a noop.
-				//
-				// But now, this "simulate" function is used only for events
-				// for which stopPropagation() is noop, so there is no need for that anymore.
-				//
-				// For the 1.x branch though, guard for "click" and "submit"
-				// events is still used, but was moved to jQuery.event.stopPropagation function
-				// because `originalEvent` should point to the original event for the constancy
-				// with other events and for more focused logic
 			}
 		);
 
 		jQuery.event.trigger( e, null, elem );
-
-		if ( e.isDefaultPrevented() ) {
-			event.preventDefault();
-		}
 	}
 
 } );
@@ -37524,7 +38483,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],88:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -39074,4 +40033,4 @@ return jQuery;
   }
 }.call(this));
 
-},{}]},{},[36]);
+},{}]},{},[38]);

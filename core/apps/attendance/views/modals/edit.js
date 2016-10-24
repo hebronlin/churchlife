@@ -71,7 +71,6 @@ module.exports = Backbone.Modal.extend({
 
     onShow: function(){
         if (this.members !== null) {
-            console.log('Members: ' + this.members.length);
             var msrView = new MemberSearchResultsView(this.members);
             msrView.render();
         }
@@ -94,6 +93,7 @@ module.exports = Backbone.Modal.extend({
                                         group_id: self.group_id,
                                         member_type: 'Member'});
                 group_member.save();
+                self.parent.addMember($(this).data('id'));
             }
         });
         this.$('.visitor-check').each(function (e) {
@@ -102,6 +102,7 @@ module.exports = Backbone.Modal.extend({
                                         group_id: self.group_id,
                                         member_type: 'Guest'});
                 group_member.save();
+                self.parent.addMember($(this).data('id'));
             }
         });
         this.parent.renderGroupAttendance();

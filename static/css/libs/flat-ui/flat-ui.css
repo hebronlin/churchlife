@@ -3922,7 +3922,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   position: relative;
 }
 .nav-tabs > li.active {
-  z-index: 2;
+  z-index: 1;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,

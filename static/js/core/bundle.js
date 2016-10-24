@@ -247,6 +247,15 @@ module.exports = Marionette.LayoutView.extend({
     this.$('#member-index-modal').html(d.el);
   },
 
+  addMember: function(member_id) {
+    var self = this;
+    var member = new Member({id: member_id});
+    member.fetch().done(
+      function() {
+        self.members.add(member);
+      });
+  },
+
   selectGroup: function(e) {
     this.groupId = e.target.value;
     this.members = new MemberCollection({groupId:this.groupId});
@@ -434,7 +443,6 @@ module.exports = Backbone.Modal.extend({
 
     onShow: function(){
         if (this.members !== null) {
-            console.log('Members: ' + this.members.length);
             var msrView = new MemberSearchResultsView(this.members);
             msrView.render();
         }
@@ -457,6 +465,7 @@ module.exports = Backbone.Modal.extend({
                                         group_id: self.group_id,
                                         member_type: 'Member'});
                 group_member.save();
+                self.parent.addMember($(this).data('id'));
             }
         });
         this.$('.visitor-check').each(function (e) {
@@ -465,6 +474,7 @@ module.exports = Backbone.Modal.extend({
                                         group_id: self.group_id,
                                         member_type: 'Guest'});
                 group_member.save();
+                self.parent.addMember($(this).data('id'));
             }
         });
         this.parent.renderGroupAttendance();
@@ -591,7 +601,7 @@ module.exports = HandlebarsCompiler.template({"1":function(container,depth0,help
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
-  return "\n<ul class=\"nav nav-tabs\">\n"
+  return "\n<ul class=\"nav nav-tabs\" data-tabs=\"tabs\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.tabs : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</ul>\n\n<div class=\"tab-content\">\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.tabs : depth0),{"name":"each","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")

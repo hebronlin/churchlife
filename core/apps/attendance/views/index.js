@@ -79,6 +79,15 @@ module.exports = Marionette.LayoutView.extend({
     this.$('#member-index-modal').html(d.el);
   },
 
+  addMember: function(member_id) {
+    var self = this;
+    var member = new Member({id: member_id});
+    member.fetch().done(
+      function() {
+        self.members.add(member);
+      });
+  },
+
   selectGroup: function(e) {
     this.groupId = e.target.value;
     this.members = new MemberCollection({groupId:this.groupId});
